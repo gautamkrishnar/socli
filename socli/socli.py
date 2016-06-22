@@ -11,6 +11,21 @@ rn = -1  # Result number (for -r and --res)
 ir = 0  # interactive mode off (for -i arg)
 query = ""
 
+
+
+class bcolors:
+    ''' use: print(bcolors.WARNING + "text here" + bcolors.ENDC) '''
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
+
 # @param searchquery = Query to search on stackoverflow
 def socli(query):
     query = urllib.parse.quote_plus(query)
@@ -31,7 +46,7 @@ def socli(query):
 
 # Displays help
 def helpman():
-    print("Stack Overflow command line client:")
+    print(bcolors.HEADER + "Stack Overflow command line client:" + bcolors.ENDC)
     print("\n\n\tUsage: socli [ Arguments ] < Search Query >\n\n")
     print("\n[ Arguments ] (optional):\n")
     print("--help or -h: Displays this help")
@@ -63,13 +78,14 @@ def socli_interactive(query):
             tmp1 = (soup.find_all("div", class_="excerpt"))
             i=0
             question_local_url=[]
-            print("\nSelect a question below:\n")
+            #bcolors.UNDERLINE + "text here" + bcolors.ENDC
+            print(bcolors.UNDERLINE + "\nSelect a question below:\n" + bcolors.ENDC)
             while (i<len(tmp)):
                 if i == 10: break  # limiting results
                 question_text=' '.join((tmp[i].a.get_text()).split())
                 question_desc=(tmp1[i].get_text()).replace("'\r\n","")
                 question_desc=' '.join(question_desc.split())
-                print(str(i+1)+"."+question_text.replace("Q: ",""))
+                print(bcolors.WARNING + str(i+1)+". "+question_text.replace("Q: ","") + bcolors.ENDC)
                 question_local_url.append(tmp[i].a.get("href"))
                 print("  "+question_desc)
                 print()
@@ -129,21 +145,26 @@ def wrongsyn(query):
     else:
         return
 
+
+def get_stats(soup):    
+    question_tittle =(soup.find_all("a", class_="question-hyperlink")[0].get_text())
+    question_stats  =(soup.find_all("span", class_="vote-count-post")[0].get_text())
+    question_stats  = "Votes "+question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0].get_text()).replace("\n", " ")).replace("     "," | "))
+    question_desc   =(soup.find_all("div", class_="post-text")[0].get_text())
+    question_stats  =' '.join(question_stats.split())
+    return question_tittle, question_desc, question_stats
+
 # Display result page
 def dispres(url):
     res_page = requests.get(url + query, verify=False)
     soup = BeautifulSoup(res_page.text, 'html.parser')
-    question_tittle=(soup.find_all("a", class_="question-hyperlink")[0].get_text())
-    question_stats=(soup.find_all("span", class_="vote-count-post")[0].get_text())
-    question_stats = "Votes "+question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0].get_text()).replace("\n", " ")).replace("     "," | "))
-    question_desc=(soup.find_all("div", class_="post-text")[0].get_text())
-    question_stats=' '.join(question_stats.split())
-    print("\nQuestion: " + question_tittle)
+    question_tittle, question_desc, question_stats = get_stats(soup)
+    print(bcolors.WARNING + "\nQuestion: " + question_tittle + bcolors.ENDC)
     print(question_desc)
-    print("\t"+question_stats)
+    print("\t" + bcolors.UNDERLINE + question_stats + bcolors.ENDC)
     try:
         answer = (soup.find_all("div", class_="post-text")[1].get_text())
-        print("\n\nAnswer:\n"+answer)
+        print(bcolors.OKGREEN + "\n\nAnswer:\n" + bcolors.ENDC + "\n-------\n"+ answer + "\n-------\n")
         return
     except IndexError as e:
         print("\n\nAnswer:\n\t No answer found for this question...")
