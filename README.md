@@ -30,6 +30,12 @@ Open a command prompt with administrative privileges and use **pip** command to 
 pip3 install socli
 ```
 
+##### For Mac (via homebrew)
+
+```sh
+brew install python3
+pip3 install socli
+```
 
 ### Usage
 ##### Quick search
