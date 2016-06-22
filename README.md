@@ -93,6 +93,7 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 
 ### Todo
 - [ ] Modify the interactive mode command line interface to browse through the answers 
+- [ ] Make interface more formatted
 
 ### Contributors
 Special thanks to these superheroes:
