@@ -84,7 +84,7 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
   ```
 
 3. Switch to the directory: `cd socli` 
-4. Create your new language branch: `git checkout -b feature name`
+4. Create your new branch: `git checkout -b feature name`
 5. Make necessary changes to this source code
 6. Add changes to git index by using `git add --all .`
 7. Commit your changes: `git commit -am 'Added new feature'`
