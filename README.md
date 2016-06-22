@@ -76,6 +76,7 @@ It refers to query to search in stack overflow.
 
 ### Contributing
 If you are willing to contribute to SoCLI project, You are awesome! Just follow the steps below:
+
 1. Fork it!
 2. Make a local clone: 
   ```sh
