@@ -28,7 +28,6 @@ sudo pip3 install socli
 Open a command prompt with administrative privileges and use **pip** command to install **socli**:
 ```
 pip3 install socli
-
 ```
 
 
