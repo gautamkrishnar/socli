@@ -200,7 +200,3 @@ def main():
             print("Wrong syntax...!\n")
             helpman()
             sys.exit(0)
-
-
-if __name__ == '__main__':
-    main()
