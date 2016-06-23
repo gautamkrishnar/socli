@@ -1,4 +1,4 @@
-SoCLI
+﻿SoCLI
 =====
 
 Stack overflow command line stack overflow client written in python.

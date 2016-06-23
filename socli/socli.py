@@ -10,6 +10,7 @@ sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
 ir = 0  # interactive mode off (for -i arg)
 query = ""
+
 ### To implement colors:
 
 class bcolors:
@@ -99,10 +100,35 @@ def socli_interactive(query):
                 print("  "+question_desc+"\n")
                 i=i+1
             try:
-                op=int(input("\n\nType the option no to continue or any other key to exit:"))
+                op=int(input("\nType the option no to continue or any other key to exit:"))
                 while 1:
                     if (op>0) and (op<=i):
                         dispres(sourl+question_local_url[op-1])
+                        cnt=1 #this is because the 1st post is the question itself
+                        while 1:
+                            global tmpsoup
+                            qna=input("Type n for next answer, b for previous answer or q for exit: ")
+                            if qna in ["q","Q"]:
+                                break
+                            elif qna in ["n","N"]:
+                                try:
+                                    answer = (tmpsoup.find_all("div", class_="post-text")[cnt+1].get_text())
+                                    printgreen("\n\nAnswer:\n")
+                                    print("-------\n" + answer + "\n-------\n")
+                                    cnt=cnt+1
+                                except IndexError as e:
+                                    printwarning(" No more answers found for this question. Exiting...")
+                                    sys.exit(0)
+                                continue
+                            elif qna in ["b","B"]:
+                                if cnt==1:
+                                    printwarning(" You cant go further back. You are on the first answer!")
+                                    continue
+                                answer = (tmpsoup.find_all("div", class_="post-text")[cnt+1].get_text())
+                                printgreen("\n\nAnswer:\n")
+                                print("-------\n" + answer + "\n-------\n")
+                                cnt = cnt - 1
+                                continue
                         sys.exit(0)
                     else:
                         op = int(input("\n\nWrong option. select the option no to continue;"))
@@ -171,7 +197,10 @@ def dispres(url):
     print("\t"+underline(question_stats))
     try:
         answer = (soup.find_all("div", class_="post-text")[1].get_text())
-        print(bcolors.OKGREEN + "\n\nAnswer:\n" + bcolors.ENDC + "\n-------\n"+ answer + "\n-------\n")
+        global tmpsoup
+        tmpsoup=soup
+        printgreen("\n\nAnswer:\n")
+        print("-------\n" + answer + "\n-------\n")
         return
     except IndexError as e:
         printwarning("\n\nAnswer:\n\t No answer found for this question...")

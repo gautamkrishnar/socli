@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from setuptools import setup
 from sys import exit,version
 import os
@@ -8,7 +9,7 @@ if version < '3.0.0':
 
 
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    return open(os.path.join(os.path.dirname(__file__),fname),encoding="utf8").read()
 
 
 setup(
