@@ -107,7 +107,7 @@ def socli_interactive(query):
                         cnt=1 #this is because the 1st post is the question itself
                         while 1:
                             global tmpsoup
-                            qna=input("Type n for next answer, b for previous answer or q for exit: ")
+                            qna=input("Type "+bold("o")+" to open in browser, "+bold("n")+" to next answer, "+bold("b")+" for previous answer and "+bold("q")+" for exit: ")
                             if qna in ["q","Q"]:
                                 break
                             elif qna in ["n","N"]:
@@ -129,6 +129,10 @@ def socli_interactive(query):
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
                                 continue
+                            elif qna in ["o","O"]:
+                                import webbrowser
+                                printwarning("Opening in your browser...")
+                                webbrowser.open(sourl+question_local_url[op-1])
                         sys.exit(0)
                     else:
                         op = int(input("\n\nWrong option. select the option no to continue;"))

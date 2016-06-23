@@ -87,6 +87,7 @@ These are the amazing features of **socli**:
 * Interactively browse stack overflow using the interactive mode
 * Coloured interface
 * Question stats view
+* Can open the page in a browser
 
 ### Contributing
 If you are willing to contribute to SoCLI project, You are awesome! Just follow the steps below:
