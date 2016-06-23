@@ -1,0 +1,4 @@
+.idea/
+build/
+dist/
+socli.egg-info/
