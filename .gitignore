@@ -1,5 +1,9 @@
 .idea/
+
 build/
+
 dist/
+
 socli.egg-info/
+
 socli/__pycache__/

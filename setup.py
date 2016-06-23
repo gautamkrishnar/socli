@@ -13,7 +13,7 @@ setup(
     packages=["socli"],
     entry_points = {"console_scripts": ['socli = socli.socli:main']},
     install_requires=['BeautifulSoup4','requests'],
-    version='1.2',
+    version='1.3',
     url='http://www.github.com/gautamkrishnar/socli',
     keywords=['stack overflow','cli'],
     license='BSD',
