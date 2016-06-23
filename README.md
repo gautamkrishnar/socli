@@ -99,7 +99,6 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 9. Submit a [new pull request](https://github.com/gautamkrishnar/socli/pull/new) :smile:
 
 ### Todo
-- [ ] Modify the interactive mode command line interface to browse through the answers 
 - [ ] Make interface more formatted
 
 ### Contributors
