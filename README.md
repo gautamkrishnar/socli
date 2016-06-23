@@ -8,6 +8,7 @@ Stack overflow command line stack overflow client written in python. Using SoCLI
 ##### Supported platforms
 * Linux
 * Windows
+* Mac
 
 ##### Requirements
 * python 3+ :
@@ -103,7 +104,8 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 
 ### Contributors
 Special thanks to these superheroes:
-* Your name here
+* [@Killbee}(https://github.com/kilbee)
+* [Sam Dean](https://github.com/deanWombourne)
 
 
 ### Bugs
