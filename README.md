@@ -104,7 +104,7 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 
 ### Contributors
 Special thanks to these superheroes:
-* [@Killbee}(https://github.com/kilbee)
+* [@Killbee](https://github.com/kilbee)
 * [Sam Dean](https://github.com/deanWombourne)
 
 
