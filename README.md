@@ -14,17 +14,13 @@ Stack overflow command line stack overflow client written in python. Using SoCLI
 * python 3+ :
 
 ##### For Linux
-Install **python3**:
+Install **python3** and just use **pip** command to install **socli**:
 ```
 sudo apt-get install python3
-```
-
-Just use **pip** command to install **socli**:
-```sh
 sudo pip3 install socli
 ```
 ##### For Windows
-[Download and install python 3](https://www.python.org/ftp/python/3.5.1/python-3.5.1.exe). Dont forget to check the option "Add to path"
+[Download and install python 3](https://www.python.org/ftp/python/3.5.1/python-3.5.1.exe). Dont forget to check the option "Add to path".
 
 Open a command prompt with administrative privileges and use **pip** command to install **socli**:
 ```
@@ -32,7 +28,7 @@ pip3 install socli
 ```
 
 ##### For Mac (via homebrew)
-
+Install **python3** and **socli**:
 ```sh
 brew install python3
 pip3 install socli
@@ -80,6 +76,12 @@ Usage: socli [ Arguments] < Search Query >
 ###### Query
 It refers to query to search in stack overflow.
 
+### Features
+These are the amazing features of **socli**:
+* Manual Search
+* Interactively browse stack overflow using the interactive mode
+* Coloured interface
+* Question stats view
 
 ### Contributing
 If you are willing to contribute to SoCLI project, You are awesome! Just follow the steps below:
