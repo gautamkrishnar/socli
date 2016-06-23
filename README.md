@@ -50,7 +50,7 @@ You can search the stack overflow interactively by using the command below:
 socli -iq html error 404
 ```
 
-This will display a list of questions from stack overflow for the query "*html error 404*" and it will allow you to choose any of the question you like interactively. When you chose a question, it will display the complete description of the chased question with its most voted answer.
+This will display a list of questions from stack overflow for the query "*html error 404*" and it will allow you to choose any of the question you like interactively. When you chose a question, it will display the complete description of the chosed question with its most voted answer. Now you can browse through all the answers of that questions on stack overflow interactively.
 
 ##### Manual search
 This will allow you to choose a question number for example:
