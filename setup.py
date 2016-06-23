@@ -5,9 +5,6 @@ if version < '3.0.0':
     print("Python 2 is not supported...")
     sys.exit(1)
 
-with open("rme.rst", "rb") as f:
-    long_des = f.read().decode("utf-8")
-
 setup(
     name='socli',
     packages=["socli"],
@@ -20,5 +17,5 @@ setup(
     author='Gautam krishna R',
     author_email='r.gautamkrishna@gmail.com',
     description='Stack overflow commnand line interface. SoCLI allows you to search and browse stack overfow from the terninal.',
-    long_description=long_des
+    long_description="Visit www.github.com/gautamkrishnar/socli"
     )
