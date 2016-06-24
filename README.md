@@ -26,6 +26,10 @@ Open a command prompt with administrative privileges and use **pip** command to 
 ```bash
 pip3 install socli
 ```
+Use **easy_install** if your python path have a space in it [Read more:"Failed to create process"](https://github.com/gautamkrishnar/socli/issues/6):
+```
+easy_install socli
+```
 
 ##### For Mac (via homebrew)
 Install **python3** and **socli**:
