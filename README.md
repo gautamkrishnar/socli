@@ -108,6 +108,7 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 
 ### Todo
 - [ ] Make interface more formatted
+- [ ] Allow posting to stackoverflow using cli (I am not sure whether we can implement it!)
 
 ### Contributors
 Special thanks to these superheroes:
