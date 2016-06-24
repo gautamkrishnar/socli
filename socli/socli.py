@@ -1,6 +1,6 @@
 # Stack overflow CLI
 # Created by Gautam krishna R : www.github.com/gautamkrishnar
-import sys, urllib, getopt, requests
+import sys, urllib, getopt, requests, os
 from bs4 import BeautifulSoup
 
 # Global vars:
@@ -13,6 +13,21 @@ query = ""
 
 ### To implement colors:
 
+# From https://github.com/django/django/blob/master/django/core/management/color.py
+def supports_color():
+    """
+    Returns True if the running system's terminal supports color,
+    and False otherwise.
+    """
+    plat = sys.platform
+    supported_platform = plat != 'Pocket PC' and (plat != 'win32' or 'ANSICON' in os.environ)
+
+    # isatty is not always implemented, #6223.
+    is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
+    if not supported_platform or not is_a_tty:
+        return False
+    return True
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -22,20 +37,32 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-def printheader(str):
-    print(bcolors.HEADER+str+bcolors.ENDC)
-def printblue(str):
-    print(bcolors.OKBLUE+str+bcolors.ENDC)
-def printgreen(str):
-    print(bcolors.OKGREEN+str+bcolors.ENDC)
-def printwarning(str):
-    print(bcolors.WARNING+str+bcolors.ENDC)
-def printfail(str):
-    print(bcolors.FAIL+str+bcolors.ENDC)
+
+def format_str(str, color):
+    _color = color if supports_color() else ''
+    _endc = bcolors.ENDC if supports_color() else ''
+    return "{0}{1}{2}".format(_color, str, _endc)
+
+def print_header(str):
+    print format_str(str, bcolors.HEADER)
+
+def print_blue(str):
+    print format_str(str, bcolors.OKBLUE)
+
+def print_green(str):
+    print format_str(str, bcolors.OKGREEN)
+
+def print_warning(str):
+    print format_str(str, bcolors.WARNING)
+
+def print_fail(str):
+    print format_str(str, bcolors.FAIL)
+
 def bold(str):
-    return bcolors.BOLD+str+bcolors.ENDC
+    return format_str(str, bcolors.BOLD)
+
 def underline(str):
-    return bcolors.UNDERLINE+str+bcolors.ENDC
+    return format_str(str, bcolors.UNDERLINE)
 
 ### SOCLI Code
 
@@ -48,32 +75,32 @@ def socli(query):
         try:
             res_url = sourl + (soup.find_all("div", class_="question-summary")[0].a.get('href'))
         except IndexError:
-            printwarning("No results found...")
+            print_warning("No results found...")
             sys.exit(0)
         dispres(res_url)
     except Exception as e:
-        printfail("Please check your internet connectivity...")
+        print_fail("Please check your internet connectivity...")
         sys.exit(1)
 #        print(e.__doc__)
 #        print(e.message)
 
 # Displays help
 def helpman():
-    printheader("Stack Overflow command line client:")
-    printgreen("\n\n\tUsage: socli [ Arguments ] < Search Query >\n\n")
-    printheader("\n[ Arguments ] (optional):\n")
+    print_header("Stack Overflow command line client:")
+    print_green("\n\n\tUsage: socli [ Arguments ] < Search Query >\n\n")
+    print_header("\n[ Arguments ] (optional):\n")
     print(" "+bold("--help or -h")+" : Displays this help")
     print(" "+bold("--query or -q")+" : If any of the following commands are used then you must specify search query after the query argument")
     print(" "+bold("--interactive or -i")+" : To search in stack overflow and display the matching results. You can chose and browse any of the"
         " result interactively")
     print(" "+bold("--res or -r")+" : To select and display a result manually and display its most voted answer. \n"
           "   eg:- socli --res 2 -query foo bar: Displays the second search result of the query \"foo bar\"'s most voted answer")
-    printheader("\n\n< Search Query >:")
+    print_header("\n\n< Search Query >:")
     print("\n Query to search on Stack overflow")
     print("\nIf no commands are specified then socli will search the stack overfow and simply displays the"
           " first search result's most voted answer.")
     print("If a command is specified then it will work according to the command.")
-    printheader("\n\nExamples:\n")
+    print_header("\n\nExamples:\n")
     print(bold("socli")+" for loop in python")
     print(bold("socli -iq")+" while loop in python")
 
@@ -95,7 +122,7 @@ def socli_interactive(query):
                 question_text=' '.join((tmp[i].a.get_text()).split())
                 question_desc=(tmp1[i].get_text()).replace("'\r\n","")
                 question_desc=' '.join(question_desc.split())
-                printwarning(str(i+1)+". "+question_text.replace("Q: ",""))
+                print_warning(str(i + 1) + ". " + question_text.replace("Q: ", ""))
                 question_local_url.append(tmp[i].a.get("href"))
                 print("  "+question_desc+"\n")
                 i=i+1
@@ -113,41 +140,41 @@ def socli_interactive(query):
                             elif qna in ["n","N"]:
                                 try:
                                     answer = (tmpsoup.find_all("div", class_="post-text")[cnt+1].get_text())
-                                    printgreen("\n\nAnswer:\n")
+                                    print_green("\n\nAnswer:\n")
                                     print("-------\n" + answer + "\n-------\n")
                                     cnt=cnt+1
                                 except IndexError as e:
-                                    printwarning(" No more answers found for this question. Exiting...")
+                                    print_warning(" No more answers found for this question. Exiting...")
                                     sys.exit(0)
                                 continue
                             elif qna in ["b","B"]:
                                 if cnt==1:
-                                    printwarning(" You cant go further back. You are on the first answer!")
+                                    print_warning(" You cant go further back. You are on the first answer!")
                                     continue
                                 answer = (tmpsoup.find_all("div", class_="post-text")[cnt+1].get_text())
-                                printgreen("\n\nAnswer:\n")
+                                print_green("\n\nAnswer:\n")
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
                                 continue
                             elif qna in ["o","O"]:
                                 import webbrowser
-                                printwarning("Opening in your browser...")
+                                print_warning("Opening in your browser...")
                                 webbrowser.open(sourl+question_local_url[op-1])
                         sys.exit(0)
                     else:
                         op = int(input("\n\nWrong option. select the option no to continue;"))
             except Exception:
-                printwarning("\n Exiting...")
+                print_warning("\n Exiting...")
                 sys.exit(1)
         except IndexError:
-            printwarning("No results found...")
+            print_warning("No results found...")
             sys.exit(1)
 
     except UnicodeEncodeError:
-        printwarning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except Exception as e:
-        printfail("Please check your internet connectivity...")
+        print_fail("Please check your internet connectivity...")
         sys.exit(1)
 #        print(e.__doc__)
 
@@ -161,14 +188,14 @@ def socl_manusearch(query, rn):
         try:
             res_url = sourl + (soup.find_all("div", class_="question-summary")[rn-1].a.get('href'))
         except IndexError:
-            printwarning("No results found...")
+            print_warning("No results found...")
             sys.exit(1)
         dispres(res_url)
     except UnicodeEncodeError:
-        printwarning("Encoding error: Use \"chcp 65001\" command before using socli...")
+        print_warning("Encoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except Exception as e:
-        printfail("Please check your internet connectivity...")
+        print_fail("Please check your internet connectivity...")
         sys.exit(1)
 #        print(e.__doc__)
 
@@ -176,7 +203,7 @@ def socl_manusearch(query, rn):
 # Exits if query value is empty
 def wrongsyn(query):
     if query == "":
-        printwarning("Wrong syntax!...\n")
+        print_warning("Wrong syntax!...\n")
         helpman()
         sys.exit(1)
     else:
@@ -196,18 +223,18 @@ def dispres(url):
     res_page = requests.get(url + query, verify=False)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_tittle, question_desc, question_stats = get_stats(soup)
-    printwarning("\nQuestion: " + question_tittle)
+    print_warning("\nQuestion: " + question_tittle)
     print(question_desc)
     print("\t"+underline(question_stats))
     try:
         answer = (soup.find_all("div", class_="post-text")[1].get_text())
         global tmpsoup
         tmpsoup=soup
-        printgreen("\n\nAnswer:\n")
+        print_green("\n\nAnswer:\n")
         print("-------\n" + answer + "\n-------\n")
         return
     except IndexError as e:
-        printwarning("\n\nAnswer:\n\t No answer found for this question...")
+        print_warning("\n\nAnswer:\n\t No answer found for this question...")
         sys.exit(0);
 
 # Main
@@ -235,7 +262,7 @@ def main():
                     try:
                         rn = int(arg)
                     except ValueError:
-                        printwarning("Wrong syntax...!\n")
+                        print_warning("Wrong syntax...!\n")
                         helpman()
                         sys.exit(0)
                 if opt in ("-q", "--query"):
@@ -251,14 +278,14 @@ def main():
             socl_manusearch(query, rn)
             sys.exit(0)
         elif (rn==0):
-            printwarning("Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
+            print_warning("Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
             sys.exit(0)
         elif (ir == 1):
             wrongsyn(query)
             socli_interactive(query)
             sys.exit(0)
         else:
-            printwarning("Wrong syntax...!\n")
+            print_warning("Wrong syntax...!\n")
             helpman()
             sys.exit(0)
 
