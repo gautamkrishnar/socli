@@ -116,12 +116,16 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 
 ### Contributors
 Special thanks to these superheroes:
-* [@Killbee](https://github.com/kilbee)
-* [Sam Dean](https://github.com/deanWombourne)
+* [@Killbee](https://github.com/kilbee) for making SoCLI colorful 
+* [Sam Dean](https://github.com/deanWombourne) for adding Macintosh SoCLI installation instructions
 
 
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
+
+### Mentions
+Special thanks to people who wrote about SoCLI on their blogs and websites:
+* [wykop.pl](http://www.wykop.pl/wpis/18286681/python-stackoverflow-interfejs-bo-sciaga-musi-byc-/)
 
 ### Liked it?
 Hope you liked this project, don't forget to give it a star :star:
