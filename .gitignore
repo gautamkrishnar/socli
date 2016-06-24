@@ -7,3 +7,5 @@ dist/
 socli.egg-info/
 
 socli/__pycache__/
+
+docs/
