@@ -16,7 +16,7 @@ Stack overflow command line stack overflow client written in python. Using SoCLI
 ##### For Linux
 Install **python3** and just use **pip** command to install **socli**:
 ```bash
-sudo apt-get install python3
+sudo apt-get install python3 python3-pip
 sudo pip3 install socli
 ```
 ##### For Windows
@@ -26,11 +26,15 @@ Open a command prompt with administrative privileges and use **pip** command to 
 ```bash
 pip3 install socli
 ```
+Use **easy_install** if your python path have a space in it [Read more:"Failed to create process"](https://github.com/gautamkrishnar/socli/issues/6):
+```
+easy_install socli
+```
 
 ##### For Mac (via homebrew)
 Install **python3** and **socli**:
 ```bash
-brew install python3
+brew install python3 python3-pip
 pip3 install socli
 ```
 ### Updating
@@ -108,6 +112,7 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 
 ### Todo
 - [ ] Make interface more formatted
+- [ ] Allow posting to stackoverflow using cli (I am not sure whether we can implement it!)
 
 ### Contributors
 Special thanks to these superheroes:
