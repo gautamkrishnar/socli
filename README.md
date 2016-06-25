@@ -86,7 +86,7 @@ Usage: socli [ Arguments] < Search Query >
 | -q | --query | Used to specify the query when arguments are used. A query value must be passed to it. If it is used alone (socli -q query) then it will display the same result as "socli query". | socli -i -q query |
 | -i | --interactive |  Used to search interactively. It doesnt take any values. It must be followed by a -q or --query after it. | socli -i -q query |
 | -r | --res | Used for manual search. It takes the question number as the argument and it must be followed by a  -q or --query after it. | socli -r 4 -q query |
-| -n | --new | Open the web browser to create a new question on stack overflow. | socli --help |
+| -n | --new | Open the web browser to create a new question on stack overflow. | socli --new |
 | -h | --help | Displays the help text. | socli --help |
 
 ###### Query
