@@ -134,10 +134,8 @@ def socli_interactive(query):
                         cnt=1 #this is because the 1st post is the question itself
                         while 1:
                             global tmpsoup
-                            qna=input("Type "+bold("o")+" to open in browser, "+bold("n")+" to next answer, "+bold("b")+" for previous answer and "+bold("q")+" for exit: ")
-                            if qna in ["q","Q"]:
-                                break
-                            elif qna in ["n","N"]:
+                            qna=input("Type "+bold("o")+" to open in browser, "+bold("n")+" to next answer, "+bold("b")+" for previous answer or any other key to exit: ")
+                            if qna in ["n","N"]:
                                 try:
                                     answer = (tmpsoup.find_all("div", class_="post-text")[cnt+1].get_text())
                                     print_green("\n\nAnswer:\n")
@@ -160,6 +158,8 @@ def socli_interactive(query):
                                 import webbrowser
                                 print_warning("Opening in your browser...")
                                 webbrowser.open(sourl+question_local_url[op-1])
+                            else:
+                                break
                         sys.exit(0)
                     else:
                         op = int(input("\n\nWrong option. select the option no to continue;"))
