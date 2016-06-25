@@ -86,7 +86,7 @@ Usage: socli [ Arguments] < Search Query >
 | -q | --query | Used to specify the query when arguments are used. A query value must be passed to it. If it is used alone (socli -q query) then it will display the same result as "socli query". | socli -i -q query |
 | -i | --interactive |  Used to search interactively. It doesnt take any values. It must be followed by a -q or --query after it. | socli -i -q query |
 | -r | --res | Used for manual search. It takes the question number as the argument and it must be followed by a  -q or --query after it. | socli -r 4 -q query |
-| -n | --new | Open the web browser to create a new question on stack overflow. | socli --new |
+| -n | --new | Opens the web browser to create a new question on stack overflow. | socli --new |
 | -h | --help | Displays the help text. | socli --help |
 
 ###### Query
@@ -99,6 +99,7 @@ These are the amazing features of **socli**:
 * Coloured interface
 * Question stats view
 * Can open the page in a browser
+* Can create a new question via the web browser
 
 ### Contributing
 If you are willing to contribute to SoCLI project, You are awesome! Just follow the steps below:
@@ -116,10 +117,6 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 7. Commit your changes: `git commit -am 'Added new feature'`
 8. Push to the branch: `git push`
 9. Submit a [new pull request](https://github.com/gautamkrishnar/socli/pull/new) :smile:
-
-### Todo
-- [ ] Make interface more formatted
-- [ ] Allow posting to stackoverflow using cli (I am not sure whether we can implement it!)
 
 ### Contributors
 Special thanks to these superheroes:
