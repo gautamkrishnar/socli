@@ -21,7 +21,14 @@ def supports_color():
     """
     plat = sys.platform
     supported_platform = plat != 'Pocket PC' and (plat != 'win32' or 'ANSICON' in os.environ)
-
+    # To detect windows 10 cmd. Windows 10 cmd supports color by default
+    if os.name=="nt":
+        x=sys.getwindowsversion()[0]
+        if x==10:
+            try:
+                test_shell=os.environ['SHELL'] # If running with a shell like cygwin this is set
+            except Exception:
+                return True
     # isatty is not always implemented, #6223.
     is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
     if not supported_platform or not is_a_tty:
