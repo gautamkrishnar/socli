@@ -1,7 +1,7 @@
 # SoCLI  
 Stack overflow command line stack overflow client written in python. Using SoCLI you can search and browse stack overflow without leaving the terminal. Just use the **socli** command:
 
-![socli in action](https://cloud.githubusercontent.com/assets/8397274/16255232/82d93dae-3865-11e6-9b0b-c4570adbda6e.gif)
+![SoCLI in action](https://cloud.githubusercontent.com/assets/8397274/16355211/ae134c66-3acd-11e6-807f-adb8f3bbcf44.gif)
 
 ### Installation
 
@@ -128,6 +128,7 @@ If you are experiencing any bugs, don’t forget to open a [new issue](https://g
 * Special thanks to people who wrote about SoCLI on their blogs and websites:
 	* [wykop.pl](http://www.wykop.pl/wpis/18286681/python-stackoverflow-interfejs-bo-sciaga-musi-byc-/)
 * Thanks to my fevourite IDE JetBrains PyCharm :heart: :smile:
+
 <img src="https://cloud.githubusercontent.com/assets/8397274/16355101/edb3b98a-3aca-11e6-8db5-5f54cd4b9969.png" width=80px>
 
 ### Liked it?
