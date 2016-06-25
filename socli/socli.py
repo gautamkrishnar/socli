@@ -11,8 +11,8 @@ rn = -1  # Result number (for -r and --res)
 ir = 0  # interactive mode off (for -i arg)
 query = ""
 
-### To implement colors:
 
+### To implement colors:
 # From https://github.com/django/django/blob/master/django/core/management/color.py
 def supports_color():
     """
@@ -64,8 +64,8 @@ def bold(str):
 def underline(str):
     return(format_str(str, bcolors.UNDERLINE))
 
-### SOCLI Code
 
+### SOCLI Code
 # @param searchquery = Query to search on stackoverflow
 def socli(query):
     query = urllib.parse.quote_plus(query)

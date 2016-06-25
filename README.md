@@ -123,9 +123,12 @@ Special thanks to these superheroes:
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
 
-### Mentions
-Special thanks to people who wrote about SoCLI on their blogs and websites:
-* [wykop.pl](http://www.wykop.pl/wpis/18286681/python-stackoverflow-interfejs-bo-sciaga-musi-byc-/)
+### Thanks
+* Thanks to all the existing users of SoCLI.
+* Special thanks to people who wrote about SoCLI on their blogs and websites:
+	* [wykop.pl](http://www.wykop.pl/wpis/18286681/python-stackoverflow-interfejs-bo-sciaga-musi-byc-/)
+* Thanks to my fevourite IDE JetBrains PyCharm :heart: :smile:
+<img src="https://cloud.githubusercontent.com/assets/8397274/16355101/edb3b98a-3aca-11e6-8db5-5f54cd4b9969.png" width=80px>
 
 ### Liked it?
 Hope you liked this project, don't forget to give it a star :star:
