@@ -44,25 +44,25 @@ def format_str(str, color):
     return "{0}{1}{2}".format(_color, str, _endc)
 
 def print_header(str):
-    print format_str(str, bcolors.HEADER)
+    print(format_str(str, bcolors.HEADER))
 
 def print_blue(str):
-    print format_str(str, bcolors.OKBLUE)
+    print(format_str(str, bcolors.OKBLUE))
 
 def print_green(str):
-    print format_str(str, bcolors.OKGREEN)
+    print(format_str(str, bcolors.OKGREEN))
 
 def print_warning(str):
-    print format_str(str, bcolors.WARNING)
+    print(format_str(str, bcolors.WARNING))
 
 def print_fail(str):
-    print format_str(str, bcolors.FAIL)
+    print(format_str(str, bcolors.FAIL))
 
 def bold(str):
-    return format_str(str, bcolors.BOLD)
+    return(format_str(str, bcolors.BOLD))
 
 def underline(str):
-    return format_str(str, bcolors.UNDERLINE)
+    return(format_str(str, bcolors.UNDERLINE))
 
 ### SOCLI Code
 

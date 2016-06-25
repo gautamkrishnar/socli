@@ -118,7 +118,7 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 Special thanks to these superheroes:
 * [@Killbee](https://github.com/kilbee) for making SoCLI colorful 
 * [Sam Dean](https://github.com/deanWombourne) for adding Macintosh SoCLI installation instructions
-
+* [Plinio89s](https://github.com/Plinio89s) for adding the check for color support
 
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
