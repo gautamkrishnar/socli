@@ -1,3 +1,7 @@
 machine:
-  python:
-    version: pypy-3.5.1
+  environment:
+    SOCLI_PY34: '3.4.3'
+
+dependencies:
+  override:
+    - sudo python3 setup.py install
