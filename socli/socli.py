@@ -134,7 +134,7 @@ def socli_interactive(query):
                         cnt=1 #this is because the 1st post is the question itself
                         while 1:
                             global tmpsoup
-                            qna=input("Type "+bold("o")+" to open in browser, "+bold("n")+" to next answer, "+bold("b")+" for previous answer or any other key to exit: ")
+                            qna=input("Type "+bold("o")+" to open in browser, "+bold("n")+" to next answer, "+bold("b")+" for previous answer or any other key to exit:")
                             if qna in ["n","N"]:
                                 try:
                                     answer = (tmpsoup.find_all("div", class_="post-text")[cnt+1].get_text())
