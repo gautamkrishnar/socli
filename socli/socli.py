@@ -255,7 +255,7 @@ def main():
         sys.exit(0)
     else:
         try:
-            options, rem = getopt.getopt(sys.argv[1:], "ir:q:", ["query=", "res=", "interactive="])
+            options, rem = getopt.getopt(sys.argv[1:], "nir:q:", ["query=", "res=", "interactive=","new"])
         except getopt.GetoptError:
             helpman()
             sys.exit(1)
@@ -276,7 +276,11 @@ def main():
                     query = arg
                     if len(rem) > 0:
                         query = query + " " + " ".join(rem)
-
+                if opt in ("-n", "--new"):
+                    import webbrowser
+                    print_warning("Opening stack overflow in your browser...")
+                    webbrowser.open(sourl + "/questions/ask")
+                    sys.exit(0)
         if (rn == -1) and (ir == 0):
             socli(" ".join(sys.argv[1:]))
             sys.exit(0)

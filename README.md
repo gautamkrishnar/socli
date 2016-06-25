@@ -68,6 +68,12 @@ socli -r 2 -q javascript porotype function
 ```
 Will search for "*javascript porotype function*" in stack overflow and displays the second question that contains it.
 
+##### New question
+If you can't find an answer for your question in stack overflow, **socli** allows you to creata a new question via the web browswer. Just type the command below and **socli** will opwn the web browser for you to post the question:
+```sh
+socli -n
+```
+
 ### Syntax:
 **socli** has the following syntax
 ```
@@ -80,6 +86,7 @@ Usage: socli [ Arguments] < Search Query >
 | -q | --query | Used to specify the query when arguments are used. A query value must be passed to it. If it is used alone (socli -q query) then it will display the same result as "socli query". | socli -i -q query |
 | -i | --interactive |  Used to search interactively. It doesnt take any values. It must be followed by a -q or --query after it. | socli -i -q query |
 | -r | --res | Used for manual search. It takes the question number as the argument and it must be followed by a  -q or --query after it. | socli -r 4 -q query |
+| -n | --new | Open the web browser to create a new question on stack overflow. | socli --help |
 | -h | --help | Displays the help text. | socli --help |
 
 ###### Query
