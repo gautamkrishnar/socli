@@ -1,6 +1,12 @@
 # Stack overflow CLI
 # Created by Gautam krishna R : www.github.com/gautamkrishnar
-import sys, urllib, getopt, requests, os
+
+import getopt
+import os
+import sys
+import urllib
+
+import requests
 from bs4 import BeautifulSoup
 
 # Global vars:
@@ -20,7 +26,8 @@ def supports_color():
     and False otherwise.
     """
     plat = sys.platform
-    supported_platform = plat != 'Pocket PC' and (plat != 'win32' or 'ANSICON' in os.environ)
+    supported_platform = plat != 'Pocket PC' and\
+                                   (plat != 'win32' or 'ANSICON' in os.environ)
     # To detect windows 10 cmd. Windows 10 cmd supports color by default
     if os.name=="nt":
         x=sys.getwindowsversion()[0]
@@ -80,7 +87,8 @@ def socli(query):
         search_res = requests.get(soqurl+query, verify=False)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
-            res_url = sourl + (soup.find_all("div", class_="question-summary")[0].a.get('href'))
+            res_url = sourl + (soup.find_all("div",
+                                   class_="question-summary")[0].a.get('href'))
         except IndexError:
             print_warning("No results found...")
             sys.exit(0)
@@ -96,20 +104,28 @@ def helpman():
     print_header("Stack Overflow command line client:")
     print_green("\n\n\tUsage: socli [ Arguments ] < Search Query >\n\n")
     print_header("\n[ Arguments ] (optional):\n")
-    print(" "+bold("--help or -h")+" : Displays this help")
-    print(" "+bold("--query or -q")+" : If any of the following commands are used then you must specify search query after the query argument")
-    print(" "+bold("--interactive or -i")+" : To search in stack overflow and display the matching results. You can chose and browse any of the"
-        " result interactively")
-    print(" "+bold("--res or -r")+" : To select and display a result manually and display its most voted answer. \n"
-          "   eg:- socli --res 2 -query foo bar: Displays the second search result of the query \"foo bar\"'s most voted answer")
+    print(" " + bold("--help or -h") + " : Displays this help")
+    print(" " + bold("--query or -q") + 
+                    " : If any of the following commands are used then you "\
+                        "must specify search query after the query argument")
+    print(" " + bold("--interactive or -i") + " : To search in stack overflow"
+                    " and display the matching results. You can chose and "
+                    "browse any of the result interactively")
+    print(" " + bold("--res or -r") + 
+                    " : To select and display a result manually and display "
+                    "its most voted answer. \n   eg:- socli --res 2 -query "
+                    "foo bar: Displays the second search result of the query"
+                    " \"foo bar\"'s most voted answer")
     print_header("\n\n< Search Query >:")
     print("\n Query to search on Stack overflow")
-    print("\nIf no commands are specified then socli will search the stack overfow and simply displays the"
-          " first search result's most voted answer.")
-    print("If a command is specified then it will work according to the command.")
+    print("\nIf no commands are specified then socli will search the stack "
+                    "overfow and simply displays the first search result's "
+                    "most voted answer.")
+    print("If a command is specified then it will work according to the "
+                    "command.")
     print_header("\n\nExamples:\n")
-    print(bold("socli")+" for loop in python")
-    print(bold("socli -iq")+" while loop in python")
+    print(bold("socli") + " for loop in python")
+    print(bold("socli -iq") + " while loop in python")
 
 
 # Interactive mode:
@@ -129,34 +145,45 @@ def socli_interactive(query):
                 question_text=' '.join((tmp[i].a.get_text()).split())
                 question_desc=(tmp1[i].get_text()).replace("'\r\n","")
                 question_desc=' '.join(question_desc.split())
-                print_warning(str(i + 1) + ". " + question_text.replace("Q: ", ""))
+                print_warning(str(i + 1) + ". " + question_text.replace("Q: ",
+                                                                           ""))
                 question_local_url.append(tmp[i].a.get("href"))
                 print("  "+question_desc+"\n")
                 i=i+1
             try:
-                op=int(input("\nType the option no to continue or any other key to exit:"))
+                op=int(input("\nType the option no to continue or any other "
+                                                               "key to exit:"))
                 while 1:
                     if (op>0) and (op<=i):
                         dispres(sourl+question_local_url[op-1])
                         cnt=1 #this is because the 1st post is the question itself
                         while 1:
                             global tmpsoup
-                            qna=input("Type "+bold("o")+" to open in browser, "+bold("n")+" to next answer, "+bold("b")+" for previous answer or any other key to exit:")
+                            qna=input("Type " + bold("o") + 
+                                   " to open in browser, " + bold("n") + 
+                                   " to next answer, " + bold("b") + " for "
+                                   "previous answer or any other key to exit:")
                             if qna in ["n","N"]:
                                 try:
-                                    answer = (tmpsoup.find_all("div", class_="post-text")[cnt+1].get_text())
+                                    answer = (tmpsoup.find_all("div", 
+                                                class_="post-text")[cnt + 1].\
+                                                                    get_text())
                                     print_green("\n\nAnswer:\n")
-                                    print("-------\n" + answer + "\n-------\n")
-                                    cnt=cnt+1
+                                    print("-------\n"  +  answer  +
+                                                                 "\n-------\n")
+                                    cnt=cnt + 1
                                 except IndexError as e:
-                                    print_warning(" No more answers found for this question. Exiting...")
+                                    print_warning(" No more answers found for"
+                                                  " this question. Exiting...")
                                     sys.exit(0)
                                 continue
                             elif qna in ["b","B"]:
                                 if cnt==1:
-                                    print_warning(" You cant go further back. You are on the first answer!")
+                                    print_warning(" You cant go further back."
+                                               " You are on the first answer!")
                                     continue
-                                answer = (tmpsoup.find_all("div", class_="post-text")[cnt+1].get_text())
+                                answer = (tmpsoup.find_all("div", 
+                                         class_="post-text")[cnt+1].get_text())
                                 print_green("\n\nAnswer:\n")
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
@@ -169,7 +196,8 @@ def socli_interactive(query):
                                 break
                         sys.exit(0)
                     else:
-                        op = int(input("\n\nWrong option. select the option no to continue;"))
+                        op = int(input("\n\nWrong option. select the option "
+                                                            "no to continue;"))
             except Exception:
                 print_warning("\n Exiting...")
                 sys.exit(1)
@@ -178,7 +206,8 @@ def socli_interactive(query):
             sys.exit(1)
 
     except UnicodeEncodeError:
-        print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        print_warning("\n\nEncoding error: Use \"chcp 65001\" command before "
+                                                              "using socli...")
         sys.exit(0)
     except Exception as e:
         print_fail("Please check your internet connectivity...")
@@ -193,13 +222,15 @@ def socl_manusearch(query, rn):
         search_res = requests.get(soqurl + query, verify=False)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
-            res_url = sourl + (soup.find_all("div", class_="question-summary")[rn-1].a.get('href'))
+            res_url = sourl + (soup.find_all("div", 
+                                class_="question-summary")[rn-1].a.get('href'))
         except IndexError:
             print_warning("No results found...")
             sys.exit(1)
         dispres(res_url)
     except UnicodeEncodeError:
-        print_warning("Encoding error: Use \"chcp 65001\" command before using socli...")
+        print_warning("Encoding error: Use \"chcp 65001\" command before "
+                                                              "using socli...")
         sys.exit(0)
     except Exception as e:
         print_fail("Please check your internet connectivity...")
@@ -218,9 +249,14 @@ def wrongsyn(query):
 
 # Get Question stats
 def get_stats(soup):    
-    question_tittle =(soup.find_all("a", class_="question-hyperlink")[0].get_text())
-    question_stats  =(soup.find_all("span", class_="vote-count-post")[0].get_text())
-    question_stats  = "Votes "+question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0].get_text()).replace("\n", " ")).replace("     "," | "))
+    question_tittle =(soup.find_all("a", 
+                                    class_="question-hyperlink")[0].get_text())
+    question_stats  =(soup.find_all("span", 
+                                    class_="vote-count-post")[0].get_text())
+    question_stats  = "Votes " + question_stats  +  " | "  +\
+                      (((soup.find_all("div", class_="module question-stats")\
+                      [0].get_text()).replace("\n", " ")).replace("     ",
+                                                                        " | "))
     question_desc   =(soup.find_all("div", class_="post-text")[0].get_text())
     question_stats  =' '.join(question_stats.split())
     return question_tittle, question_desc, question_stats
@@ -250,12 +286,14 @@ def main():
     global ir  # interactive mode off (for -i arg)
     global query
     # IF there is no command line options or if it is help argument:
-    if (len(sys.argv) == 1) or ((sys.argv[1] == "-h") or (sys.argv[1] == "--help")):
+    if (len(sys.argv) == 1) or\
+                        ((sys.argv[1] == "-h") or (sys.argv[1] == "--help")):
         helpman()
         sys.exit(0)
     else:
         try:
-            options, rem = getopt.getopt(sys.argv[1:], "nir:q:", ["query=", "res=", "interactive=","new"])
+            options, rem = getopt.getopt(sys.argv[1:],\
+                            "nir:q:", ["query=", "res=", "interactive=","new"])
         except getopt.GetoptError:
             helpman()
             sys.exit(1)
@@ -289,7 +327,8 @@ def main():
             socl_manusearch(query, rn)
             sys.exit(0)
         elif (rn==0):
-            print_warning("Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
+            print_warning("Count starts from 1. Use: \"socli -i 2 -q python "
+                                 "for loop\" for the 2nd result for the query")
             sys.exit(0)
         elif (ir == 1):
             wrongsyn(query)
