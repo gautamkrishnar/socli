@@ -11,20 +11,20 @@ Stack overflow command line stack overflow client written in python. Using SoCLI
 * Mac
 
 ##### Requirements
-* python 3+ :
+* python 2+ :
 
 ##### For Linux
-Install **python3** and just use **pip** command to install **socli**:
+Install **python** and just use **pip** command to install **socli**:
 ```bash
-sudo apt-get install python3 python3-pip
-sudo pip3 install socli
+sudo apt-get install python python-pip
+sudo pip install socli
 ```
 ##### For Windows
-[Download and install python 3](https://www.python.org/ftp/python/3.5.1/python-3.5.1.exe). Dont forget to check the option "Add to path".
+[Download and install python](https://www.python.org/downloads/). Dont forget to check the option "Add to path".
 
 Open a command prompt with administrative privileges and use **pip** command to install **socli**:
 ```bash
-pip3 install socli
+pip install socli
 ```
 Use **easy_install** if your python path have a space in it [Read more:"Failed to create process"](https://github.com/gautamkrishnar/socli/issues/6):
 ```
@@ -32,10 +32,10 @@ easy_install socli
 ```
 
 ##### For Mac (via homebrew)
-Install **python3** and **socli**:
+Install **python** and **socli**:
 ```bash
-brew install python3 python3-pip
-pip3 install socli
+brew install python python-pip
+pip install socli
 ```
 ### Updating
 Use the command below to update your existing version of **socli** to the newest version, so that you won't miss any features:
