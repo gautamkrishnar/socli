@@ -5,8 +5,8 @@ except ImportError:
 
 from sys import exit,version
 import sys
-if version < '3.0.0':
-    print("Python 2 is not supported...")
+if version < '1.0.0':
+    print("Python 1 is not supported...")
     sys.exit(1)
 
 setup(

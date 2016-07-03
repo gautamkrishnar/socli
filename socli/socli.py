@@ -18,6 +18,14 @@ ir = 0  # interactive mode off (for -i arg)
 query = ""
 
 
+### To support python 2:
+if sys.version < '3.0.0':
+    def urlencode(inp):
+        return urllib.quote_plus(inp)
+else:
+    def urlencode(inp):
+        return urllib.parse.quote_plus(inp)
+
 ### To implement colors:
 # From https://github.com/django/django/blob/master/django/core/management/color.py
 def supports_color():
@@ -90,7 +98,7 @@ def underline(str):
 ### SOCLI Code
 # @param searchquery = Query to search on stackoverflow
 def socli(query):
-    query = urllib.parse.quote_plus(query)
+    query = urlencode(query)
     try:
         search_res = requests.get(soqurl + query, verify=False)
         soup = BeautifulSoup(search_res.text, 'html.parser')
@@ -195,7 +203,7 @@ def socli_interactive(query):
                                 break
                         sys.exit(0)
                     else:
-                        op = int(input("\n\nWrong option. select the option no to continue;"))
+                        op = int(input("\n\nWrong option. select the option no to continue:"))
             except Exception:
                 print_warning("\n Exiting...")
                 sys.exit(1)
@@ -216,7 +224,7 @@ def socli_interactive(query):
 
 # Manual search by question index
 def socl_manusearch(query, rn):
-    query = urllib.parse.quote_plus(query)
+    query = urlencode(query)
     try:
         search_res = requests.get(soqurl + query, verify=False)
         soup = BeautifulSoup(search_res.text, 'html.parser')
