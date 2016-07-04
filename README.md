@@ -129,6 +129,8 @@ If you are experiencing any bugs, don’t forget to open a [new issue](https://g
 
 ### Thanks
 * Thanks to all the existing users of SoCLI.
+* Thanks to all upvoters and followers on reddit.
+* [impress that girl in the Starbucks by browsing SO with your CLI app XD XD](https://www.reddit.com/r/programmingcirclejerk/comments/4pwil4/impress_that_girl_in_the_starbucks_by_browsing_so/) by [insane0hflex](https://www.reddit.com/user/insane0hflex). Thanks for the post :wink:
 * Special thanks to people who wrote about SoCLI on their blogs and websites:
 	* [wykop.pl](http://www.wykop.pl/wpis/18286681/python-stackoverflow-interfejs-bo-sciaga-musi-byc-/)
 * Thanks to my favourite IDE JetBrains PyCharm :heart: :smile:
