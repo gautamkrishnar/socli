@@ -69,7 +69,7 @@ socli -r 2 -q javascript porotype function
 Will search for "*javascript porotype function*" in stack overflow and displays the second question that contains it.
 
 ##### New question
-If you can't find an answer for your question in stack overflow, **socli** allows you to creata a new question via the web browswer. Just type the command below and **socli** will open the web browser for you to post the question:
+If you can't find an answer for your question in stack overflow, **socli** allows you to creata a new question via the web browswer. Just type the command below and **socli** will open the new question page of stack overflow in the web browser for you:
 ```sh
 socli -n
 ```
