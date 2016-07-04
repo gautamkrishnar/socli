@@ -1,0 +1,21 @@
+language: python
+sudo: required
+python:
+  - "2.6"
+  - "2.7"
+  - "3.2"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.5-dev" # 3.5 development branch
+  - "nightly" # currently points to 3.6-dev
+# command to install dependencies
+install: "sudo pip install -r requirements.txt"
+# command to run tests
+script: 
+  - "sudo python setup.py sdist"
+  - "sudo python setup.py install"
+  - "python -m socli"
+  - "python -m socli for loop in java"
+  - "python -m socli unit test in java"
+  - "python3 -m socli --help"
