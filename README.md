@@ -123,6 +123,7 @@ Special thanks to these superheroes:
 * [@Killbee](https://github.com/kilbee) for making SoCLI colorful 
 * [Sam Dean](https://github.com/deanWombourne) for adding Macintosh SoCLI installation instructions
 * [Plinio89s](https://github.com/Plinio89s) for adding the check for color support
+* [nagracks](https://github.com/nagracks) for improving readability of the code
 
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
@@ -133,6 +134,7 @@ If you are experiencing any bugs, don’t forget to open a [new issue](https://g
 * [impress that girl in the Starbucks by browsing SO with your CLI app XD XD](https://www.reddit.com/r/programmingcirclejerk/comments/4pwil4/impress_that_girl_in_the_starbucks_by_browsing_so/) by [insane0hflex](https://www.reddit.com/user/insane0hflex). Thanks for the post :wink:
 * Special thanks to people who wrote about SoCLI on their blogs and websites:
 	* [wykop.pl](http://www.wykop.pl/wpis/18286681/python-stackoverflow-interfejs-bo-sciaga-musi-byc-/)
+	* [memect.com](http://forum.memect.com/blog/thread/py-2016-06-26/)
 * Thanks to my favourite IDE JetBrains PyCharm :heart: :smile:
 
 <img src="https://cloud.githubusercontent.com/assets/8397274/16355101/edb3b98a-3aca-11e6-8db5-5f54cd4b9969.png" width=80px>
