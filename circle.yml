@@ -1,9 +1,0 @@
-machine:
-  environment:
-    SICLI_PY27: '2.7.10'
-    SOCLI_PY34: '3.4.3'
-
-dependencies:
-  override:
-    - sudo python3 setup.py install
-    - sudo python2 setup.py install
