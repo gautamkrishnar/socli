@@ -135,6 +135,11 @@ If you are experiencing any bugs, don’t forget to open a [new issue](https://g
 * Special thanks to people who wrote about SoCLI on their blogs and websites:
 	* [wykop.pl](http://www.wykop.pl/wpis/18286681/python-stackoverflow-interfejs-bo-sciaga-musi-byc-/)
 	* [memect.com](http://forum.memect.com/blog/thread/py-2016-06-26/)
+	* [pseudoscripter](https://pseudoscripter.wordpress.com/2016/06/28/socli-stack-overflow-command-line-client/)
+	* [b.hatena.ne.jp](http://b.hatena.ne.jp/entry/s/github.com/gautamkrishnar/socli)
+* Tweets:
+ 	* [@cyb3rops](https://twitter.com/cyb3rops/status/747380776350650368)
+ 	* [@pythontrending](https://twitter.com/pythontrending/status/745635512803819521)
 * Thanks to my favourite IDE JetBrains PyCharm :heart: :smile:
 
 <img src="https://cloud.githubusercontent.com/assets/8397274/16355101/edb3b98a-3aca-11e6-8db5-5f54cd4b9969.png" width=80px>
