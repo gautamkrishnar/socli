@@ -125,7 +125,7 @@ Special thanks to these superheroes:
 * [Plinio89s](https://github.com/Plinio89s) for adding the check for color support
 * [nagracks](https://github.com/nagracks) for improving readability of the
 * [mwwynne](https://github.com/mwwynne) for adding links to the SoCLI
-* [Carlos J. Puga Medina](https://github.com/cpu82) for finding the bug [#11](https://github.com/gautamkrishnar/socli/issues/14) for SoCLI python2 version
+* [Carlos J. Puga Medina](https://github.com/cpu82) for finding the bug [#11](https://github.com/gautamkrishnar/socli/issues/14) on SoCLI python2 version
 
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
