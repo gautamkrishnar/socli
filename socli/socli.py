@@ -262,9 +262,23 @@ def get_stats(soup):
     question_stats = (soup.find_all("span",class_="vote-count-post")[0].get_text())
     question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div",\
                         class_="module question-stats")[0].get_text()).replace("\n", " ")).replace("     "," | "))
-    question_desc = (soup.find_all("div", class_="post-text")[0].get_text())
+    question_desc = (soup.find_all("div", class_="post-text")[0])
+    add_urls(question_desc)
+    question_desc = question_desc.get_text()
     question_stats = ' '.join(question_stats.split())
     return question_tittle, question_desc, question_stats
+
+
+def add_urls(tags):
+    """
+    Adds the URL to any hyperlinked text found in a question
+    or answer.
+    """
+    images = tags.find_all("a")
+
+    for image in images:
+        if hasattr(image, "href"):
+            image.string = "{} [{}]".format(image.text, image['href'])
 
 
 # Display result page
@@ -276,6 +290,8 @@ def dispres(url):
     print(question_desc)
     print("\t" + underline(question_stats))
     try:
+        answer = (soup.find_all("div", class_="post-text"))[1]
+        add_urls(answer)
         answer = (soup.find_all("div", class_="post-text")[1].get_text())
         global tmpsoup
         tmpsoup = soup
