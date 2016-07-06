@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # Global vars:
-DEBUG = False # Set True for enabling debugging
+DEBUG = True # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
@@ -187,8 +187,7 @@ def socli_interactive(query):
                         cnt = 1  # this is because the 1st post is the question itself
                         while 1:
                             global tmpsoup
-                            qna = input("Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, "
-                                        + bold("b") + " for previous answer or any other key to exit:")
+                            qna = raw_input("Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, "+ bold("b") + " for previous answer or any other key to exit:")
                             if qna in ["n", "N"]:
                                 try:
                                     answer = (tmpsoup.find_all("div",class_="post-text")[cnt + 1].get_text())
@@ -217,9 +216,9 @@ def socli_interactive(query):
                         sys.exit(0)
                     else:
                         op = int(input("\n\nWrong option. select the option no to continue:"))
-            except Exception:
+            except Exception as e:
                 print_warning("\n Exiting...")
-                sys.exit(1)
+                sys.exit(0)
         except IndexError:
             print_warning("No results found...")
             sys.exit(1)
