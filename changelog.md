@@ -1,5 +1,8 @@
 # SoCLI Changelog
 
+### 2.1
+* Fixed encoding bug
+
 ### 2.0
 * Fixed bugs on python 2
 
