@@ -15,7 +15,7 @@ setup(
     entry_points = {"console_scripts": ['socli = socli.socli:main']},
     install_requires=['BeautifulSoup4','requests'],
     requires=['BeautifulSoup4','requests'],
-    version='1.9',
+    version='2.0',
     url='http://www.github.com/gautamkrishnar/socli',
     keywords="stack overflow cli",
     license='BSD',

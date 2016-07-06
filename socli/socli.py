@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # Global vars:
-DEBUG = True # Set True for enabling debugging
+DEBUG = False # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
