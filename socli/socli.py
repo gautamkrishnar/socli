@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # Global vars:
-DEBUG = False
+DEBUG = False # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
@@ -94,6 +94,18 @@ def bold(str):
 def underline(str):
     return (format_str(str, bcolors.UNDERLINE))
 
+## For testing exceptions
+def showerror(e):
+    if DEBUG == True:
+        import traceback
+        print("Error name: "+ e.__doc__)
+        print()
+        print("Description: "+str(e))
+        print()
+        traceback.print_exc()
+    else:
+        return
+
 
 ### SOCLI Code
 # @param searchquery = Query to search on stackoverflow
@@ -108,13 +120,14 @@ def socli(query):
             print_warning("No results found...")
             sys.exit(0)
         dispres(res_url)
-    except Exception as e:
+    except UnicodeEncodeError:
+        print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        sys.exit(0)
+    except requests.exceptions.ConnectionError:
         print_fail("Please check your internet connectivity...")
-        sys.exit(1)
-
-
-# print(e.__doc__)
-#        print(e.message)
+    except Exception as e:
+        showerror(e)
+        sys.exit(0)
 
 # Displays help
 def helpman():
@@ -214,9 +227,11 @@ def socli_interactive(query):
     except UnicodeEncodeError:
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
-    except Exception as e:
+    except requests.exceptions.ConnectionError:
         print_fail("Please check your internet connectivity...")
-        sys.exit(1)
+    except Exception as e:
+        showerror(e)
+        sys.exit(0)
 
 
 # print(e.__doc__)
@@ -238,9 +253,11 @@ def socl_manusearch(query, rn):
         print_warning("Encoding error: Use \"chcp 65001\" command before "
                       "using socli...")
         sys.exit(0)
-    except Exception as e:
+    except requests.exceptions.ConnectionError:
         print_fail("Please check your internet connectivity...")
-        sys.exit(1)
+    except Exception as e:
+        showerror(e)
+        sys.exit(0)
 
 
 # print(e.__doc__)
