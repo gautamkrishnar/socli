@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # Global vars:
-DEBUG = False # Set True for enabling debugging
+DEBUG = True # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
@@ -22,9 +22,17 @@ query = ""
 if sys.version < '3.0.0':
     def urlencode(inp):
         return urllib.quote_plus(inp)
+    def dispstr(inp):
+        return inp.encode('utf-8')
+    def inputs(str):
+        return raw_input(str)
 else:
     def urlencode(inp):
         return urllib.parse.quote_plus(inp)
+    def dispstr(inp):
+        return inp
+    def inputs(str):
+        return input(str)
 
 ### To implement colors:
 # From https://github.com/django/django/blob/master/django/core/management/color.py
@@ -120,7 +128,8 @@ def socli(query):
             print_warning("No results found...")
             sys.exit(0)
         dispres(res_url)
-    except UnicodeEncodeError:
+    except UnicodeEncodeError as e:
+        showerror(e)
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError:
@@ -173,21 +182,22 @@ def socli_interactive(query):
             while (i < len(tmp)):
                 if i == 10: break  # limiting results
                 question_text = ' '.join((tmp[i].a.get_text()).split())
+                question_text = question_text.replace("Q: ","")
                 question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
                 question_desc = ' '.join(question_desc.split())
-                print_warning(str(i + 1) + ". " + question_text.replace("Q: ",""))
+                print_warning(str(i + 1) + ". " + dispstr(question_text))
                 question_local_url.append(tmp[i].a.get("href"))
-                print("  " + question_desc + "\n")
+                print("  " + dispstr(question_desc) + "\n")
                 i = i + 1
             try:
-                op = int(input("\nType the option no to continue or any other key to exit:"))
+                op = int(inputs("\nType the option no to continue or any other key to exit:"))
                 while 1:
                     if (op > 0) and (op <= i):
                         dispres(sourl + question_local_url[op - 1])
                         cnt = 1  # this is because the 1st post is the question itself
                         while 1:
                             global tmpsoup
-                            qna = raw_input("Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, "+ bold("b") + " for previous answer or any other key to exit:")
+                            qna = inputs("Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, "+ bold("b") + " for previous answer or any other key to exit:")
                             if qna in ["n", "N"]:
                                 try:
                                     answer = (tmpsoup.find_all("div",class_="post-text")[cnt + 1].get_text())
@@ -217,6 +227,7 @@ def socli_interactive(query):
                     else:
                         op = int(input("\n\nWrong option. select the option no to continue:"))
             except Exception as e:
+                showerror(e)
                 print_warning("\n Exiting...")
                 sys.exit(0)
         except IndexError:
@@ -231,9 +242,6 @@ def socli_interactive(query):
     except Exception as e:
         showerror(e)
         sys.exit(0)
-
-
-# print(e.__doc__)
 
 
 # Manual search by question index
@@ -302,8 +310,8 @@ def dispres(url):
     res_page = requests.get(url + query, verify=False)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_tittle, question_desc, question_stats = get_stats(soup)
-    print_warning("\nQuestion: " + question_tittle.encode('utf-8'))
-    print(question_desc.encode('utf-8'))
+    print_warning("\nQuestion: " + dispstr(question_tittle))
+    print(dispstr(question_desc))
     print("\t" + underline(question_stats))
     try:
         answer = (soup.find_all("div", class_="post-text"))[1]
@@ -312,7 +320,7 @@ def dispres(url):
         global tmpsoup
         tmpsoup = soup
         print_green("\n\nAnswer:\n")
-        print("-------\n" + answer.encode('utf-8') + "\n-------\n")
+        print("-------\n" + dispstr(answer) + "\n-------\n")
         return
     except IndexError as e:
         print_warning("\n\nAnswer:\n\t No answer found for this question...")
