@@ -302,8 +302,8 @@ def dispres(url):
     res_page = requests.get(url + query, verify=False)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_tittle, question_desc, question_stats = get_stats(soup)
-    print_warning("\nQuestion: " + question_tittle)
-    print(question_desc)
+    print_warning("\nQuestion: " + question_tittle.encode('utf-8'))
+    print(question_desc.encode('utf-8'))
     print("\t" + underline(question_stats))
     try:
         answer = (soup.find_all("div", class_="post-text"))[1]
@@ -312,7 +312,7 @@ def dispres(url):
         global tmpsoup
         tmpsoup = soup
         print_green("\n\nAnswer:\n")
-        print("-------\n" + answer + "\n-------\n")
+        print("-------\n" + answer.encode('utf-8') + "\n-------\n")
         return
     except IndexError as e:
         print_warning("\n\nAnswer:\n\t No answer found for this question...")
