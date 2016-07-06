@@ -4,7 +4,8 @@
 * Fixed bugs on python 2
 
 ### 1.9
-* Added URL support to answers
+* Added **URL support to answers**
+* Added debugger module
 
 ### 1.8
 * Added **support to python 2**
