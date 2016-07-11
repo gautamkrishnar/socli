@@ -26,6 +26,6 @@ setup(
     license='BSD',
     author='Gautam krishna R',
     author_email='r.gautamkrishna@gmail.com',
-    description='Stack overflow commnand line interface. SoCLI allows you to search and browse stack overfow from the terninal.',
+    description='Stack overflow commnand line interface. SoCLI allows you to search and browse stack overfow from the terminal.',
     long_description=long
     )
