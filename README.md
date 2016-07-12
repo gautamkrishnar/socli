@@ -77,6 +77,7 @@ You can also specify multiple tags, Just seporate them with a comma:
 ```sh
 socli -t javascript,node.js -q window.open
 ```
+See the complete list of tags [here](http://stackoverflow.com/tags).
 
 
 ##### New question
