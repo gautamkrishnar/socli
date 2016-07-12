@@ -12,7 +12,7 @@ if version < '1.0.0':
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long = f.read()
+    longd = f.read()
 
 setup(
     name='socli',
@@ -20,12 +20,12 @@ setup(
     entry_points = {"console_scripts": ['socli = socli.socli:main']},
     install_requires=['BeautifulSoup4','requests'],
     requires=['BeautifulSoup4','requests'],
-    version='2.1',
+    version='2.2',
     url='http://www.github.com/gautamkrishnar/socli',
     keywords="stack overflow cli",
     license='BSD',
     author='Gautam krishna R',
     author_email='r.gautamkrishna@gmail.com',
     description='Stack overflow commnand line interface. SoCLI allows you to search and browse stack overfow from the terminal.',
-    long_description=long
+    long_description=longd
     )

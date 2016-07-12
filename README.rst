@@ -121,6 +121,25 @@ This will allow you to choose a question number for example:
 Will search for "*javascript porotype function*" in stack overflow and
 displays the second question that contains it.
 
+Topic based search
+''''''''''''''''''
+
+Stack overflow supports topic by using tags. **socli** allows you to
+query stack overflow based on specific tags. Just specify the tag via
+the following command:
+
+.. code:: sh
+
+    socli -t javascript -q window.open
+
+You can also specify multiple tags, Just seporate them with a comma:
+
+.. code:: sh
+
+    socli -t javascript,node.js -q window.open
+
+See the complete list of tags `here <http://stackoverflow.com/tags>`__.
+
 New question
 ''''''''''''
 
@@ -204,6 +223,21 @@ Arguments (optional)
 |           |           | --query   |           |
 |           |           | after it. |           |
 +-----------+-----------+-----------+-----------+
+| -t        | --tag     | Specifies | socli     |
+|           |           | the tag   | -new js   |
+|           |           | to search | -q query  |
+|           |           | for the   |           |
+|           |           | query on  |           |
+|           |           | stack     |           |
+|           |           | overflow. |           |
+|           |           | It must   |           |
+|           |           | be        |           |
+|           |           | followed  |           |
+|           |           | by a -q   |           |
+|           |           | or        |           |
+|           |           | --query   |           |
+|           |           | after it. |           |
++-----------+-----------+-----------+-----------+
 | -n        | --new     | Opens the | socli     |
 |           |           | web       | --new     |
 |           |           | browser   |           |
@@ -228,8 +262,8 @@ Features
 
 These are the amazing features of **socli**: \* Manual Search \*
 Interactively browse stack overflow using the interactive mode \*
-Coloured interface \* Question stats view \* Can open the page in a
-browser \* Can create a new question via the web browser
+Coloured interface \* Question stats view \* Tag support \* Can open the
+page in a browser \* Can create a new question via the web browser
 
 Contributing
 ~~~~~~~~~~~~
@@ -263,7 +297,7 @@ improving readability of the \* `mwwynne <https://github.com/mwwynne>`__
 for adding links to the SoCLI \* `Carlos J. Puga
 Medina <https://github.com/cpu82>`__ for finding the bug
 `#11 <https://github.com/gautamkrishnar/socli/issues/14>`__ on SoCLI
-python2 version and for making `SoCLI Free BSD
+python2 version and for making `SoCLI freshports
 port <https://www.freshports.org/misc/py-socli/>`__
 
 Bugs
@@ -300,7 +334,7 @@ Thanks
 Liked it?
 ~~~~~~~~~
 
-Hope you liked this project, don't forget to give it a star
+Hope you liked this project, don't forget to give it a star on github
 
 .. |PyPI version| image:: https://badge.fury.io/py/socli.svg
    :target: https://badge.fury.io/py/socli

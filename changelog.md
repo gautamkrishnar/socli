@@ -1,5 +1,8 @@
 # SoCLI Changelog
 
+### 2.2
+* Added **tag based search**
+
 ### 2.1
 * Fixed encoding bug
 
