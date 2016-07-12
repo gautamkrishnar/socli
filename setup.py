@@ -11,8 +11,10 @@ if version < '1.0.0':
     sys.exit(1)
 
 here = path.abspath(path.dirname(__file__))
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    longd = f.read()
+with open(path.join(here, 'README.rst'), "rb") as f:
+    longd = f.read().decode("utf-8")
+print(longd)
+
 
 setup(
     name='socli',
