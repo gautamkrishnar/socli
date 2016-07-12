@@ -15,6 +15,7 @@ soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
 ir = 0  # interactive mode off (for -i arg)
+tag = "" # tag based search
 query = ""
 
 
@@ -126,6 +127,8 @@ def socli(query):
             res_url = sourl + (soup.find_all("div", class_="question-summary")[0].a.get('href'))
         except IndexError:
             print_warning("No results found...")
+            print(soqurl)
+            print(query)
             sys.exit(0)
         dispres(res_url)
     except UnicodeEncodeError as e:
@@ -155,6 +158,16 @@ def helpman():
           "its most voted answer. \n   eg:- socli --res 2 -query "
           "foo bar: Displays the second search result of the query"
           " \"foo bar\"'s most voted answer")
+    print(" " + bold("--tag or -t") +
+          " : To search a query by tag on stack overflow.  Visit http://stackoverflow.com/tags to see the "
+          "list of all tags."
+          "\n   eg:- socli --tag javascript,node.js -query "
+          "foo bar: Displays the search result of the query"
+          " \"foo bar\" in stack overflow's javascript and node.js tags.")
+    print(" " + bold("--new or -n") +
+          " : Opens the stack overflow new questions page in your default browser. You can create a "
+          "new question using it.")
+
     print_header("\n\n< Search Query >:")
     print("\n Query to search on Stack overflow")
     print("\nIf no commands are specified then socli will search the stack "
@@ -232,7 +245,7 @@ def socli_interactive(query):
                 sys.exit(0)
         except IndexError:
             print_warning("No results found...")
-            sys.exit(1)
+            sys.exit(0)
 
     except UnicodeEncodeError:
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
@@ -265,9 +278,6 @@ def socl_manusearch(query, rn):
     except Exception as e:
         showerror(e)
         sys.exit(0)
-
-
-# print(e.__doc__)
 
 
 # Exits if query value is empty
@@ -304,7 +314,12 @@ def add_urls(tags):
         if hasattr(image, "href"):
             image.string = "{} [{}]".format(image.text, image['href'])
 
-
+# Gets the tags and adds them to query url
+def hastags():
+    global soqurl
+    global tag
+    for tags in tag.split(","):
+        soqurl = soqurl + "[" + tags + "]" + "+"
 # Display result page
 def dispres(url):
     res_page = requests.get(url + query, verify=False)
@@ -329,8 +344,9 @@ def dispres(url):
 
 # Main
 def main():
-    global rn  # Result number (for -r and --res)
+    global rn  # Result number (for -r arg)
     global ir  # interactive mode off (for -i arg)
+    global tag # tag based search (for -t arg)
     global query
     # IF there is no command line options or if it is help argument:
     if (len(sys.argv) == 1) or ((sys.argv[1] == "-h") or (sys.argv[1] == "--help")):
@@ -338,7 +354,7 @@ def main():
         sys.exit(0)
     else:
         try:
-            options, rem = getopt.getopt(sys.argv[1:],"nir:q:", ["query=", "res=", "interactive=", "new"])
+            options, rem = getopt.getopt(sys.argv[1:],"nit:r:q:", ["query=", "res=", "interactive=", "new" , "tag="])
         except getopt.GetoptError:
             helpman()
             sys.exit(1)
@@ -355,6 +371,13 @@ def main():
                         print_warning("Wrong syntax...!\n")
                         helpman()
                         sys.exit(0)
+                if opt in ("-t", "--tag"):
+                    if len(arg)==0:
+                        print_warning("Wrong syntax...!\n")
+                        helpman()
+                        sys.exit(0)
+                    tag = arg
+                    hastags()
                 if opt in ("-q", "--query"):
                     query = arg
                     if len(rem) > 0:
@@ -364,7 +387,9 @@ def main():
                     print_warning("Opening stack overflow in your browser...")
                     webbrowser.open(sourl + "/questions/ask")
                     sys.exit(0)
-        if (rn == -1) and (ir == 0):
+        if tag != "":
+            wrongsyn(query)
+        if (rn == -1) and (ir == 0) and tag == "":
             socli(" ".join(sys.argv[1:]))
             sys.exit(0)
         elif (rn > 0):
@@ -377,6 +402,9 @@ def main():
         elif (ir == 1):
             wrongsyn(query)
             socli_interactive(query)
+            sys.exit(0)
+        elif query != "":
+            socli(query)
             sys.exit(0)
         else:
             print_warning("Wrong syntax...!\n")
