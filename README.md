@@ -34,7 +34,8 @@ easy_install socli
 ##### For Mac (via homebrew)
 Install **python** and **socli**:
 ```bash
-brew install python python-pip
+brew install python
+easy_install pip
 pip install socli
 ```
 ### Updating
