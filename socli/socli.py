@@ -117,7 +117,7 @@ def showerror(e):
 
 
 ### SOCLI Code
-# @param searchquery = Query to search on stackoverflow
+# @para query = Query to search on stackoverflow
 def socli(query):
     query = urlencode(query)
     try:
@@ -127,8 +127,6 @@ def socli(query):
             res_url = sourl + (soup.find_all("div", class_="question-summary")[0].a.get('href'))
         except IndexError:
             print_warning("No results found...")
-            print(soqurl)
-            print(query)
             sys.exit(0)
         dispres(res_url)
     except UnicodeEncodeError as e:
@@ -155,13 +153,13 @@ def helpman():
                                               "browse any of the result interactively")
     print(" " + bold("--res or -r") +
           " : To select and display a result manually and display "
-          "its most voted answer. \n   eg:- socli --res 2 -query "
+          "its most voted answer. \n   eg:- socli --res 2 --query "
           "foo bar: Displays the second search result of the query"
           " \"foo bar\"'s most voted answer")
     print(" " + bold("--tag or -t") +
           " : To search a query by tag on stack overflow.  Visit http://stackoverflow.com/tags to see the "
           "list of all tags."
-          "\n   eg:- socli --tag javascript,node.js -query "
+          "\n   eg:- socli --tag javascript,node.js --query "
           "foo bar: Displays the search result of the query"
           " \"foo bar\" in stack overflow's javascript and node.js tags.")
     print(" " + bold("--new or -n") +
