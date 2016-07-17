@@ -11,8 +11,11 @@ if version < '1.0.0':
     sys.exit(1)
 
 here = path.abspath(path.dirname(__file__))
-with open(path.join(here, 'README.rst'), "rb") as f:
-    longd = f.read().decode("utf-8")
+try:
+    with open(path.join(here, 'README.rst'), "rb") as f:
+        longd = f.read().decode("utf-8")
+except Exception:
+    pass
 
 
 setup(
@@ -21,7 +24,7 @@ setup(
     entry_points = {"console_scripts": ['socli = socli.socli:main']},
     install_requires=['BeautifulSoup4','requests'],
     requires=['BeautifulSoup4','requests'],
-    version='2.2',
+    version='2.3',
     url='http://www.github.com/gautamkrishnar/socli',
     keywords="stack overflow cli",
     license='BSD',

@@ -63,7 +63,8 @@ Install **python** and **socli**:
 
 .. code:: bash
 
-    brew install python python-pip
+    brew install python
+    easy_install pip
     pip install socli
 
 Updating
@@ -329,12 +330,12 @@ Thanks
    -  [@cyb3rops](https://twitter.com/cyb3rops/status/747380776350650368)
    -  [@pythontrending](https://twitter.com/pythontrending/status/745635512803819521)
 
--  Thanks to my favourite IDE JetBrains PyCharm
+-  Thanks to my favourite IDE JetBrains PyCharm 
 
 Liked it?
 ~~~~~~~~~
 
-Hope you liked this project, don't forget to give it a star on github
+Hope you liked this project, don't forget to give it a star 
 
 .. |PyPI version| image:: https://badge.fury.io/py/socli.svg
    :target: https://badge.fury.io/py/socli
