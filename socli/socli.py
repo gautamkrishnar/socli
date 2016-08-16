@@ -324,7 +324,6 @@ def dispres(url):
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
     print_warning("\nQuestion: " + dispstr(question_title))
-    print_blue("(" + underline(url) + ")")
     print(dispstr(question_desc))
     print("\t" + underline(question_stats))
     try:
@@ -335,6 +334,8 @@ def dispres(url):
         tmpsoup = soup
         print_green("\n\nAnswer:\n")
         print("-------\n" + dispstr(answer) + "\n-------\n")
+        print(bold("Question URL:"))
+        print_blue(underline(url))
         return
     except IndexError as e:
         print_warning("\n\nAnswer:\n\t No answer found for this question...")
