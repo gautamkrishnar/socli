@@ -290,7 +290,7 @@ def wrongsyn(query):
 
 # Get Question stats
 def get_stats(soup):
-    question_tittle = (soup.find_all("a",class_="question-hyperlink")[0].get_text())
+    question_title = (soup.find_all("a",class_="question-hyperlink")[0].get_text())
     question_stats = (soup.find_all("span",class_="vote-count-post")[0].get_text())
     question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div",\
                         class_="module question-stats")[0].get_text()).replace("\n", " ")).replace("     "," | "))
@@ -298,7 +298,7 @@ def get_stats(soup):
     add_urls(question_desc)
     question_desc = question_desc.get_text()
     question_stats = ' '.join(question_stats.split())
-    return question_tittle, question_desc, question_stats
+    return question_title, question_desc, question_stats
 
 
 def add_urls(tags):
@@ -322,8 +322,9 @@ def hastags():
 def dispres(url):
     res_page = requests.get(url + query, verify=False)
     soup = BeautifulSoup(res_page.text, 'html.parser')
-    question_tittle, question_desc, question_stats = get_stats(soup)
-    print_warning("\nQuestion: " + dispstr(question_tittle))
+    question_title, question_desc, question_stats = get_stats(soup)
+    print_warning("\nQuestion: " + dispstr(question_title))
+    print_blue("(" + underline(url) + ")")
     print(dispstr(question_desc))
     print("\t" + underline(question_stats))
     try:
