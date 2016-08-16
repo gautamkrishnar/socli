@@ -1,6 +1,9 @@
 # SoCLI Changelog
-### 2.3
+### 2.4
 * Added StackOverflow attribution
+
+### 2.3
+* Fixed minor bugs
 
 ### 2.2
 * Added **tag based search**
