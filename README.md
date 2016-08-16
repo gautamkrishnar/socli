@@ -141,7 +141,7 @@ Special thanks to these superheroes:
 * [nagracks](https://github.com/nagracks) for improving readability of the
 * [mwwynne](https://github.com/mwwynne) for adding links to the SoCLI
 * [Carlos J. Puga Medina](https://github.com/cpu82) for finding the bug [#11](https://github.com/gautamkrishnar/socli/issues/14) on SoCLI python2 version and for making [SoCLI freshports port](https://www.freshports.org/misc/py-socli/)
-* [Jon Ericson](https://github.com/jericson)(Community Manage, Stack Overflow) for the PR [#18](https://github.com/gautamkrishnar/socli/pull/18) and letting me know about the Stack overflow attribution policy
+* [Jon Ericson](https://github.com/jericson) (*Community Manager, Stack Overflow*) for the PR [#18](https://github.com/gautamkrishnar/socli/pull/18) and letting me know about the Stack overflow attribution policy
 
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
