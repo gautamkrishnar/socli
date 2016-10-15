@@ -116,6 +116,13 @@ These are the amazing features of **socli**:
 * Can open the page in a browser
 * Can create a new question via the web browser
 
+### To Do
+Command line interface for:
+- [ ] Stack overflow authentication
+- [ ] Posting to stack overflow
+- [ ] Upvote answer
+- [ ] Comment on an answer
+
 ### Contributing
 If you are willing to contribute to SoCLI project, You are awesome! Just follow the steps below:
 
