@@ -169,7 +169,7 @@ def helpman():
     print_header("\n\n< Search Query >:")
     print("\n Query to search on Stack overflow")
     print("\nIf no commands are specified then socli will search the stack "
-          "overfow and simply displays the first search result's "
+          "overflow and simply displays the first search result's "
           "most voted answer.")
     print("If a command is specified then it will work according to the "
           "command.")
