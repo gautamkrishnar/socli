@@ -1,4 +1,4 @@
-# SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) 
+﻿# SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) 
 Stack overflow command line written in python. Using SoCLI you can search and browse stack overflow without leaving the terminal. Just use the **socli** command:
 
 ![SoCLI in action](https://cloud.githubusercontent.com/assets/8397274/16355211/ae134c66-3acd-11e6-807f-adb8f3bbcf44.gif)
@@ -99,7 +99,7 @@ Usage: socli [ Arguments] < Search Query >
 | -q | --query | Used to specify the query when arguments are used. A query value must be passed to it. If it is used alone (socli -q query) then it will display the same result as "socli query". | socli -i -q query |
 | -i | --interactive |  Used to search interactively. It doesnt take any values. It must be followed by a -q or --query after it. | socli -i -q query |
 | -r | --res | Used for manual search. It takes the question number as the argument and it must be followed by a  -q or --query after it. | socli -r 4 -q query |
-| -t | --tag | Specifies the tag to search for the query on stack overflow. It must be followed by a  -q or --query after it. | socli -new js -q query |
+| -t | --tag | Specifies the tag to search for the query on stack overflow. It must be followed by a  -q or --query after it. | socli -t js -q query |
 | -n | --new | Opens the web browser to create a new question on stack overflow. | socli --new |
 | -h | --help | Displays the help text. | socli --help |
 
