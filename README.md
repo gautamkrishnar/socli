@@ -20,6 +20,11 @@ sudo apt-get install python python-pip
 sudo pip install socli
 ```
 ##### For Windows
+###### Method 1 (Using Installer)
+Download and install the latest release of [SoCLI-Setup.exe](https://github.com/gautamkrishnar/socli/releases/latest/) for windows. It is a self contained package with all the required dependencies.
+Add SoCLI directory to windows path. See [this page](http://windowsitpro.com/systems-management/how-can-i-add-new-folder-my-system-path) for more info. If you are running 64bit version of windows add `C:\Program Files (x86)\SoCLI` to the path, else add `C:\Program Files\SoCLI` to the path. This method doesn't support the command line updating of SoCLI, you must manually uninstall the program and reinstall the new versions.
+
+###### Method 2 (Using PIP)
 [Download and install python](https://www.python.org/downloads/). Dont forget to check the option "Add to path".
 
 Open a command prompt with administrative privileges and use **pip** command to install **socli**:
