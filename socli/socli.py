@@ -225,7 +225,7 @@ def socli_interactive(query):
                                 if cnt == 1:
                                     print_warning(" You cant go further back. You are on the first answer!")
                                     continue
-                                answer = (tmpsoup.find_all("div",class_="post-text")[cnt + 1].get_text())
+                                answer = (tmpsoup.find_all("div",class_="post-text")[cnt - 1].get_text())
                                 print_green("\n\nAnswer:\n")
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
