@@ -1,4 +1,12 @@
 # SoCLI Changelog
+### 2.6
+* Fixed some minor typos
+* Added windows binary release
+
+### 2.5
+* Fixed some bugs due to latest windows cmd update
+* Added sorting of question based on number of votes
+
 ### 2.4
 * Added StackOverflow attribution
 

@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 
 # Global vars:
 DEBUG = False # Set True for enabling debugging
-soqurl = "http://stackoverflow.com/search?q="  # Query url
+soqurl = "http://stackoverflow.com/search?tab=votes&q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
 ir = 0  # interactive mode off (for -i arg)
@@ -45,13 +45,15 @@ def supports_color():
     plat = sys.platform
     supported_platform = plat != 'Pocket PC' and (plat != 'win32' or 'ANSICON' in os.environ)
     # To detect windows 10 cmd. Windows 10 cmd supports color by default
-    if os.name == "nt":
-        x = sys.getwindowsversion()[0]
-        if x == 10:
-            try:
-                test_shell = os.environ['SHELL']  # If running with a shell like cygwin this is set
-            except Exception:
-                return True
+    # Removed due to the latest windows 10 update. The command prompt no longer  support color
+    #
+    # if os.name == "nt":
+    #     x = sys.getwindowsversion()[0]
+    #     if x == 10:
+    #         try:
+    #             test_shell = os.environ['SHELL']  # If running with a shell like cygwin this is set
+    #         except Exception:
+    #             return True
     # isatty is not always implemented, #6223.
     is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
     if not supported_platform or not is_a_tty:
@@ -169,7 +171,7 @@ def helpman():
     print_header("\n\n< Search Query >:")
     print("\n Query to search on Stack overflow")
     print("\nIf no commands are specified then socli will search the stack "
-          "overfow and simply displays the first search result's "
+          "overflow and simply displays the first search result's "
           "most voted answer.")
     print("If a command is specified then it will work according to the "
           "command.")

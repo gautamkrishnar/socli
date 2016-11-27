@@ -1,4 +1,4 @@
-# SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) 
+﻿# SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) 
 Stack overflow command line written in python. Using SoCLI you can search and browse stack overflow without leaving the terminal. Just use the **socli** command:
 
 ![SoCLI in action](https://cloud.githubusercontent.com/assets/8397274/16355211/ae134c66-3acd-11e6-807f-adb8f3bbcf44.gif)
@@ -20,6 +20,11 @@ sudo apt-get install python python-pip
 sudo pip install socli
 ```
 ##### For Windows
+###### Method 1 (Using Installer)
+Download and install the latest release of [SoCLI-Setup.exe](https://github.com/gautamkrishnar/socli/releases/latest/) for windows. It is a self contained package with all the required dependencies.
+Add SoCLI directory to windows path. See [this page](http://windowsitpro.com/systems-management/how-can-i-add-new-folder-my-system-path) for more info. If you are running 64bit version of windows add `C:\Program Files (x86)\SoCLI` to the path, else add `C:\Program Files\SoCLI` to the path. This method doesn't support the command line updating of SoCLI, you must manually uninstall the program and reinstall the new versions.
+
+###### Method 2 (Using PIP)
 [Download and install python](https://www.python.org/downloads/). Dont forget to check the option "Add to path".
 
 Open a command prompt with administrative privileges and use **pip** command to install **socli**:
@@ -99,7 +104,7 @@ Usage: socli [ Arguments] < Search Query >
 | -q | --query | Used to specify the query when arguments are used. A query value must be passed to it. If it is used alone (socli -q query) then it will display the same result as "socli query". | socli -i -q query |
 | -i | --interactive |  Used to search interactively. It doesnt take any values. It must be followed by a -q or --query after it. | socli -i -q query |
 | -r | --res | Used for manual search. It takes the question number as the argument and it must be followed by a  -q or --query after it. | socli -r 4 -q query |
-| -t | --tag | Specifies the tag to search for the query on stack overflow. It must be followed by a  -q or --query after it. | socli -new js -q query |
+| -t | --tag | Specifies the tag to search for the query on stack overflow. It must be followed by a  -q or --query after it. | socli -t js -q query |
 | -n | --new | Opens the web browser to create a new question on stack overflow. | socli --new |
 | -h | --help | Displays the help text. | socli --help |
 
@@ -115,6 +120,13 @@ These are the amazing features of **socli**:
 * Tag support
 * Can open the page in a browser
 * Can create a new question via the web browser
+
+### To Do
+Command line interface for:
+- [ ] Stack overflow authentication
+- [ ] Posting to stack overflow
+- [ ] Upvote answer
+- [ ] Comment on an answer
 
 ### Contributing
 If you are willing to contribute to SoCLI project, You are awesome! Just follow the steps below:
@@ -142,6 +154,7 @@ Special thanks to these superheroes:
 * [mwwynne](https://github.com/mwwynne) for adding links to the SoCLI
 * [Carlos J. Puga Medina](https://github.com/cpu82) for finding the bug [#11](https://github.com/gautamkrishnar/socli/issues/14) on SoCLI python2 version and for making [SoCLI freshports port](https://www.freshports.org/misc/py-socli/)
 * [Jon Ericson](https://github.com/jericson) (*Community Manager, Stack Overflow*) for the PR [#18](https://github.com/gautamkrishnar/socli/pull/18) and letting me know about the Stack overflow attribution policy. Thanks for the [blog post](http://jericson.github.io/2016/08/25/long_tail_docs.html)
+* [Ankit Kr. Singh](https://github.com/kumarankit0411) Thanks for fixing some typos PR [#21](https://github.com/gautamkrishnar/socli/pull/21).
 
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
