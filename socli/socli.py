@@ -5,6 +5,7 @@ import getopt
 import os
 import sys
 import urllib
+import re
 
 import requests
 from bs4 import BeautifulSoup
@@ -17,7 +18,7 @@ rn = -1  # Result number (for -r and --res)
 ir = 0  # interactive mode off (for -i arg)
 tag = "" # tag based search
 query = ""
-
+pattern_normalize = re.compile(r"[^\w\s\.\?\,\+\-\*\/\\\%]+")	# Keep only 0-9, a-z, A-Z, whitespace, dot, ?, comma, +, -, *, /, \, %, etc. Add more here.
 
 ### To support python 2:
 if sys.version < '3.0.0':
@@ -104,6 +105,9 @@ def bold(str):
 
 def underline(str):
     return (format_str(str, bcolors.UNDERLINE))
+	
+def remove_unwanted_chars(str):
+    return pattern_normalize.sub("", str)
 
 ## For testing exceptions
 def showerror(e):
@@ -293,6 +297,8 @@ def wrongsyn(query):
 # Get Question stats
 def get_stats(soup):
     question_title = (soup.find_all("a",class_="question-hyperlink")[0].get_text())
+    question_title = remove_unwanted_chars(question_title)
+	
     question_stats = (soup.find_all("span",class_="vote-count-post")[0].get_text())
     question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div",\
                         class_="module question-stats")[0].get_text()).replace("\n", " ")).replace("     "," | "))
@@ -325,6 +331,7 @@ def dispres(url):
     res_page = requests.get(url + query, verify=False)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
+
     print_warning("\nQuestion: " + dispstr(question_title))
     print(dispstr(question_desc))
     print("\t" + underline(question_stats))
