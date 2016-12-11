@@ -1,4 +1,4 @@
-﻿# SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) 
+# SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) 
 Stack overflow command line written in python. Using SoCLI you can search and browse stack overflow without leaving the terminal. Just use the **socli** command:
 
 ![SoCLI in action](https://cloud.githubusercontent.com/assets/8397274/16355211/ae134c66-3acd-11e6-807f-adb8f3bbcf44.gif)
@@ -20,9 +20,8 @@ sudo apt-get install python python-pip
 sudo pip install socli
 ```
 ##### For Windows
-###### Method 1 (Using Installer)
-Download and install the latest release of [SoCLI-Setup.exe](https://github.com/gautamkrishnar/socli/releases/latest/) for windows. It is a self contained package with all the required dependencies.
-Add SoCLI directory to windows path. See [this page](http://www.howtogeek.com/118594/how-to-edit-your-system-path-for-easy-command-line-access/) for more info. Add `C:\Program Files (x86)\SoCLI` to the path. This method doesn't support the command line updating of SoCLI, you must manually uninstall the program and reinstall the new versions.
+###### Method 1 (Using Installer :star: Easy way)
+Download and install the latest release of [SoCLI-Setup.exe](https://github.com/gautamkrishnar/socli/releases/latest/) for windows. It is a self contained package with all the required dependencies. This package also contain auto updater for SoCLI.
 
 ###### Method 2 (Using PIP)
 [Download and install python](https://www.python.org/downloads/). Dont forget to check the option "Add to path".
