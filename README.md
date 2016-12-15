@@ -169,6 +169,7 @@ If you are experiencing any bugs, don’t forget to open a [new issue](https://g
 	* [pseudoscripter](https://pseudoscripter.wordpress.com/2016/06/28/socli-stack-overflow-command-line-client/)
 	* [b.hatena.ne.jp](http://b.hatena.ne.jp/entry/s/github.com/gautamkrishnar/socli)
 	* [jericson.github.io](http://jericson.github.io/2016/08/25/long_tail_docs.html)
+	* [The really big list of really interesting Open Source projects](https://medium.com/@likid.geimfari/the-list-of-interesting-open-source-projects-2daaa2153f7c#.6qm1v3ioa)
 * Tweets:
  	* [@cyb3rops](https://twitter.com/cyb3rops/status/747380776350650368)
  	* [@pythontrending](https://twitter.com/pythontrending/status/745635512803819521)
