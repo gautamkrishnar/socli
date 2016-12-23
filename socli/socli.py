@@ -78,6 +78,14 @@ def supports_color():
     """
     plat = sys.platform
     supported_platform = plat != 'Pocket PC' and (plat != 'win32' or 'ANSICON' in os.environ)
+    #To detect if socli is run in UNIX shell on a windows platform. If true then this function returns true
+    if os.name == "nt":
+        try:
+            test_shell = os.environ['SHELL']
+            if 'bash' in test_shell:
+                return True
+        except KeyError:
+            pass
     # To detect windows 10 cmd. Windows 10 cmd supports color by default
     # Removed due to the latest windows 10 update. The command prompt no longer  support color
     #
@@ -393,7 +401,7 @@ def main():
         sys.exit(0)
     else:
         try:
-            options, rem = getopt.getopt(sys.argv[1:],"nit:r:q:", ["query=", "res=", "interactive=", "new" , "tag="])
+            options, rem = getopt.getopt(sys.argv[1:],"nit:r:q:", ["query=", "res=", "interactive", "new" , "tag="])
         except getopt.GetoptError:
             helpman()
             sys.exit(1)
@@ -429,8 +437,10 @@ def main():
         if tag != "":
             wrongsyn(query)
         if (rn == -1) and (ir == 0) and tag == "":
-            socli(" ".join(sys.argv[1:]))
-            sys.exit(0)
+            if sys.argv[1] in ['-q', '--query']:
+                socli(" ".join(sys.argv[2:]))
+            else:
+                socli(" ".join(sys.argv[1:]))
         elif (rn > 0):
             wrongsyn(query)
             socl_manusearch(query, rn)
