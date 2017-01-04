@@ -245,5 +245,7 @@ Become a sponsor and get your logo on our README on Github with a link to your s
 <a href="https://opencollective.com/socli/sponsor/28/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/28/avatar.svg"></a>
 <a href="https://opencollective.com/socli/sponsor/29/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/29/avatar.svg"></a>
 
+* Thanks [Steven Reubenstone](https://www.collaborizm.com/profile/1) for contributing $5 for the issue [#22](https://github.com/gautamkrishnar/socli/issues/22)
+
 ### Liked it?
 Hope you liked this project, don't forget to give it a star :star:
