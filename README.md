@@ -1,4 +1,4 @@
-# SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) 
+# SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) [![OpenCollective](https://opencollective.com/socli/backers/badge.svg)](#backers) [![OpenCollective](https://opencollective.com/socli/sponsors/badge.svg)](#sponsors) 
 Stack overflow command line written in python. Using SoCLI you can search and browse stack overflow without leaving the terminal. Just use the **socli** command:
 
 ![SoCLI in action](https://cloud.githubusercontent.com/assets/8397274/16355211/ae134c66-3acd-11e6-807f-adb8f3bbcf44.gif)
@@ -176,6 +176,74 @@ If you are experiencing any bugs, don’t forget to open a [new issue](https://g
 * Thanks to my favourite IDE JetBrains PyCharm :heart: :smile:
 
 <img src="https://cloud.githubusercontent.com/assets/8397274/16355101/edb3b98a-3aca-11e6-8db5-5f54cd4b9969.png" width=80px>
+
+### Backers
+Support us with a monthly donation and help us continue our activities. [[Become a backer](https://opencollective.com/socli#backer)]
+
+<a href="https://opencollective.com/socli/backer/0/website" target="_blank"><img src="https://opencollective.com/socli/backer/0/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/1/website" target="_blank"><img src="https://opencollective.com/socli/backer/1/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/2/website" target="_blank"><img src="https://opencollective.com/socli/backer/2/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/3/website" target="_blank"><img src="https://opencollective.com/socli/backer/3/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/4/website" target="_blank"><img src="https://opencollective.com/socli/backer/4/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/5/website" target="_blank"><img src="https://opencollective.com/socli/backer/5/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/6/website" target="_blank"><img src="https://opencollective.com/socli/backer/6/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/7/website" target="_blank"><img src="https://opencollective.com/socli/backer/7/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/8/website" target="_blank"><img src="https://opencollective.com/socli/backer/8/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/9/website" target="_blank"><img src="https://opencollective.com/socli/backer/9/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/10/website" target="_blank"><img src="https://opencollective.com/socli/backer/10/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/11/website" target="_blank"><img src="https://opencollective.com/socli/backer/11/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/12/website" target="_blank"><img src="https://opencollective.com/socli/backer/12/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/13/website" target="_blank"><img src="https://opencollective.com/socli/backer/13/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/14/website" target="_blank"><img src="https://opencollective.com/socli/backer/14/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/15/website" target="_blank"><img src="https://opencollective.com/socli/backer/15/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/16/website" target="_blank"><img src="https://opencollective.com/socli/backer/16/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/17/website" target="_blank"><img src="https://opencollective.com/socli/backer/17/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/18/website" target="_blank"><img src="https://opencollective.com/socli/backer/18/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/19/website" target="_blank"><img src="https://opencollective.com/socli/backer/19/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/20/website" target="_blank"><img src="https://opencollective.com/socli/backer/20/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/21/website" target="_blank"><img src="https://opencollective.com/socli/backer/21/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/22/website" target="_blank"><img src="https://opencollective.com/socli/backer/22/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/23/website" target="_blank"><img src="https://opencollective.com/socli/backer/23/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/24/website" target="_blank"><img src="https://opencollective.com/socli/backer/24/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/25/website" target="_blank"><img src="https://opencollective.com/socli/backer/25/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/26/website" target="_blank"><img src="https://opencollective.com/socli/backer/26/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/27/website" target="_blank"><img src="https://opencollective.com/socli/backer/27/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/28/website" target="_blank"><img src="https://opencollective.com/socli/backer/28/avatar.svg"></a>
+<a href="https://opencollective.com/socli/backer/29/website" target="_blank"><img src="https://opencollective.com/socli/backer/29/avatar.svg"></a>
+
+### Sponsors
+Become a sponsor and get your logo on our README on Github with a link to your site. [[Become a sponsor](https://opencollective.com/socli#sponsor)]
+
+<a href="https://opencollective.com/socli/sponsor/0/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/1/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/2/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/3/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/4/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/5/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/6/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/7/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/8/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/9/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/9/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/10/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/10/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/11/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/11/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/12/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/12/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/13/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/13/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/14/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/14/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/15/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/15/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/16/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/16/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/17/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/17/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/18/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/18/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/19/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/19/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/20/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/20/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/21/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/21/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/22/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/22/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/23/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/23/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/24/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/24/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/25/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/25/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/26/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/26/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/27/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/27/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/28/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/28/avatar.svg"></a>
+<a href="https://opencollective.com/socli/sponsor/29/website" target="_blank"><img src="https://opencollective.com/socli/sponsor/29/avatar.svg"></a>
 
 ### Liked it?
 Hope you liked this project, don't forget to give it a star :star:
