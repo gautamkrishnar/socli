@@ -1,4 +1,7 @@
 # SoCLI Changelog
+### 2.9
+* Many minor bug fixes
+
 ### 2.8
 * Fixed Windows encoding problem
 

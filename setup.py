@@ -4,6 +4,7 @@ except ImportError:
     from distutils.core import setup
 from codecs import open
 from os import path
+# -*- coding: utf-8 -*-
 from sys import exit,version
 import sys
 if version < '1.0.0':
@@ -24,7 +25,7 @@ setup(
     entry_points = {"console_scripts": ['socli = socli.socli:main']},
     install_requires=['BeautifulSoup4','requests'],
     requires=['BeautifulSoup4','requests'],
-    version='2.8',
+    version='2.9',
     url='http://www.github.com/gautamkrishnar/socli',
     keywords="stack overflow cli",
     license='BSD',
