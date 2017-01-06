@@ -126,6 +126,9 @@ Command line interface for:
 - [ ] Posting to stack overflow
 - [ ] Upvote answer
 - [ ] Comment on an answer
+- [ ] Browsing stackoverflow home page
+
+Please check out the list of [issues](https://github.com/gautamkrishnar/socli/issues).
 
 ### Contributing
 If you are willing to contribute to SoCLI project, You are awesome! Just follow the steps below:
@@ -155,6 +158,7 @@ Special thanks to these superheroes:
 * [Jon Ericson](https://github.com/jericson) (*Community Manager, Stack Overflow*) for the PR [#18](https://github.com/gautamkrishnar/socli/pull/18) and letting me know about the Stack overflow attribution policy. Thanks for the [blog post](http://jericson.github.io/2016/08/25/long_tail_docs.html)
 * [Ankit Kr. Singh](https://github.com/kumarankit0411) for fixing some typos PR [#21](https://github.com/gautamkrishnar/socli/pull/21) [#23](https://github.com/gautamkrishnar/socli/pull/23).
 * [Harsha Alva](https://github.com/aharshac) for fixing windows encoding problem PR [#24](https://github.com/gautamkrishnar/socli/pull/21).
+* [Pia Mancini](https://github.com/piamancini) for adding SoCLI to OpenCollective [#27](https://github.com/gautamkrishnar/socli/pull/27)
 
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
