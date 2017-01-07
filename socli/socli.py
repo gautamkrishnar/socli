@@ -1,5 +1,7 @@
 # Stack overflow CLI
-# Created by Gautam krishna R : www.github.com/gautamkrishnar
+# Created by 
+# Gautam krishna R : www.github.com/gautamkrishnar 
+# And open source contributors at GitHub: https://github.com/gautamkrishnar/socli#contributors
 
 import getopt
 import os
