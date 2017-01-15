@@ -7,7 +7,7 @@ import getopt
 import os
 import sys
 import urllib
-import colorama # @TODO: we will need to update installation instructions with requirements
+import colorama
 
 import requests
 from bs4 import BeautifulSoup
@@ -77,13 +77,8 @@ def fixCodePage():
             # Windows XP, Wine do not support SetCurrentConsoleFontEx.
             pass
 
+# Bold and underline are not supported by colorama.
 class bcolors:
-   # HEADER = '\033[35m'
-   # OKBLUE = '\033[34m'
-   # OKGREEN = '\033[32m'
-   # WARNING = '\033[33m'
-   # FAIL = '\033[31m'
-   # ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
@@ -109,17 +104,18 @@ def print_warning(str):
 
 
 def print_fail(str):
-    print(format_str(str, coreama.Fore.RED))
+    print(format_str(str, colorama.Fore.RED))
 
-# Bold and underline are not supported by colorama.
 
+# Not supported on windows.
 def bold(str):
     return (format_str(str, bcolors.BOLD))
 
 
+# Not supported on windows.
 def underline(str):
     return (format_str(str, bcolors.UNDERLINE))
- 
+
 ## For testing exceptions
 def showerror(e):
     if DEBUG == True:
