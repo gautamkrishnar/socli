@@ -40,45 +40,49 @@ else:
 
 ### Fixes windows encoding errors
 def fixCodePage():
-	
-	import codecs
-	import ctypes
-	if sys.platform == 'win32':
-		if sys.stdout.encoding != 'cp65001':
-			os.system("echo off")
-			os.system("chcp 65001") # Change active page code
-			sys.stdout.write("\x1b[A") # Removes the output of chcp command
-			sys.stdout.flush()
-		LF_FACESIZE = 32
-		STD_OUTPUT_HANDLE = -11
-		class COORD(ctypes.Structure):
-		    _fields_ = [("X", ctypes.c_short), ("Y", ctypes.c_short)]
+    
+    import codecs
+    import ctypes
+    if sys.platform == 'win32':
+        if sys.stdout.encoding != 'cp65001':
+            os.system("echo off")
+            os.system("chcp 65001") # Change active page code
+            sys.stdout.write("\x1b[A") # Removes the output of chcp command
+            sys.stdout.flush()
+        LF_FACESIZE = 32
+        STD_OUTPUT_HANDLE = -11
+        class COORD(ctypes.Structure):
+            _fields_ = [("X", ctypes.c_short), ("Y", ctypes.c_short)]
 
-		class CONSOLE_FONT_INFOEX(ctypes.Structure):
-			_fields_ = [("cbSize", ctypes.c_ulong),
+        class CONSOLE_FONT_INFOEX(ctypes.Structure):
+            _fields_ = [("cbSize", ctypes.c_ulong),
                 ("nFont", ctypes.c_ulong),
                 ("dwFontSize", COORD),
                 ("FontFamily", ctypes.c_uint),
                 ("FontWeight", ctypes.c_uint),
                 ("FaceName", ctypes.c_wchar * LF_FACESIZE)]
 
-		font = CONSOLE_FONT_INFOEX()
-		font.cbSize = ctypes.sizeof(CONSOLE_FONT_INFOEX)
-		font.nFont = 12
-		font.dwFontSize.X = 7
-		font.dwFontSize.Y = 12
-		font.FontFamily = 54
-		font.FontWeight = 400
-		font.FaceName = "Lucida Console"
-		handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
-		ctypes.windll.kernel32.SetCurrentConsoleFontEx(handle, ctypes.c_long(False), ctypes.pointer(font))
+        font = CONSOLE_FONT_INFOEX()
+        font.cbSize = ctypes.sizeof(CONSOLE_FONT_INFOEX)
+        font.nFont = 12
+        font.dwFontSize.X = 7
+        font.dwFontSize.Y = 12
+        font.FontFamily = 54
+        font.FontWeight = 400
+        font.FaceName = "Lucida Console"
+        handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
+        try:
+            ctypes.windll.kernel32.SetCurrentConsoleFontEx(handle, ctypes.c_long(False), ctypes.pointer(font))
+        except AttributeError:
+            # Windows XP, Wine do not have SetCurrentConsoleFontEx.
+            pass
 
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
+    HEADER = '\033[35m'
+    OKBLUE = '\033[34m'
+    OKGREEN = '\033[32m'
+    WARNING = '\033[33m'
+    FAIL = '\033[31m'
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
