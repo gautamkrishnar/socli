@@ -7,9 +7,11 @@ import getopt
 import os
 import sys
 import urllib
+import colorama # @TODO: we will need to update installation instructions with requirements
 
 import requests
 from bs4 import BeautifulSoup
+
 
 # Global vars:
 DEBUG = False # Set True for enabling debugging
@@ -71,39 +73,6 @@ def fixCodePage():
 		handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
 		ctypes.windll.kernel32.SetCurrentConsoleFontEx(handle, ctypes.c_long(False), ctypes.pointer(font))
 
-### To implement colors:
-# From https://github.com/django/django/blob/master/django/core/management/color.py
-def supports_color():
-    """
-    Returns True if the running system's terminal supports color,
-    and False otherwise.
-    """
-    plat = sys.platform
-    supported_platform = plat != 'Pocket PC' and (plat != 'win32' or 'ANSICON' in os.environ)
-    #To detect if socli is run in UNIX shell on a windows platform. If true then this function returns true
-    if os.name == "nt":
-        try:
-            test_shell = os.environ['SHELL']
-            if 'bash' in test_shell:
-                return True
-        except KeyError:
-            pass
-    # To detect windows 10 cmd. Windows 10 cmd supports color by default
-    # Removed due to the latest windows 10 update. The command prompt no longer  support color
-    #
-    # if os.name == "nt":
-    #     x = sys.getwindowsversion()[0]
-    #     if x == 10:
-    #         try:
-    #             test_shell = os.environ['SHELL']  # If running with a shell like cygwin this is set
-    #         except Exception:
-    #             return True
-    # isatty is not always implemented, #6223.
-    is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
-    if not supported_platform or not is_a_tty:
-        return False
-    return True
-
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -116,9 +85,7 @@ class bcolors:
 
 
 def format_str(str, color):
-    _color = color if supports_color() else ''
-    _endc = bcolors.ENDC if supports_color() else ''
-    return "{0}{1}{2}".format(_color, str, _endc)
+    return "{0}{1}{2}".format(color, str, bcolors.ENDC)
 
 
 def print_header(str):
@@ -189,6 +156,8 @@ def helpman():
     print_header("Stack Overflow command line client:")
     print_green("\n\n\tUsage: socli [ Arguments ] < Search Query >\n\n")
     print_header("\n[ Arguments ] (optional):\n")
+    # Add support for windows colors.
+    colorama.init()
     print(" " + bold("--help or -h") + " : Displays this help")
     print(" " + bold("--query or -q") +
           " : If any of the following commands are used then you " \
@@ -390,10 +359,14 @@ def dispres(url):
 
 # Main
 def main():
+
     global rn  # Result number (for -r arg)
     global ir  # interactive mode off (for -i arg)
     global tag # tag based search (for -t arg)
     global query
+
+    # Add support for windows colors.
+    colorama.init()
     
     fixCodePage() # For fixing encoding errors in windows
     
