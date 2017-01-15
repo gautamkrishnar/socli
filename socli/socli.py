@@ -74,43 +74,44 @@ def fixCodePage():
         try:
             ctypes.windll.kernel32.SetCurrentConsoleFontEx(handle, ctypes.c_long(False), ctypes.pointer(font))
         except AttributeError:
-            # Windows XP, Wine do not have SetCurrentConsoleFontEx.
+            # Windows XP, Wine do not support SetCurrentConsoleFontEx.
             pass
 
 class bcolors:
-    HEADER = '\033[35m'
-    OKBLUE = '\033[34m'
-    OKGREEN = '\033[32m'
-    WARNING = '\033[33m'
-    FAIL = '\033[31m'
-    ENDC = '\033[0m'
+   # HEADER = '\033[35m'
+   # OKBLUE = '\033[34m'
+   # OKGREEN = '\033[32m'
+   # WARNING = '\033[33m'
+   # FAIL = '\033[31m'
+   # ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
 
 def format_str(str, color):
-    return "{0}{1}{2}".format(color, str, bcolors.ENDC)
+    return "{0}{1}{2}".format(color, str, colorama.Style.RESET_ALL)
 
 
 def print_header(str):
-    print(format_str(str, bcolors.HEADER))
+    print(format_str(str, colorama.Fore.MAGENTA))
 
 
 def print_blue(str):
-    print(format_str(str, bcolors.OKBLUE))
+    print(format_str(str, colorama.Fore.BLUE))
 
 
 def print_green(str):
-    print(format_str(str, bcolors.OKGREEN))
+    print(format_str(str, colorama.Fore.GREEN))
 
 
 def print_warning(str):
-    print(format_str(str, bcolors.WARNING))
+    print(format_str(str, colorama.Fore.YELLOW))
 
 
 def print_fail(str):
-    print(format_str(str, bcolors.FAIL))
+    print(format_str(str, coreama.Fore.RED))
 
+# Bold and underline are not supported by colorama.
 
 def bold(str):
     return (format_str(str, bcolors.BOLD))
@@ -160,8 +161,6 @@ def helpman():
     print_header("Stack Overflow command line client:")
     print_green("\n\n\tUsage: socli [ Arguments ] < Search Query >\n\n")
     print_header("\n[ Arguments ] (optional):\n")
-    # Add support for windows colors.
-    colorama.init()
     print(" " + bold("--help or -h") + " : Displays this help")
     print(" " + bold("--query or -q") +
           " : If any of the following commands are used then you " \
@@ -369,9 +368,6 @@ def main():
     global tag # tag based search (for -t arg)
     global query
 
-    # Add support for windows colors.
-    colorama.init()
-    
     fixCodePage() # For fixing encoding errors in windows
     
     # IF there is no command line options or if it is help argument:
