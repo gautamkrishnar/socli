@@ -1,5 +1,5 @@
-SoCLI |PyPI version| |Build Status|
-===================================
+SoCLI |PyPI version| |Build Status| |Collaborizm|
+=================================================
 
 Stack overflow command line written in python. Using SoCLI you can
 search and browse stack overflow without leaving the terminal. Just use
@@ -23,7 +23,7 @@ Supported platforms
 Requirements
 ''''''''''''
 
--  python 2+ :
+-  python 2+
 
 For Linux
 '''''''''
@@ -37,6 +37,17 @@ Install **python** and just use **pip** command to install **socli**:
 
 For Windows
 '''''''''''
+
+Method 1 (Using Installer Easy way)
+                                          
+
+Download and install the latest release of
+`SoCLI-Setup.exe <https://github.com/gautamkrishnar/socli/releases/latest/>`__
+for windows. It is a self contained package with all the required
+dependencies. This package also contain auto updater for SoCLI.
+
+Method 2 (Using PIP)
+                    
 
 `Download and install python <https://www.python.org/downloads/>`__.
 Dont forget to check the option "Add to path".
@@ -224,9 +235,9 @@ Arguments (optional)
 |           |           | --query   |           |
 |           |           | after it. |           |
 +-----------+-----------+-----------+-----------+
-| -t        | --tag     | Specifies | socli     |
-|           |           | the tag   | -new js   |
-|           |           | to search | -q query  |
+| -t        | --tag     | Specifies | socli -t  |
+|           |           | the tag   | js -q     |
+|           |           | to search | query     |
 |           |           | for the   |           |
 |           |           | query on  |           |
 |           |           | stack     |           |
@@ -266,6 +277,16 @@ Interactively browse stack overflow using the interactive mode \*
 Coloured interface \* Question stats view \* Tag support \* Can open the
 page in a browser \* Can create a new question via the web browser
 
+To Do
+~~~~~
+
+Command line interface for: - [ ] Stack overflow authentication - [ ]
+Posting to stack overflow - [ ] Upvote answer - [ ] Comment on an answer
+- [ ] Browsing stackoverflow home page
+
+Please check out the list of
+`issues <https://github.com/gautamkrishnar/socli/issues>`__.
+
 Contributing
 ~~~~~~~~~~~~
 
@@ -283,23 +304,42 @@ follow the steps below:
 7. Commit your changes: ``git commit -am 'Added new feature'``
 8. Push to the branch: ``git push``
 9. Submit a `new pull
-   request <https://github.com/gautamkrishnar/socli/pull/new>`__ :smile:
+   request <https://github.com/gautamkrishnar/socli/pull/new>`__ 
 
 Contributors
 ~~~~~~~~~~~~
 
 Special thanks to these superheroes: \*
-[@Killbee](https://github.com/kilbee) for making SoCLI colorful \* `Sam
+`Killbee <https://github.com/kilbee>`__ for making SoCLI colorful
+`#3 <https://github.com/gautamkrishnar/socli/pull/3>`__ \* `Sam
 Dean <https://github.com/deanWombourne>`__ for adding Macintosh SoCLI
-installation instructions \*
+installation instructions
+`#1 <https://github.com/gautamkrishnar/socli/pull/1>`__ \*
 `Plinio89s <https://github.com/Plinio89s>`__ for adding the check for
-color support \* `nagracks <https://github.com/nagracks>`__ for
-improving readability of the \* `mwwynne <https://github.com/mwwynne>`__
-for adding links to the SoCLI \* `Carlos J. Puga
-Medina <https://github.com/cpu82>`__ for finding the bug
+color support `#8 <https://github.com/gautamkrishnar/socli/pull/8>`__ \*
+`nagracks <https://github.com/nagracks>`__ for improving readability of
+the SoCLI code `#11 <https://github.com/gautamkrishnar/socli/pull/11>`__
+\* `mwwynne <https://github.com/mwwynne>`__ for adding links to the
+SoCLI `#13 <https://github.com/gautamkrishnar/socli/pull/13>`__ \*
+`Carlos J. Puga Medina <https://github.com/cpu82>`__ for finding the bug
 `#11 <https://github.com/gautamkrishnar/socli/issues/14>`__ on SoCLI
 python2 version and for making `SoCLI freshports
-port <https://www.freshports.org/misc/py-socli/>`__
+port <https://www.freshports.org/misc/py-socli/>`__ \* `Jon
+Ericson <https://github.com/jericson>`__ (*Community Manager, Stack
+Overflow*) for the PR
+`#18 <https://github.com/gautamkrishnar/socli/pull/18>`__ and letting me
+know about the Stack overflow attribution policy. Thanks for the `blog
+post <http://jericson.github.io/2016/08/25/long_tail_docs.html>`__ \*
+`Ankit Kr. Singh <https://github.com/kumarankit0411>`__ for fixing some
+typos PR `#21 <https://github.com/gautamkrishnar/socli/pull/21>`__
+`#23 <https://github.com/gautamkrishnar/socli/pull/23>`__ \* `Harsha
+Alva <https://github.com/aharshac>`__ for fixing windows encoding
+problem PR `#24 <https://github.com/gautamkrishnar/socli/pull/21>`__ \*
+`Pia Mancini <https://github.com/piamancini>`__ for adding SoCLI to
+OpenCollective `#27 <https://github.com/gautamkrishnar/socli/pull/27>`__
+\* `Elliott Beach <https://github.com/e-beach>`__ for improving color
+support by adding colorama
+`#29 <https://github.com/gautamkrishnar/socli/pull/29>`__
 
 Bugs
 ~~~~
@@ -324,20 +364,43 @@ Thanks
    -  `memect.com <http://forum.memect.com/blog/thread/py-2016-06-26/>`__
    -  `pseudoscripter <https://pseudoscripter.wordpress.com/2016/06/28/socli-stack-overflow-command-line-client/>`__
    -  `b.hatena.ne.jp <http://b.hatena.ne.jp/entry/s/github.com/gautamkrishnar/socli>`__
+   -  `jericson.github.io <http://jericson.github.io/2016/08/25/long_tail_docs.html>`__
+   -  `The really big list of really interesting Open Source
+      projects <https://medium.com/@likid.geimfari/the-list-of-interesting-open-source-projects-2daaa2153f7c#.6qm1v3ioa>`__
+   -  `Ostechnix <http://www.ostechnix.com/search-browse-stack-overflow-website-commandline/>`__
 
 -  Tweets:
 
    -  [@cyb3rops](https://twitter.com/cyb3rops/status/747380776350650368)
    -  [@pythontrending](https://twitter.com/pythontrending/status/745635512803819521)
 
--  Thanks to my favourite IDE JetBrains PyCharm 
+-  Thanks to my favourite IDE JetBrains PyCharm :heart: :smile:
+
+Backers
+~~~~~~~
+
+Support us with a monthly donation and help us continue our activities.
+[`Become a backer <https://opencollective.com/socli#backer>`__]
+
+Sponsors
+~~~~~~~~
+
+Become a sponsor and get your logo on our README on Github with a link
+to your site. [`Become a
+sponsor <https://opencollective.com/socli#sponsor>`__]
+
+-  Thanks `Steven Reubenstone <https://www.collaborizm.com/profile/1>`__
+   for contributing $5 for the issue
+   `#22 <https://github.com/gautamkrishnar/socli/issues/22>`__
 
 Liked it?
 ~~~~~~~~~
 
-Hope you liked this project, don't forget to give it a star 
+Hope you liked this project, don't forget to give it a star
 
 .. |PyPI version| image:: https://badge.fury.io/py/socli.svg
    :target: https://badge.fury.io/py/socli
 .. |Build Status| image:: https://travis-ci.org/gautamkrishnar/socli.svg?branch=master
    :target: https://travis-ci.org/gautamkrishnar/socli
+.. |Collaborizm| image:: https://img.shields.io/badge/Collaborizm-Join%20Project-brightgreen.svg
+   :target: https://www.collaborizm.com/project/S1cbUui6
