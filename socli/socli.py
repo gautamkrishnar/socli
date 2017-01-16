@@ -7,9 +7,11 @@ import getopt
 import os
 import sys
 import urllib
+import colorama
 
 import requests
 from bs4 import BeautifulSoup
+
 
 # Global vars:
 DEBUG = False # Set True for enabling debugging
@@ -38,116 +40,82 @@ else:
 
 ### Fixes windows encoding errors
 def fixCodePage():
-	
-	import codecs
-	import ctypes
-	if sys.platform == 'win32':
-		if sys.stdout.encoding != 'cp65001':
-			os.system("echo off")
-			os.system("chcp 65001") # Change active page code
-			sys.stdout.write("\x1b[A") # Removes the output of chcp command
-			sys.stdout.flush()
-		LF_FACESIZE = 32
-		STD_OUTPUT_HANDLE = -11
-		class COORD(ctypes.Structure):
-		    _fields_ = [("X", ctypes.c_short), ("Y", ctypes.c_short)]
+    
+    import codecs
+    import ctypes
+    if sys.platform == 'win32':
+        if sys.stdout.encoding != 'cp65001':
+            os.system("echo off")
+            os.system("chcp 65001") # Change active page code
+            sys.stdout.write("\x1b[A") # Removes the output of chcp command
+            sys.stdout.flush()
+        LF_FACESIZE = 32
+        STD_OUTPUT_HANDLE = -11
+        class COORD(ctypes.Structure):
+            _fields_ = [("X", ctypes.c_short), ("Y", ctypes.c_short)]
 
-		class CONSOLE_FONT_INFOEX(ctypes.Structure):
-			_fields_ = [("cbSize", ctypes.c_ulong),
+        class CONSOLE_FONT_INFOEX(ctypes.Structure):
+            _fields_ = [("cbSize", ctypes.c_ulong),
                 ("nFont", ctypes.c_ulong),
                 ("dwFontSize", COORD),
                 ("FontFamily", ctypes.c_uint),
                 ("FontWeight", ctypes.c_uint),
                 ("FaceName", ctypes.c_wchar * LF_FACESIZE)]
 
-		font = CONSOLE_FONT_INFOEX()
-		font.cbSize = ctypes.sizeof(CONSOLE_FONT_INFOEX)
-		font.nFont = 12
-		font.dwFontSize.X = 7
-		font.dwFontSize.Y = 12
-		font.FontFamily = 54
-		font.FontWeight = 400
-		font.FaceName = "Lucida Console"
-		handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
-		ctypes.windll.kernel32.SetCurrentConsoleFontEx(handle, ctypes.c_long(False), ctypes.pointer(font))
-
-### To implement colors:
-# From https://github.com/django/django/blob/master/django/core/management/color.py
-def supports_color():
-    """
-    Returns True if the running system's terminal supports color,
-    and False otherwise.
-    """
-    plat = sys.platform
-    supported_platform = plat != 'Pocket PC' and (plat != 'win32' or 'ANSICON' in os.environ)
-    #To detect if socli is run in UNIX shell on a windows platform. If true then this function returns true
-    if os.name == "nt":
+        font = CONSOLE_FONT_INFOEX()
+        font.cbSize = ctypes.sizeof(CONSOLE_FONT_INFOEX)
+        font.nFont = 12
+        font.dwFontSize.X = 7
+        font.dwFontSize.Y = 12
+        font.FontFamily = 54
+        font.FontWeight = 400
+        font.FaceName = "Lucida Console"
+        handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
         try:
-            test_shell = os.environ['SHELL']
-            if 'bash' in test_shell:
-                return True
-        except KeyError:
+            ctypes.windll.kernel32.SetCurrentConsoleFontEx(handle, ctypes.c_long(False), ctypes.pointer(font))
+        except AttributeError:
+            # Windows XP, Wine do not support SetCurrentConsoleFontEx.
             pass
-    # To detect windows 10 cmd. Windows 10 cmd supports color by default
-    # Removed due to the latest windows 10 update. The command prompt no longer  support color
-    #
-    # if os.name == "nt":
-    #     x = sys.getwindowsversion()[0]
-    #     if x == 10:
-    #         try:
-    #             test_shell = os.environ['SHELL']  # If running with a shell like cygwin this is set
-    #         except Exception:
-    #             return True
-    # isatty is not always implemented, #6223.
-    is_a_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
-    if not supported_platform or not is_a_tty:
-        return False
-    return True
 
+# Bold and underline are not supported by colorama.
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
 
 def format_str(str, color):
-    _color = color if supports_color() else ''
-    _endc = bcolors.ENDC if supports_color() else ''
-    return "{0}{1}{2}".format(_color, str, _endc)
+    return "{0}{1}{2}".format(color, str, colorama.Style.RESET_ALL)
 
 
 def print_header(str):
-    print(format_str(str, bcolors.HEADER))
+    print(format_str(str, colorama.Fore.MAGENTA))
 
 
 def print_blue(str):
-    print(format_str(str, bcolors.OKBLUE))
+    print(format_str(str, colorama.Fore.BLUE))
 
 
 def print_green(str):
-    print(format_str(str, bcolors.OKGREEN))
+    print(format_str(str, colorama.Fore.GREEN))
 
 
 def print_warning(str):
-    print(format_str(str, bcolors.WARNING))
+    print(format_str(str, colorama.Fore.YELLOW))
 
 
 def print_fail(str):
-    print(format_str(str, bcolors.FAIL))
+    print(format_str(str, colorama.Fore.RED))
 
 
+# Not supported on windows.
 def bold(str):
     return (format_str(str, bcolors.BOLD))
 
 
+# Not supported on windows.
 def underline(str):
     return (format_str(str, bcolors.UNDERLINE))
- 
+
 ## For testing exceptions
 def showerror(e):
     if DEBUG == True:
@@ -390,11 +358,12 @@ def dispres(url):
 
 # Main
 def main():
+
     global rn  # Result number (for -r arg)
     global ir  # interactive mode off (for -i arg)
     global tag # tag based search (for -t arg)
     global query
-    
+
     fixCodePage() # For fixing encoding errors in windows
     
     # IF there is no command line options or if it is help argument:

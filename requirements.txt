@@ -1,2 +1,3 @@
 BeautifulSoup4
 requests
+colorama
