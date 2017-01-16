@@ -149,16 +149,18 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 
 ### Contributors
 Special thanks to these superheroes:
-* [@Killbee](https://github.com/kilbee) for making SoCLI colorful 
-* [Sam Dean](https://github.com/deanWombourne) for adding Macintosh SoCLI installation instructions
-* [Plinio89s](https://github.com/Plinio89s) for adding the check for color support
-* [nagracks](https://github.com/nagracks) for improving readability of the
-* [mwwynne](https://github.com/mwwynne) for adding links to the SoCLI
+* [Killbee](https://github.com/kilbee) for making SoCLI colorful [#3](https://github.com/gautamkrishnar/socli/pull/3)
+* [Sam Dean](https://github.com/deanWombourne) for adding Macintosh SoCLI installation instructions [#1](https://github.com/gautamkrishnar/socli/pull/1)
+* [Plinio89s](https://github.com/Plinio89s) for adding the check for color support [#8](https://github.com/gautamkrishnar/socli/pull/8)
+* [nagracks](https://github.com/nagracks) for improving readability of the SoCLI code [#11](https://github.com/gautamkrishnar/socli/pull/11)
+* [mwwynne](https://github.com/mwwynne) for adding links to the SoCLI [#13](https://github.com/gautamkrishnar/socli/pull/13)
 * [Carlos J. Puga Medina](https://github.com/cpu82) for finding the bug [#11](https://github.com/gautamkrishnar/socli/issues/14) on SoCLI python2 version and for making [SoCLI freshports port](https://www.freshports.org/misc/py-socli/)
 * [Jon Ericson](https://github.com/jericson) (*Community Manager, Stack Overflow*) for the PR [#18](https://github.com/gautamkrishnar/socli/pull/18) and letting me know about the Stack overflow attribution policy. Thanks for the [blog post](http://jericson.github.io/2016/08/25/long_tail_docs.html)
-* [Ankit Kr. Singh](https://github.com/kumarankit0411) for fixing some typos PR [#21](https://github.com/gautamkrishnar/socli/pull/21) [#23](https://github.com/gautamkrishnar/socli/pull/23).
-* [Harsha Alva](https://github.com/aharshac) for fixing windows encoding problem PR [#24](https://github.com/gautamkrishnar/socli/pull/21).
+* [Ankit Kr. Singh](https://github.com/kumarankit0411) for fixing some typos PR [#21](https://github.com/gautamkrishnar/socli/pull/21) [#23](https://github.com/gautamkrishnar/socli/pull/23)
+* [Harsha Alva](https://github.com/aharshac) for fixing windows encoding problem PR [#24](https://github.com/gautamkrishnar/socli/pull/21)
 * [Pia Mancini](https://github.com/piamancini) for adding SoCLI to OpenCollective [#27](https://github.com/gautamkrishnar/socli/pull/27)
+* [Elliott Beach](https://github.com/e-beach) for improving color support by adding colorama [#29](https://github.com/gautamkrishnar/socli/pull/29)
+
 
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
