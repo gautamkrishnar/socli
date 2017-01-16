@@ -1,4 +1,7 @@
 # SoCLI Changelog
+### 3.0
+* Fixed almost all windows encoding and color bugs
+
 ### 2.9
 * Many minor bug fixes
 
