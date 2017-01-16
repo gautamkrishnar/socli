@@ -38,44 +38,18 @@ else:
     def inputs(str):
         return input(str)
 
-### Fixes windows encoding errors
+### Fixes windows active page code errors
 def fixCodePage():
-    
-    import codecs
-    import ctypes
     if sys.platform == 'win32':
         if sys.stdout.encoding != 'cp65001':
             os.system("echo off")
             os.system("chcp 65001") # Change active page code
             sys.stdout.write("\x1b[A") # Removes the output of chcp command
             sys.stdout.flush()
-        LF_FACESIZE = 32
-        STD_OUTPUT_HANDLE = -11
-        class COORD(ctypes.Structure):
-            _fields_ = [("X", ctypes.c_short), ("Y", ctypes.c_short)]
+            return
+        else:
+            return
 
-        class CONSOLE_FONT_INFOEX(ctypes.Structure):
-            _fields_ = [("cbSize", ctypes.c_ulong),
-                ("nFont", ctypes.c_ulong),
-                ("dwFontSize", COORD),
-                ("FontFamily", ctypes.c_uint),
-                ("FontWeight", ctypes.c_uint),
-                ("FaceName", ctypes.c_wchar * LF_FACESIZE)]
-
-        font = CONSOLE_FONT_INFOEX()
-        font.cbSize = ctypes.sizeof(CONSOLE_FONT_INFOEX)
-        font.nFont = 12
-        font.dwFontSize.X = 7
-        font.dwFontSize.Y = 12
-        font.FontFamily = 54
-        font.FontWeight = 400
-        font.FaceName = "Lucida Console"
-        handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
-        try:
-            ctypes.windll.kernel32.SetCurrentConsoleFontEx(handle, ctypes.c_long(False), ctypes.pointer(font))
-        except AttributeError:
-            # Windows XP, Wine do not support SetCurrentConsoleFontEx.
-            pass
 
 # Bold and underline are not supported by colorama.
 class bcolors:
@@ -107,12 +81,10 @@ def print_fail(str):
     print(format_str(str, colorama.Fore.RED))
 
 
-# Not supported on windows.
 def bold(str):
     return (format_str(str, bcolors.BOLD))
 
 
-# Not supported on windows.
 def underline(str):
     return (format_str(str, bcolors.UNDERLINE))
 
@@ -362,9 +334,9 @@ def main():
     global rn  # Result number (for -r arg)
     global ir  # interactive mode off (for -i arg)
     global tag # tag based search (for -t arg)
-    global query
-
-    fixCodePage() # For fixing encoding errors in windows
+    global query # query variable
+    colorama.init() # for colorama support in windows
+    fixCodePage() # For fixing codepage errors in windows
     
     # IF there is no command line options or if it is help argument:
     if (len(sys.argv) == 1) or ((sys.argv[1] == "-h") or (sys.argv[1] == "--help")):
