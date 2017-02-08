@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 # Global vars:
 DEBUG = False # Set True for enabling debugging
-soqurl = "http://stackoverflow.com/search?tab=votes&q="  # Query url
+soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
 ir = 0  # interactive mode off (for -i arg)
