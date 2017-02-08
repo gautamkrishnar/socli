@@ -160,6 +160,8 @@ Special thanks to these superheroes:
 * [Harsha Alva](https://github.com/aharshac) for fixing windows encoding problem PR [#24](https://github.com/gautamkrishnar/socli/pull/21)
 * [Pia Mancini](https://github.com/piamancini) for adding SoCLI to OpenCollective [#27](https://github.com/gautamkrishnar/socli/pull/27)
 * [Elliott Beach](https://github.com/e-beach) for improving color support by adding colorama [#29](https://github.com/gautamkrishnar/socli/pull/29)
+* [Aditya Tandon](https://github.com/adityatandon007) for the issue [#30](https://github.com/gautamkrishnar/socli/issues/30)
+* [Akshatha Nayak](https://github.com/Aksh77) for your first contribution to an open source project. PR [#31](https://github.com/gautamkrishnar/socli/issues/31)
 
 
 ### Bugs
