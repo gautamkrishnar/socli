@@ -321,7 +321,7 @@ def dispres(url):
         print_green("\n\nAnswer:\n")
         print("-------\n" + dispstr(answer) + "\n-------\n")
         print(bold("Question URL:"))
-        print_blue(underline(url))
+        print_blue(underline(url)+"\n")
         return
     except IndexError as e:
         print_warning("\n\nAnswer:\n\t No answer found for this question...")
