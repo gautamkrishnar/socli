@@ -3,5 +3,6 @@ build/
 dist/
 socli.egg-info/
 socli/__pycache__/
+socli/data.json
 docs/
 *.pyc
