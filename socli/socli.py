@@ -8,7 +8,6 @@ import os
 import sys
 import urllib
 import colorama
-
 import requests
 from bs4 import BeautifulSoup
 
@@ -81,6 +80,10 @@ def print_fail(str):
     print(format_str(str, colorama.Fore.RED))
 
 
+def print_white(str):
+    print(format_str(str,colorama.Fore.WHITE))
+
+
 def bold(str):
     return (format_str(str, bcolors.BOLD))
 
@@ -101,9 +104,13 @@ def showerror(e):
         return
 
 
-### SOCLI Code
-# @para query = Query to search on stackoverflow
+
 def socli(query):
+    """
+    SOCLI Code
+    :param query: Query to search on stackoverflow
+    :return:
+    """
     query = urlencode(query)
     try:
         search_res = requests.get(soqurl + query, verify=False)
@@ -124,8 +131,12 @@ def socli(query):
         showerror(e)
         sys.exit(0)
 
-# Displays help
+
 def helpman():
+    """
+    Displays help
+    :return:
+    """
     print_header("Stack Overflow command line client:")
     print_green("\n\n\tUsage: socli [ Arguments ] < Search Query >\n\n")
     print_header("\n[ Arguments ] (optional):\n")
@@ -163,8 +174,12 @@ def helpman():
     print(bold("socli -iq") + " while loop in python")
 
 
-# Interactive mode:
 def socli_interactive(query):
+    """
+    Interactive mode
+    :param query:
+    :return:
+    """
     try:
         search_res = requests.get(soqurl + query, verify=False)
         soup = BeautifulSoup(search_res.text, 'html.parser')
@@ -240,8 +255,13 @@ def socli_interactive(query):
         sys.exit(0)
 
 
-# Manual search by question index
 def socl_manusearch(query, rn):
+    """
+    Manual search by question index
+    :param query:
+    :param rn:
+    :return:
+    """
     query = urlencode(query)
     try:
         search_res = requests.get(soqurl + query, verify=False)
@@ -263,8 +283,22 @@ def socl_manusearch(query, rn):
         sys.exit(0)
 
 
-# Exits if query value is empty
+def userpage(userid):
+    """
+    Stackoverflow user profile browsing
+    :param userid:
+    :return:
+    """
+    import stackexchange
+    print_blue(userid)
+
+
 def wrongsyn(query):
+    """
+    Exits if query value is empty
+    :param query:
+    :return:
+    """
     if query == "":
         print_warning("Wrong syntax!...\n")
         helpman()
@@ -273,8 +307,12 @@ def wrongsyn(query):
         return
 
 
-# Get Question stats
 def get_stats(soup):
+    """
+    Get Question stats
+    :param soup:
+    :return:
+    """
     question_title = (soup.find_all("a",class_="question-hyperlink")[0].get_text())
     question_stats = (soup.find_all("span",class_="vote-count-post")[0].get_text())
     question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div",\
@@ -290,6 +328,7 @@ def add_urls(tags):
     """
     Adds the URL to any hyperlinked text found in a question
     or answer.
+    :param tags:
     """
     images = tags.find_all("a")
 
@@ -297,14 +336,24 @@ def add_urls(tags):
         if hasattr(image, "href"):
             image.string = "{} [{}]".format(image.text, image['href'])
 
-# Gets the tags and adds them to query url
+
 def hastags():
+    """
+    Gets the tags and adds them to query url
+    :return:
+    """
     global soqurl
     global tag
     for tags in tag.split(","):
         soqurl = soqurl + "[" + tags + "]" + "+"
-# Display result page
+
+
 def dispres(url):
+    """
+    Display result page
+    :param url:
+    :return:
+    """
     res_page = requests.get(url + query, verify=False)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
@@ -328,8 +377,11 @@ def dispres(url):
         sys.exit(0);
 
 
-# Main
 def main():
+    """
+    Main Function
+    :return:
+    """
 
     global rn  # Result number (for -r arg)
     global ir  # interactive mode off (for -i arg)
@@ -344,7 +396,7 @@ def main():
         sys.exit(0)
     else:
         try:
-            options, rem = getopt.getopt(sys.argv[1:],"nit:r:q:", ["query=", "res=", "interactive", "new" , "tag="])
+            options, rem = getopt.getopt(sys.argv[1:],"niut:r:q:", [ "new" , "interactive" , "user" , "tag=" , "res=" ,"query=" ])
         except getopt.GetoptError:
             helpman()
             sys.exit(1)
@@ -356,16 +408,16 @@ def main():
                     ir = 1  # interactive mode on
                 if opt in ("-r", "--res"):
                     try:
-                        rn = int(arg)
+                        rn = int(arg) # Result Number
                     except ValueError:
                         print_warning("Wrong syntax...!\n")
                         helpman()
-                        sys.exit(0)
+                        sys.exit(1)
                 if opt in ("-t", "--tag"):
                     if len(arg)==0:
                         print_warning("Wrong syntax...!\n")
                         helpman()
-                        sys.exit(0)
+                        sys.exit(1)
                     tag = arg
                     hastags()
                 if opt in ("-q", "--query"):
@@ -377,6 +429,48 @@ def main():
                     print_warning("Opening stack overflow in your browser...")
                     webbrowser.open(sourl + "/questions/ask")
                     sys.exit(0)
+                if opt in ("-u", "--user"):
+                    # Stackoverflow user profile support
+                    print_blue(sys.path[0])
+                    user = 0
+                    if len(rem)==1:
+                        try:
+                            user = int(rem[0])
+                        except ValueError:
+                            print_warning("Wrong syntax. User id must be an integer.")
+                            helpman()
+                            exit(1)
+                    else:
+                        import json
+                        data_fille = os.path.join(os.path.dirname(__file__),"data.json")
+                        try:
+                            with open(data_fille) as dataf:
+                                    data = json.load(dataf)
+                            user = data["user"]
+                            if (user == 0):
+                                raise FileNotFoundError
+                        except json.JSONDecodeError:
+                            # This maybe some write failures
+                            os.remove(data_fille)
+                            print_warning("Error in parsing the data file, it will be now deleted. Please rerun the "
+                                          "socli -u command.")
+                            exit(1)
+                        except FileNotFoundError:
+                            print_warning("Default user not set...\n")
+                            try:
+                                data = dict() # For JSON o/p
+                                data['user'] = int(inputs("Enter your Stackoverflow User ID: "))
+                                with open(data_fille,"w") as dataf:
+                                    json.dump(data , dataf)
+                                user = data['user']
+                                print_green("\nUserID saved...")
+                            except ValueError:
+                                print_warning("\nUser ID must be an integer.")
+                                print("\nFollow the instructions on this page to get your User ID: http://meta.stackexchange.com/a/111130")
+                                exit(1)
+                    userpage(user)
+                    exit(0)
+
         if tag != "":
             wrongsyn(query)
         if (rn == -1) and (ir == 0) and tag == "":
