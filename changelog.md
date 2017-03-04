@@ -1,6 +1,6 @@
 # SoCLI Changelog
 ### 3.2
-* Added user profiles
+* Added user profiles 
 
 ### 3.1
 * Bugfix release
