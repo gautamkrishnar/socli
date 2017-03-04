@@ -17,7 +17,7 @@ setup(
     name='socli',
     packages=["socli"],
     entry_points = {"console_scripts": ['socli = socli.socli:main']},
-    install_requires=['BeautifulSoup4','requests', 'colorama'],
+    install_requires=['BeautifulSoup4','requests', 'colorama' , 'Py-StackExchange'],
     requires=['BeautifulSoup4','requests', 'colorama'],
     version='3.1',
     url='http://www.github.com/gautamkrishnar/socli',
