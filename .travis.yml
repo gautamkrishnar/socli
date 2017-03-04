@@ -16,6 +16,7 @@ script:
 - socli for loop in java
 - socli unit test in java
 - socli --help
+- socli -u 22656
 deploy:
   provider: pypi
   user: gautamkrishnar

@@ -38,7 +38,7 @@ Install **python** and just use **pip** command to install **socli**:
 For Windows
 '''''''''''
 
-Method 1 (Using Installer Easy way)
+Method 1 (Using Installer :star: Easy way)
                                           
 
 Download and install the latest release of
@@ -121,10 +121,8 @@ complete description of the chosed question with its most voted answer.
 Now you can browse through all the answers of that questions on stack
 overflow interactively.
 
-Manual search
-'''''''''''''
-
-This will allow you to choose a question number for example:
+Manual search This will allow you to choose a question number for
+example:
 
 .. code:: sh
 
@@ -151,6 +149,30 @@ You can also specify multiple tags, Just seporate them with a comma:
     socli -t javascript,node.js -q window.open
 
 See the complete list of tags `here <http://stackoverflow.com/tags>`__.
+
+User Profile browsing
+'''''''''''''''''''''
+
+Just use the command below to set your `user
+ID <http://meta.stackexchange.com/a/111130>`__ in socli. When you
+execute the command next time, it will automaticially fetch the data.
+
+.. code:: sh
+
+    socli -u
+
+if your are an extensive user of StackOverflow, **socli** allows you to
+set your own API key to overcome the `StackOverflow API
+Limitations <http://stackapps.com/a/3057/41332>`__. Just use the command
+below:
+
+.. code:: sh
+
+    socli --api
+
+You can get an API Key
+`here <http://stackapps.com/apps/oauth/register>`__ by registering as a
+new app. Please don't use SoCLI as app name.
 
 New question
 ''''''''''''
@@ -259,6 +281,33 @@ Arguments (optional)
 |           |           | on stack  |           |
 |           |           | overflow. |           |
 +-----------+-----------+-----------+-----------+
+| -u        | --user    | Displays  | socli -u  |
+|           |           | the user  | 22656     |
+|           |           | profile   |           |
+|           |           | informati |           |
+|           |           | ons.      |           |
+|           |           | If no     |           |
+|           |           | argument  |           |
+|           |           | is given, |           |
+|           |           | it will   |           |
+|           |           | display   |           |
+|           |           | your      |           |
+|           |           | profile.  |           |
++-----------+-----------+-----------+-----------+
+| -a        | --api     | Sets a    | socli     |
+|           |           | custom    | -api      |
+|           |           | API key.  |           |
++-----------+-----------+-----------+-----------+
+| -d        | --del     | Deletes   | socli -d  |
+|           |           | the       |           |
+|           |           | configura |           |
+|           |           | tion      |           |
+|           |           | file      |           |
+|           |           | generated |           |
+|           |           | by socli  |           |
+|           |           | -u        |           |
+|           |           | manually. |           |
++-----------+-----------+-----------+-----------+
 | -h        | --help    | Displays  | socli     |
 |           |           | the help  | --help    |
 |           |           | text.     |           |
@@ -275,7 +324,8 @@ Features
 These are the amazing features of **socli**: \* Manual Search \*
 Interactively browse stack overflow using the interactive mode \*
 Coloured interface \* Question stats view \* Tag support \* Can open the
-page in a browser \* Can create a new question via the web browser
+page in a browser \* Can view user profiles \* Can create a new question
+via the web browser
 
 To Do
 ~~~~~
@@ -304,7 +354,7 @@ follow the steps below:
 7. Commit your changes: ``git commit -am 'Added new feature'``
 8. Push to the branch: ``git push``
 9. Submit a `new pull
-   request <https://github.com/gautamkrishnar/socli/pull/new>`__ 
+   request <https://github.com/gautamkrishnar/socli/pull/new>`__ :smile:
 
 Contributors
 ~~~~~~~~~~~~
@@ -339,7 +389,12 @@ problem PR `#24 <https://github.com/gautamkrishnar/socli/pull/21>`__ \*
 OpenCollective `#27 <https://github.com/gautamkrishnar/socli/pull/27>`__
 \* `Elliott Beach <https://github.com/e-beach>`__ for improving color
 support by adding colorama
-`#29 <https://github.com/gautamkrishnar/socli/pull/29>`__
+`#29 <https://github.com/gautamkrishnar/socli/pull/29>`__ \* `Aditya
+Tandon <https://github.com/adityatandon007>`__ for the issue
+`#30 <https://github.com/gautamkrishnar/socli/issues/30>`__ \* `Akshatha
+Nayak <https://github.com/Aksh77>`__ for your first contribution to an
+open source project. PR
+`#31 <https://github.com/gautamkrishnar/socli/issues/31>`__
 
 Bugs
 ~~~~
@@ -396,7 +451,7 @@ sponsor <https://opencollective.com/socli#sponsor>`__]
 Liked it?
 ~~~~~~~~~
 
-Hope you liked this project, don't forget to give it a star
+Hope you liked this project, don't forget to give it a star :star:
 
 .. |PyPI version| image:: https://badge.fury.io/py/socli.svg
    :target: https://badge.fury.io/py/socli
