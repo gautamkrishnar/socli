@@ -307,7 +307,6 @@ def userpage(userid):
         if "api_key" not in data:
             data["api_key"] = None
         userprofile = stackexchange.Site(stackexchange.StackOverflow,app_key=data["api_key"]).user(userid)
-        print(data["api_key"])
         print(bold("\n User: " + userprofile.display_name.format()))
         print("\n\tReputations: " + userprofile.reputation.format())
         print_warning("\n\tBadges:")
@@ -354,8 +353,7 @@ def set_api_key():
     Sets a custom API Key
     :return:
     """
-    global json
-    import json
+    import_json()
     api_key = inputs("Type an API key to continue: ")
     if len(api_key) > 0:
         data["api_key"] = api_key
@@ -399,6 +397,23 @@ def del_datafile():
         print_warning("File not created.... Use socli -u to create a new configuration file.")
         exit(0)
 
+
+def import_json():
+    """
+    imports json
+    fixes #33(https://github.com/gautamkrishnar/socli/issues/33)
+    :return:
+    """
+    global json # Importing json globally
+    global JSONDecodeError
+    try:
+        import simplejson as json
+    except ImportError:
+        import json
+    try:
+        JSONDecodeError = json.JSONDecodeError
+    except AttributeError:
+        JSONDecodeError = ValueError
 
 def wrongsyn(query):
     """
@@ -496,7 +511,7 @@ def main():
     global query # query variable
     colorama.init() # for colorama support in windows
     fixCodePage() # For fixing codepage errors in windows
-    
+
     # IF there is no command line options or if it is help argument:
     if (len(sys.argv) == 1) or ((sys.argv[1] == "-h") or (sys.argv[1] == "--help")):
         helpman()
@@ -548,8 +563,7 @@ def main():
                     exit(0)
                 if opt in ("-u", "--user"):
                     # Stackoverflow user profile support
-                    global json  # Importing json globally
-                    import json
+                    import_json()
                     user = 0
                     if len(rem)==1:
                         try:
@@ -570,7 +584,7 @@ def main():
                                 user = data["user"]
                             else:
                                 raise  FileNotFoundError # Manually raising to get value
-                        except json.JSONDecodeError:
+                        except JSONDecodeError:
                             # This maybe some write failures
                             del_datafile()
                             print_warning("Error in parsing the data file, it will be now deleted. Please rerun the "
