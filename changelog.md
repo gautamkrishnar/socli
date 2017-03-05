@@ -1,4 +1,7 @@
 # SoCLI Changelog
+### 3.3
+* Minor bugfix 
+
 ### 3.2
 * Added user profiles 
 
