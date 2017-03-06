@@ -1,7 +1,9 @@
+"""
 # Stack overflow CLI
-# Created by 
-# Gautam krishna R : www.github.com/gautamkrishnar 
+# Created by
+# Gautam krishna R : www.github.com/gautamkrishnar
 # And open source contributors at GitHub: https://github.com/gautamkrishnar/socli#contributors
+"""
 
 import getopt
 import os
@@ -29,15 +31,19 @@ if sys.version < '3.0.0':
         return urllib.quote_plus(inp)
     def dispstr(inp):
         return inp.encode('utf-8')
-    def inputs(str):
-        return raw_input(str)
+    def inputs(str=""):
+        sys.stdout.write(str)
+        tempx = raw_input()
+        return tempx
 else:
     def urlencode(inp):
         return urllib.parse.quote_plus(inp)
     def dispstr(inp):
         return inp
-    def inputs(str):
-        return input(str)
+    def inputs(str=""):
+        sys.stdout.write(str)
+        tempx = input()
+        return tempx
 
 ### Fixes windows active page code errors
 def fixCodePage():
@@ -511,7 +517,7 @@ def main():
     global query # query variable
     colorama.init() # for colorama support in windows
     fixCodePage() # For fixing codepage errors in windows
-
+	
     # IF there is no command line options or if it is help argument:
     if (len(sys.argv) == 1) or ((sys.argv[1] == "-h") or (sys.argv[1] == "--help")):
         helpman()
