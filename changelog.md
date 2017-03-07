@@ -1,4 +1,7 @@
 # SoCLI Changelog
+### 3.4
+* Bugfix release
+
 ### 3.3
 * Minor bugfix 
 
