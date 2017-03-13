@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 
 
 # Global vars:
-DEBUG = True # Set True for enabling debugging
+DEBUG = False # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
@@ -194,23 +194,10 @@ def helpman():
 
 
 
-
-class Header(urwid.Text):
-    def __init__(self):
-        self.current_event = None
-        urwid.Text.__init__(self, '')
-
-    def event(self, event, message):
-        self.current_event = event
-        self.set_text(message)
-
-    def clear(self, event):
-        if self.current_event == event:
-            self.set_text('')
-
-HEADER = Header()
-
 class QuestionPage(urwid.Pile):
+    """
+    Main container for urwid interactive mode.
+    """
     def __init__(self, data):
         answers, question_title, question_desc, question_stats, question_url = data
         self.url = question_url
@@ -237,6 +224,7 @@ class QuestionPage(urwid.Pile):
 
 
     def run(self):
+        """Start urwid text interface, using the QuestionPage as the base widget"""
         palette = [('answer', 'default', 'default'),
                    ('title', 'light green, bold', 'default'),
                    ('heading', 'light green, bold', 'default'),
@@ -247,59 +235,85 @@ class QuestionPage(urwid.Pile):
 
 
 
-class AnswerText(urwid.Text):
-
+class Header(urwid.Text):
     """
-    print_green("\n\nAnswer:\n")
-    print("-------\n" + answer + "\n-------\n") """
+    Header of the question page. Event messages are recorded here.
+    """
+    def __init__(self):
+        self.current_event = None
+        urwid.Text.__init__(self, '')
+
+    def event(self, event, message):
+        self.current_event = event
+        self.set_text(message)
+
+    def clear(self, event):
+        if self.current_event == event:
+            self.set_text('')
+
+HEADER = Header()
+
+
+class AnswerText(urwid.Text):
+    """Answers to the question."""
+
     def __init__(self, answers):
-        urwid.Text.__init__(self, ('answer', answers[0]))
+        urwid.Text.__init__(self, '')
         self.index = 0
         self.answers = answers
         self._selectable = True # so that we receive keyboard input
+        self.set_answer()
+
+    def set_answer(self):
+        self.set_text( [
+            ('less-important', 'Answer: '),
+            ('answer', self.answers[self.index])
+        ])
 
     def prev_ans(self):
+        """go to previous answer."""
         self.index -= 1
         if self.index < 0:
             self.index = 0
             HEADER.event('answer-bounds', "No previous answers." )
         else:
             HEADER.clear('answer-bounds')
-        self.set_text(self.answers[self.index])
+        self.set_answer()
 
     def next_ans(self):
+        """go to next answer."""
         self.index += 1
         if self.index > len(self.answers) - 1:
             self.index = len(self.answers) - 1
             HEADER.event('answer-bounds', "No more answers.")
         else:
             HEADER.clear('answer-bounds')
-        self.set_text(self.answers[self.index])
+        self.set_answer()
 
 
 
 class QuestionText(urwid.Text):
-    """
-    print_warning("\nQuestion: " + question_title)
-    print(question_desc)
-    print("\t" + underline(question_stats))
-    """
+    """ Title, description, and stats of the question,"""
+
     def __init__(self, title, description, stats):
-        #text = "\nQuestion: %s\n%s\n\t%s" % (title, description, stats)
         text = [ "Question: ", ('title', title), description, ('metadata', stats)]
         urwid.Text.__init__(self, text)
 
 
 class QuestionURL(urwid.Text):
-    """print(bold("Question URL:"))
-    print_blue(underline(url) + "\n")
-    """
+    """ url of the question """
+
     def __init__(self, url):
         text = [('heading', 'Question URL: '), url]
         urwid.Text.__init__(self, text)
 
 
-def get_questions_for_query():
+def get_questions_for_query(): # `query` is global
+    """
+    Fetch questions for a query. Returned question urls are relative to SO homepage.
+    At most 10 questions are returned.
+    :return: list of [ (question_text, question_description, question_url) ]
+    """
     questions = []
     search_res = requests.get(soqurl + query, verify=False)
     soup = BeautifulSoup(search_res.text, 'html.parser')
@@ -323,6 +337,11 @@ def get_questions_for_query():
     return questions
 
 def get_question_stats_and_answer(url):
+    """
+    Fetch the content of a StackOverflow page for a particular question.
+    :param url: full url of a StackOverflow question
+    :return: tuple of ( question_title, question_desc, question_stats, answers )
+    """
     res_page = requests.get(url + query, verify=False)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
@@ -332,7 +351,6 @@ def get_question_stats_and_answer(url):
 def socli_interactive():
     """
     Interactive mode
-    :param query:
     :return:
     """
     try:
@@ -358,6 +376,7 @@ def socli_interactive():
             print_warning("\n\nAnswer:\n\t No answer found for this question...")
             sys.exit(0)
 
+        # start urwid
         QuestionPage( (answers, question_title, question_desc, question_stats, url) ).run()
 
     except UnicodeEncodeError:
