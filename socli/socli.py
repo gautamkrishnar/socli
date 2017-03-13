@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 
 # Global vars:
-DEBUG = False # Set True for enabling debugging
+DEBUG = True # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
@@ -192,76 +192,103 @@ def helpman():
           " issues to report problems: "+ underline("http://github.com/gautamkrishnar/socli"))
 
 
-def socli_interactive(query):
+
+def get_questions_for_query():
+    questions = []
+    search_res = requests.get(soqurl + query, verify=False)
+    soup = BeautifulSoup(search_res.text, 'html.parser')
+    try:
+        soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
+    except IndexError:
+        print_warning("No results found...")
+        sys.exit(0)
+    tmp = (soup.find_all("div", class_="question-summary"))
+    tmp1 = (soup.find_all("div", class_="excerpt"))
+    i = 0
+    while (i < len(tmp)):
+        if i == 10: break  # limiting results
+        question_text = ' '.join((tmp[i].a.get_text()).split())
+        question_text = question_text.replace("Q: ","")
+        question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
+        question_desc = ' '.join(question_desc.split())
+        question_local_url = tmp[i].a.get("href")
+        questions.append( (question_text, question_desc, question_local_url))
+        i = i + 1
+    return questions
+
+def get_question_stats_and_answer(url):
+    res_page = requests.get(url + query, verify=False)
+    soup = BeautifulSoup(res_page.text, 'html.parser')
+    question_title, question_desc, question_stats = get_stats(soup)
+    answers = [s.get_text() for s in soup.find_all("div", class_="post-text")]
+    return question_title, question_desc, question_stats, answers
+
+def show_answer(answer):
+        print_green("\n\nAnswer:\n")
+        print("-------\n" + dispstr(answer) + "\n-------\n")
+
+def socli_interactive():
     """
     Interactive mode
     :param query:
     :return:
     """
     try:
-        search_res = requests.get(soqurl + query, verify=False)
-        soup = BeautifulSoup(search_res.text, 'html.parser')
+        # Display questions to the user
+        questions = get_questions_for_query()
+        print(bold("\nSelect a question below:\n"))
+        for i,q in enumerate(questions, 1):
+            question_text, question_desc, _ = q
+            print_warning(str(i) + ". " + dispstr(question_text))
+            print("  " + dispstr(question_desc) + "\n")
+
+        # get the question to show answers for from user
+        op = int(inputs("\nType the option no to continue or any other key to exit:"))
+        while (op <= 0 or op > len(questions)):
+            op = int(input("\n\nWrong option. select the option no to continue:"))
+
+        # fetch answers and question info
+        question_url = questions[op -1][2]
+        url = sourl + question_url
+        question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
+
         try:
-            soup.find_all("div", class_="question-summary")[0]  # For explictly raising exception
-            tmp = (soup.find_all("div", class_="question-summary"))
-            tmp1 = (soup.find_all("div", class_="excerpt"))
-            i = 0
-            question_local_url = []
-            print(bold("\nSelect a question below:\n"))
-            while (i < len(tmp)):
-                if i == 10: break  # limiting results
-                question_text = ' '.join((tmp[i].a.get_text()).split())
-                question_text = question_text.replace("Q: ","")
-                question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
-                question_desc = ' '.join(question_desc.split())
-                print_warning(str(i + 1) + ". " + dispstr(question_text))
-                question_local_url.append(tmp[i].a.get("href"))
-                print("  " + dispstr(question_desc) + "\n")
-                i = i + 1
-            try:
-                op = int(inputs("\nType the option no to continue or any other key to exit:"))
-                while 1:
-                    if (op > 0) and (op <= i):
-                        dispres(sourl + question_local_url[op - 1])
-                        cnt = 1  # this is because the 1st post is the question itself
-                        while 1:
-                            global tmpsoup
-                            qna = inputs("Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, "+ bold("b") + " for previous answer or any other key to exit:")
-                            if qna in ["n", "N"]:
-                                try:
-                                    answer = (tmpsoup.find_all("div",class_="post-text")[cnt + 1].get_text())
-                                    print_green("\n\nAnswer:\n")
-                                    print("-------\n" + answer + "\n-------\n")
-                                    cnt = cnt + 1
-                                except IndexError as e:
-                                    print_warning(" No more answers found for this question. Exiting...")
-                                    sys.exit(0)
-                                continue
-                            elif qna in ["b", "B"]:
-                                if cnt == 1:
-                                    print_warning(" You cant go further back. You are on the first answer!")
-                                    continue
-                                answer = (tmpsoup.find_all("div",class_="post-text")[cnt - 1].get_text())
-                                print_green("\n\nAnswer:\n")
-                                print("-------\n" + answer + "\n-------\n")
-                                cnt = cnt - 1
-                                continue
-                            elif qna in ["o", "O"]:
-                                import webbrowser
-                                print_warning("Opening in your browser...")
-                                webbrowser.open(sourl + question_local_url[op - 1])
-                            else:
-                                break
-                        sys.exit(0)
-                    else:
-                        op = int(input("\n\nWrong option. select the option no to continue:"))
-            except Exception as e:
-                showerror(e)
-                print_warning("\n Exiting...")
-                sys.exit(0)
-        except IndexError:
-            print_warning("No results found...")
+            answer = answers[1]
+        except IndexError as e:
+            print_warning("\n\nAnswer:\n\t No answer found for this question...")
             sys.exit(0)
+
+        print_warning("\nQuestion: " + dispstr(question_title))
+        print(dispstr(question_desc))
+        print("\t" + underline(question_stats))
+
+        show_answer(answer)
+
+        print(bold("Question URL:"))
+        print_blue(underline(url) + "\n")
+
+        cnt = 1  # this is because the 1st post is the question itself
+        while 1:
+            qna = inputs("Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, "+ bold("b") + " for previous answer or any other key to exit:")
+            if qna in ["n", "N"]:
+                try:
+                    cnt += 1
+                    show_answer(answers[cnt])
+                except IndexError as e:
+                    print_warning(" No more answers found for this question. Exiting...")
+                    sys.exit(0)
+            elif qna in ["b", "B"]:
+                if cnt == 1:
+                    print_warning(" You cant go further back. You are on the first answer!")
+                    continue
+                cnt -= 1
+                show_answer(answers[cnt])
+            elif qna in ["o", "O"]:
+                import webbrowser
+                print_warning("Opening in your browser...")
+                webbrowser.open(sourl + question_url)
+            else:
+                break
 
     except UnicodeEncodeError:
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
@@ -270,6 +297,7 @@ def socli_interactive(query):
         print_fail("Please check your internet connectivity...")
     except Exception as e:
         showerror(e)
+        print("exiting...")
         sys.exit(0)
 
 
@@ -502,7 +530,7 @@ def dispres(url):
         return
     except IndexError as e:
         print_warning("\n\nAnswer:\n\t No answer found for this question...")
-        sys.exit(0);
+        sys.exit(0)
 
 
 def main():
@@ -627,7 +655,7 @@ def main():
             sys.exit(0)
         elif (ir == 1):
             wrongsyn(query)
-            socli_interactive(query)
+            socli_interactive()
             sys.exit(0)
         elif query != "":
             socli(query)
