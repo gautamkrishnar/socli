@@ -11,6 +11,7 @@ import sys
 import urllib
 import colorama
 import requests
+import urwid
 from bs4 import BeautifulSoup
 
 
@@ -193,6 +194,111 @@ def helpman():
 
 
 
+
+class Header(urwid.Text):
+    def __init__(self):
+        self.current_event = None
+        urwid.Text.__init__(self, '')
+
+    def event(self, event, message):
+        self.current_event = event
+        self.set_text(message)
+
+    def clear(self, event):
+        if self.current_event == event:
+            self.set_text('')
+
+HEADER = Header()
+
+class QuestionPage(urwid.Pile):
+    def __init__(self, data):
+        answers, question_title, question_desc, question_stats, question_url = data
+        self.url = question_url
+        self.answer_text = AnswerText(answers)
+        widgets = [
+            HEADER,
+            QuestionText(question_title, question_desc, question_stats),
+            urwid.Divider('-'),
+            self.answer_text,
+            QuestionURL(question_url)
+        ]
+        urwid.Pile.__init__(self, widgets)
+
+
+    def keypress(self, size, key):
+        if key in {'down', 'b', 'B'}:
+           self.answer_text.prev_ans()
+        elif key in {'up', 'n', 'N'}:
+            self.answer_text.next_ans()
+        elif key in {'o', 'O'}:
+            import webbrowser
+            HEADER.event('browser', "Opening in your browser..." )
+            webbrowser.open(self.url)
+
+
+    def run(self):
+        palette = [('answer', 'default', 'default'),
+                   ('title', 'light green, bold', 'default'),
+                   ('heading', 'light green, bold', 'default'),
+                   ('metadata', 'dark green', 'default'),
+                   ('less-important','dark gray', 'default')
+                   ]
+        urwid.MainLoop(urwid.Filler(self, valign='top'), palette).run()
+
+
+
+class AnswerText(urwid.Text):
+
+    """
+    print_green("\n\nAnswer:\n")
+    print("-------\n" + answer + "\n-------\n") """
+    def __init__(self, answers):
+        urwid.Text.__init__(self, ('answer', answers[0]))
+        self.index = 0
+        self.answers = answers
+        self._selectable = True # so that we receive keyboard input
+
+    def prev_ans(self):
+        self.index -= 1
+        if self.index < 0:
+            self.index = 0
+            HEADER.event('answer-bounds', "No previous answers." )
+        else:
+            HEADER.clear('answer-bounds')
+        self.set_text(self.answers[self.index])
+
+    def next_ans(self):
+        self.index += 1
+        if self.index > len(self.answers) - 1:
+            self.index = len(self.answers) - 1
+            HEADER.event('answer-bounds', "No more answers.")
+        else:
+            HEADER.clear('answer-bounds')
+        self.set_text(self.answers[self.index])
+
+
+
+class QuestionText(urwid.Text):
+    """
+    print_warning("\nQuestion: " + question_title)
+    print(question_desc)
+    print("\t" + underline(question_stats))
+    """
+    def __init__(self, title, description, stats):
+        #text = "\nQuestion: %s\n%s\n\t%s" % (title, description, stats)
+        text = [ "Question: ", ('title', title), description, ('metadata', stats)]
+        urwid.Text.__init__(self, text)
+
+
+class QuestionURL(urwid.Text):
+    """print(bold("Question URL:"))
+    print_blue(underline(url) + "\n")
+    """
+    def __init__(self, url):
+        text = [('heading', 'Question URL: '), url]
+        urwid.Text.__init__(self, text)
+
+
 def get_questions_for_query():
     questions = []
     search_res = requests.get(soqurl + query, verify=False)
@@ -212,7 +318,7 @@ def get_questions_for_query():
         question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
         question_desc = ' '.join(question_desc.split())
         question_local_url = tmp[i].a.get("href")
-        questions.append( (question_text, question_desc, question_local_url))
+        questions.append( (question_text, question_desc, question_local_url) )
         i = i + 1
     return questions
 
@@ -220,12 +326,8 @@ def get_question_stats_and_answer(url):
     res_page = requests.get(url + query, verify=False)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
-    answers = [s.get_text() for s in soup.find_all("div", class_="post-text")]
+    answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][1:] # first post is question, discard it.
     return question_title, question_desc, question_stats, answers
-
-def show_answer(answer):
-        print_green("\n\nAnswer:\n")
-        print("-------\n" + dispstr(answer) + "\n-------\n")
 
 def socli_interactive():
     """
@@ -252,43 +354,11 @@ def socli_interactive():
         url = sourl + question_url
         question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
 
-        try:
-            answer = answers[1]
-        except IndexError as e:
+        if not answers:
             print_warning("\n\nAnswer:\n\t No answer found for this question...")
             sys.exit(0)
 
-        print_warning("\nQuestion: " + dispstr(question_title))
-        print(dispstr(question_desc))
-        print("\t" + underline(question_stats))
-
-        show_answer(answer)
-
-        print(bold("Question URL:"))
-        print_blue(underline(url) + "\n")
-
-        cnt = 1  # this is because the 1st post is the question itself
-        while 1:
-            qna = inputs("Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, "+ bold("b") + " for previous answer or any other key to exit:")
-            if qna in ["n", "N"]:
-                try:
-                    cnt += 1
-                    show_answer(answers[cnt])
-                except IndexError as e:
-                    print_warning(" No more answers found for this question. Exiting...")
-                    sys.exit(0)
-            elif qna in ["b", "B"]:
-                if cnt == 1:
-                    print_warning(" You cant go further back. You are on the first answer!")
-                    continue
-                cnt -= 1
-                show_answer(answers[cnt])
-            elif qna in ["o", "O"]:
-                import webbrowser
-                print_warning("Opening in your browser...")
-                webbrowser.open(sourl + question_url)
-            else:
-                break
+        QuestionPage( (answers, question_title, question_desc, question_stats, url) ).run()
 
     except UnicodeEncodeError:
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
