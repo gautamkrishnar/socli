@@ -199,6 +199,10 @@ class QuestionPage(urwid.Pile):
     Main container for urwid interactive mode.
     """
     def __init__(self, data):
+        """
+        Construct the Question Page.
+        :param data: tuple of  (answers, question_title, question_desc, question_stats, question_url)
+        """
         answers, question_title, question_desc, question_stats, question_url = data
         self.url = question_url
         self.answer_text = AnswerText(answers)
@@ -207,14 +211,18 @@ class QuestionPage(urwid.Pile):
             QuestionText(question_title, question_desc, question_stats),
             urwid.Divider('-'),
             self.answer_text,
-            QuestionURL(question_url)
+            QuestionURL(question_url),
         ]
         urwid.Pile.__init__(self, widgets)
+        # Initialize some widgets that contain this widget.
+        footer = urwid.Text(u'\u2191: next question, \u2193: previous question, o: open in browser')
+        shift_to_top = urwid.Filler(self, valign='top')
+        self.frame = urwid.Frame(shift_to_top, header=None, footer=footer)
 
 
     def keypress(self, size, key):
         if key in {'down', 'b', 'B'}:
-           self.answer_text.prev_ans()
+            self.answer_text.prev_ans()
         elif key in {'up', 'n', 'N'}:
             self.answer_text.next_ans()
         elif key in {'o', 'O'}:
@@ -231,7 +239,7 @@ class QuestionPage(urwid.Pile):
                    ('metadata', 'dark green', 'default'),
                    ('less-important','dark gray', 'default')
                    ]
-        urwid.MainLoop(urwid.Filler(self, valign='top'), palette).run()
+        urwid.MainLoop(self.frame, palette).run()
 
 
 
