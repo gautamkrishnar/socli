@@ -316,10 +316,11 @@ class QuestionURL(urwid.Text):
         urwid.Text.__init__(self, text)
 
 
-def get_questions_for_query(): # `query` is global
+def get_questions_for_query(query):
     """
     Fetch questions for a query. Returned question urls are relative to SO homepage.
     At most 10 questions are returned.
+    :param query: User-entered query string
     :return: list of [ (question_text, question_description, question_url) ]
     """
     questions = []
@@ -350,20 +351,20 @@ def get_question_stats_and_answer(url):
     :param url: full url of a StackOverflow question
     :return: tuple of ( question_title, question_desc, question_stats, answers )
     """
-    res_page = requests.get(url + query, verify=False)
+    res_page = requests.get(url, verify=False)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][1:] # first post is question, discard it.
     return question_title, question_desc, question_stats, answers
 
-def socli_interactive():
+def socli_interactive(query):
     """
     Interactive mode
     :return:
     """
     try:
         # Display questions to the user
-        questions = get_questions_for_query()
+        questions = get_questions_for_query(query)
         print(bold("\nSelect a question below:\n"))
         for i,q in enumerate(questions, 1):
             question_text, question_desc, _ = q
@@ -752,7 +753,7 @@ def main():
             sys.exit(0)
         elif (ir == 1):
             wrongsyn(query)
-            socli_interactive()
+            socli_interactive(query)
             sys.exit(0)
         elif query != "":
             socli(query)
