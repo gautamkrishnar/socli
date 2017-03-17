@@ -194,128 +194,6 @@ def helpman():
 
 
 
-class QuestionPage(urwid.Pile):
-    """
-    Main container for urwid interactive mode.
-    """
-    def __init__(self, data):
-        """
-        Construct the Question Page.
-        :param data: tuple of  (answers, question_title, question_desc, question_stats, question_url)
-        """
-        answers, question_title, question_desc, question_stats, question_url = data
-        self.url = question_url
-        self.answer_text = AnswerText(answers)
-        widgets = [
-            HEADER,
-            QuestionText(question_title, question_desc, question_stats),
-            urwid.Divider('-'),
-            self.answer_text,
-            QuestionURL(question_url),
-        ]
-        urwid.Pile.__init__(self, widgets)
-        # Initialize some widgets that contain this widget.
-        footer = urwid.Text(u'\u2191: next question, \u2193: previous question, o: open in browser')
-        shift_to_top = urwid.Filler(self, valign='top')
-        self.frame = urwid.Frame(shift_to_top, header=None, footer=footer)
-
-
-    def keypress(self, size, key):
-        if key in {'down', 'b', 'B'}:
-            self.answer_text.prev_ans()
-        elif key in {'up', 'n', 'N'}:
-            self.answer_text.next_ans()
-        elif key in {'o', 'O'}:
-            import webbrowser
-            HEADER.event('browser', "Opening in your browser..." )
-            webbrowser.open(self.url)
-
-
-    def run(self):
-        """Start urwid text interface, using the QuestionPage as the base widget"""
-        palette = [('answer', 'default', 'default'),
-                   ('title', 'light green, bold', 'default'),
-                   ('heading', 'light green, bold', 'default'),
-                   ('metadata', 'dark green', 'default'),
-                   ('less-important','dark gray', 'default')
-                   ]
-        urwid.MainLoop(self.frame, palette).run()
-
-
-
-class Header(urwid.Text):
-    """
-    Header of the question page. Event messages are recorded here.
-    """
-    def __init__(self):
-        self.current_event = None
-        urwid.Text.__init__(self, '')
-
-    def event(self, event, message):
-        self.current_event = event
-        self.set_text(message)
-
-    def clear(self, event):
-        if self.current_event == event:
-            self.set_text('')
-
-HEADER = Header()
-
-
-class AnswerText(urwid.Text):
-    """Answers to the question."""
-
-    def __init__(self, answers):
-        urwid.Text.__init__(self, '')
-        self.index = 0
-        self.answers = answers
-        self._selectable = True # so that we receive keyboard input
-        self.set_answer()
-
-    def set_answer(self):
-        self.set_text( [
-            ('less-important', 'Answer: '),
-            ('answer', self.answers[self.index])
-        ])
-
-    def prev_ans(self):
-        """go to previous answer."""
-        self.index -= 1
-        if self.index < 0:
-            self.index = 0
-            HEADER.event('answer-bounds', "No previous answers." )
-        else:
-            HEADER.clear('answer-bounds')
-        self.set_answer()
-
-    def next_ans(self):
-        """go to next answer."""
-        self.index += 1
-        if self.index > len(self.answers) - 1:
-            self.index = len(self.answers) - 1
-            HEADER.event('answer-bounds', "No more answers.")
-        else:
-            HEADER.clear('answer-bounds')
-        self.set_answer()
-
-
-
-class QuestionText(urwid.Text):
-    """ Title, description, and stats of the question,"""
-
-    def __init__(self, title, description, stats):
-        text = [ "Question: ", ('title', title), description, ('metadata', stats)]
-        urwid.Text.__init__(self, text)
-
-
-class QuestionURL(urwid.Text):
-    """ url of the question """
-
-    def __init__(self, url):
-        text = [('heading', 'Question URL: '), url]
-        urwid.Text.__init__(self, text)
-
-
 def get_questions_for_query(query):
     """
     Fetch questions for a query. Returned question urls are relative to SO homepage.
@@ -362,31 +240,175 @@ def socli_interactive(query):
     Interactive mode
     :return:
     """
+
+    class QuestionPage(urwid.Pile):
+        """
+        Main container for urwid interactive mode.
+        """
+        def __init__(self, data):
+            """
+            Construct the Question Page.
+            :param data: tuple of  (answers, question_title, question_desc, question_stats, question_url)
+            """
+            answers, question_title, question_desc, question_stats, question_url = data
+            self.url = question_url
+            self.answer_text = AnswerText(answers)
+            widgets = [
+                HEADER,
+                QuestionText(question_title, question_desc, question_stats),
+                urwid.Divider('-'),
+                self.answer_text,
+                QuestionURL(question_url),
+            ]
+            urwid.Pile.__init__(self, widgets)
+            # Initialize some widgets that contain this widget.
+            footer = urwid.Text(u'\u2191: next question, \u2193: previous question, o: open in browser, \u2190: back')
+            shift_to_top = urwid.Filler(self, valign='top')
+            self.frame = urwid.Frame(shift_to_top, header=None, footer=footer)
+
+
+        def keypress(self, size, key):
+            if key in {'down', 'b', 'B'}:
+                self.answer_text.prev_ans()
+            elif key in {'up', 'n', 'N'}:
+                self.answer_text.next_ans()
+            elif key in {'o', 'O'}:
+                import webbrowser
+                HEADER.event('browser', "Opening in your browser..." )
+                webbrowser.open(self.url)
+            elif key == 'left':
+                LOOP.widget = QUESTION_PAGE.frame
+
+
+
+    class Header(urwid.Text):
+        """
+        Header of the question page. Event messages are recorded here.
+        """
+        def __init__(self):
+            self.current_event = None
+            urwid.Text.__init__(self, '')
+
+        def event(self, event, message):
+            self.current_event = event
+            self.set_text(message)
+
+        def clear(self, event):
+            if self.current_event == event:
+                self.set_text('')
+
+
+
+    class AnswerText(urwid.Text):
+        """Answers to the question."""
+
+        def __init__(self, answers):
+            urwid.Text.__init__(self, '')
+            self.index = 0
+            self.answers = answers
+            self._selectable = True # so that we receive keyboard input
+            self.set_answer()
+
+        def set_answer(self):
+            self.set_text( [
+                ('less-important', 'Answer: '),
+                ('answer', self.answers[self.index])
+            ])
+
+        def prev_ans(self):
+            """go to previous answer."""
+            self.index -= 1
+            if self.index < 0:
+                self.index = 0
+                HEADER.event('answer-bounds', "No previous answers." )
+            else:
+                HEADER.clear('answer-bounds')
+            self.set_answer()
+
+        def next_ans(self):
+            """go to next answer."""
+            self.index += 1
+            if self.index > len(self.answers) - 1:
+                self.index = len(self.answers) - 1
+                HEADER.event('answer-bounds', "No more answers.")
+            else:
+                HEADER.clear('answer-bounds')
+            self.set_answer()
+
+
+
+    class QuestionText(urwid.Text):
+        """ Title, description, and stats of the question,"""
+
+        def __init__(self, title, description, stats):
+            text = [ "Question: ", ('title', title), description, ('metadata', stats)]
+            urwid.Text.__init__(self, text)
+
+
+
+    class QuestionURL(urwid.Text):
+        """ url of the question """
+
+        def __init__(self, url):
+            text = [('heading', 'Question URL: '), url]
+            urwid.Text.__init__(self, text)
+
+
+
+    class SelectQuestionPage(urwid.Pile):
+
+        def display_text(self, index, question):
+            question_text, question_desc, _ = question
+            text = [
+                ('warning', "{}.{}\n".format(index, question_text)),
+                question_desc+"\n",
+            ]
+            return urwid.Text(text)
+
+
+        def __init__(self, questions):
+            self.questions = questions
+            widgets = [ self.display_text(i,q) for i, q in enumerate(questions, 1)]
+            urwid.Pile.__init__(self, widgets)
+            self.frame = urwid.Filler(self, valign='top')
+        
+        # Override parent method
+        def selectable(self):
+            return True
+
+        def keypress(self, size, key):
+            if key in '012345679':
+            # fetch answers and question info
+                question_url = self.questions[int(key) -1][2]
+                self.select_question(question_url)
+
+        def select_question(self, url):
+            url = sourl + url
+            question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
+
+            if not answers:
+                print_warning("\n\nAnswer:\n\t No answer found for this question...")
+                sys.exit(0)
+
+            questions = QuestionPage( (answers, question_title, question_desc, question_stats, url) )
+            LOOP.widget = questions.frame
+
+
+
+    palette = [('answer', 'default', 'default'),
+               ('title', 'light green, bold', 'default'),
+               ('heading', 'light green, bold', 'default'),
+               ('metadata', 'dark green', 'default'),
+               ('less-important','dark gray', 'default'),
+               ('warning', 'yellow', 'default')
+               ]
+    HEADER = Header()  
+
     try:
-        # Display questions to the user
         questions = get_questions_for_query(query)
-        print(bold("\nSelect a question below:\n"))
-        for i,q in enumerate(questions, 1):
-            question_text, question_desc, _ = q
-            print_warning(str(i) + ". " + dispstr(question_text))
-            print("  " + dispstr(question_desc) + "\n")
-
-        # get the question to show answers for from user
-        op = int(inputs("\nType the option no to continue or any other key to exit:"))
-        while (op <= 0 or op > len(questions)):
-            op = int(input("\n\nWrong option. select the option no to continue:"))
-
-        # fetch answers and question info
-        question_url = questions[op -1][2]
-        url = sourl + question_url
-        question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
-
-        if not answers:
-            print_warning("\n\nAnswer:\n\t No answer found for this question...")
-            sys.exit(0)
-
-        # start urwid
-        QuestionPage( (answers, question_title, question_desc, question_stats, url) ).run()
+        QUESTION_PAGE = SelectQuestionPage(questions)
+        LOOP = urwid.MainLoop(QUESTION_PAGE.frame, palette)
+        LOOP.run()
 
     except UnicodeEncodeError:
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
