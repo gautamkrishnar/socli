@@ -299,21 +299,27 @@ def socli_interactive(query):
 
 
 
-    class AnswerText(urwid.Text):
-        """Answers to the question."""
+    class AnswerText(urwid.WidgetWrap):
+        """Answers to the question.
+
+        Long answers can be navigated up or down using the mouse.
+        """
 
         def __init__(self, answers):
-            urwid.Text.__init__(self, '')
-            self.index = 0
-            self.answers = answers
+            urwid.WidgetWrap.__init__(self, urwid.Text(''))
             self._selectable = True # so that we receive keyboard input
+            self.answers = answers
+            self.index = 0
             self.set_answer()
 
         def set_answer(self):
-            self.set_text( [
-                ('less-important', 'Answer: '),
-                ('answer', self.answers[self.index])
-            ])
+            """
+            We must use a box adapter to get the text to scroll when this widget is already in
+            a Pile from the main question page. Scrolling is necessary for long answers which are longer
+            than the length of the terminal.
+            """
+            content =  [  ('less-important', 'Answer: ') ] + self.answers[self.index].split("\n")
+            self._w = urwid.BoxAdapter(ScrollableTextBox(content), len(content))
 
         def prev_ans(self):
             """go to previous answer."""
@@ -334,6 +340,31 @@ def socli_interactive(query):
             else:
                 HEADER.clear('answer-bounds')
             self.set_answer()
+
+    class ScrollableTextBox(urwid.ListBox):
+        """ Display input text, scrolling through when there is not enough room.
+
+        Scrolling through text takes a little work to support on Urwid.
+        """
+
+        def __init__(self, content):
+            """
+            :param content: text string to be displayed
+            """
+            lines = [ urwid.Text(line) for line in content ]
+            body = urwid.SimpleFocusListWalker(lines)
+            urwid.ListBox.__init__(self, body)
+
+        def mouse_event(self, size, event, button, col, row, focus):
+            SCROLL_WHEEL_UP = 4
+            SCROLL_WHEEL_DOWN = 5
+            if button == SCROLL_WHEEL_DOWN:
+                self.keypress(size, 'down')
+            elif button == SCROLL_WHEEL_UP:
+                self.keypress(size, 'up')
+            else:
+                return False
+            return True
 
 
 
@@ -360,7 +391,7 @@ def socli_interactive(query):
         def display_text(self, index, question):
             question_text, question_desc, _ = question
             text = [
-                ('warning', "{}.{}\n".format(index, question_text)),
+                ('warning', "{}. {}\n".format(index, question_text)),
                 question_desc+"\n",
             ]
             return urwid.Text(text)
@@ -371,7 +402,7 @@ def socli_interactive(query):
             widgets = [ self.display_text(i,q) for i, q in enumerate(questions, 1)]
             urwid.Pile.__init__(self, widgets)
             self.frame = urwid.Filler(self, valign='top')
-        
+
         # Override parent method
         def selectable(self):
             return True
@@ -402,7 +433,7 @@ def socli_interactive(query):
                ('less-important','dark gray', 'default'),
                ('warning', 'yellow', 'default')
                ]
-    HEADER = Header()  
+    HEADER = Header()
 
     try:
         questions = get_questions_for_query(query)
@@ -665,7 +696,7 @@ def main():
     global query # query variable
     colorama.init() # for colorama support in windows
     fixCodePage() # For fixing codepage errors in windows
-	
+
     # IF there is no command line options or if it is help argument:
     if (len(sys.argv) == 1) or ((sys.argv[1] == "-h") or (sys.argv[1] == "--help")):
         helpman()
