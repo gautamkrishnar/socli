@@ -399,7 +399,7 @@ def socli_interactive(query):
 
         def __init__(self, questions):
             self.questions = questions
-            widgets = [ self.display_text(i,q) for i, q in enumerate(questions, 1)]
+            widgets = [ self.display_text(i,q) for i, q in enumerate(questions)]
             urwid.Pile.__init__(self, widgets)
             self.frame = urwid.Filler(self, valign='top')
 
@@ -410,7 +410,7 @@ def socli_interactive(query):
         def keypress(self, size, key):
             if key in '012345679':
             # fetch answers and question info
-                question_url = self.questions[int(key) -1][2]
+                question_url = self.questions[int(key)][2]
                 self.select_question(question_url)
 
         def select_question(self, url):
