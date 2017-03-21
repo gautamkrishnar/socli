@@ -11,6 +11,7 @@ import sys
 import urllib
 import colorama
 import requests
+import urwid
 from bs4 import BeautifulSoup
 
 
@@ -192,76 +193,253 @@ def helpman():
           " issues to report problems: "+ underline("http://github.com/gautamkrishnar/socli"))
 
 
+
+def get_questions_for_query(query):
+    """
+    Fetch questions for a query. Returned question urls are relative to SO homepage.
+    At most 10 questions are returned.
+    :param query: User-entered query string
+    :return: list of [ (question_text, question_description, question_url) ]
+    """
+    questions = []
+    search_res = requests.get(soqurl + query, verify=False)
+    soup = BeautifulSoup(search_res.text, 'html.parser')
+    try:
+        soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
+    except IndexError:
+        print_warning("No results found...")
+        sys.exit(0)
+    tmp = (soup.find_all("div", class_="question-summary"))
+    tmp1 = (soup.find_all("div", class_="excerpt"))
+    i = 0
+    while (i < len(tmp)):
+        if i == 10: break  # limiting results
+        question_text = ' '.join((tmp[i].a.get_text()).split())
+        question_text = question_text.replace("Q: ","")
+        question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
+        question_desc = ' '.join(question_desc.split())
+        question_local_url = tmp[i].a.get("href")
+        questions.append( (question_text, question_desc, question_local_url) )
+        i = i + 1
+    return questions
+
+def get_question_stats_and_answer(url):
+    """
+    Fetch the content of a StackOverflow page for a particular question.
+    :param url: full url of a StackOverflow question
+    :return: tuple of ( question_title, question_desc, question_stats, answers )
+    """
+    res_page = requests.get(url, verify=False)
+    soup = BeautifulSoup(res_page.text, 'html.parser')
+    question_title, question_desc, question_stats = get_stats(soup)
+    answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][1:] # first post is question, discard it.
+    return question_title, question_desc, question_stats, answers
+
 def socli_interactive(query):
     """
     Interactive mode
-    :param query:
     :return:
     """
-    try:
-        search_res = requests.get(soqurl + query, verify=False)
-        soup = BeautifulSoup(search_res.text, 'html.parser')
-        try:
-            soup.find_all("div", class_="question-summary")[0]  # For explictly raising exception
-            tmp = (soup.find_all("div", class_="question-summary"))
-            tmp1 = (soup.find_all("div", class_="excerpt"))
-            i = 0
-            question_local_url = []
-            print(bold("\nSelect a question below:\n"))
-            while (i < len(tmp)):
-                if i == 10: break  # limiting results
-                question_text = ' '.join((tmp[i].a.get_text()).split())
-                question_text = question_text.replace("Q: ","")
-                question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
-                question_desc = ' '.join(question_desc.split())
-                print_warning(str(i + 1) + ". " + dispstr(question_text))
-                question_local_url.append(tmp[i].a.get("href"))
-                print("  " + dispstr(question_desc) + "\n")
-                i = i + 1
-            try:
-                op = int(inputs("\nType the option no to continue or any other key to exit:"))
-                while 1:
-                    if (op > 0) and (op <= i):
-                        dispres(sourl + question_local_url[op - 1])
-                        cnt = 1  # this is because the 1st post is the question itself
-                        while 1:
-                            global tmpsoup
-                            qna = inputs("Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, "+ bold("b") + " for previous answer or any other key to exit:")
-                            if qna in ["n", "N"]:
-                                try:
-                                    answer = (tmpsoup.find_all("div",class_="post-text")[cnt + 1].get_text())
-                                    print_green("\n\nAnswer:\n")
-                                    print("-------\n" + answer + "\n-------\n")
-                                    cnt = cnt + 1
-                                except IndexError as e:
-                                    print_warning(" No more answers found for this question. Exiting...")
-                                    sys.exit(0)
-                                continue
-                            elif qna in ["b", "B"]:
-                                if cnt == 1:
-                                    print_warning(" You cant go further back. You are on the first answer!")
-                                    continue
-                                answer = (tmpsoup.find_all("div",class_="post-text")[cnt - 1].get_text())
-                                print_green("\n\nAnswer:\n")
-                                print("-------\n" + answer + "\n-------\n")
-                                cnt = cnt - 1
-                                continue
-                            elif qna in ["o", "O"]:
-                                import webbrowser
-                                print_warning("Opening in your browser...")
-                                webbrowser.open(sourl + question_local_url[op - 1])
-                            else:
-                                break
-                        sys.exit(0)
-                    else:
-                        op = int(input("\n\nWrong option. select the option no to continue:"))
-            except Exception as e:
-                showerror(e)
-                print_warning("\n Exiting...")
+
+    class QuestionPage(urwid.Pile):
+        """
+        Main container for urwid interactive mode.
+        """
+        def __init__(self, data):
+            """
+            Construct the Question Page.
+            :param data: tuple of  (answers, question_title, question_desc, question_stats, question_url)
+            """
+            answers, question_title, question_desc, question_stats, question_url = data
+            self.url = question_url
+            self.answer_text = AnswerText(answers)
+            widgets = [
+                HEADER,
+                QuestionText(question_title, question_desc, question_stats),
+                urwid.Divider('-'),
+                self.answer_text,
+                QuestionURL(question_url),
+            ]
+            urwid.Pile.__init__(self, widgets)
+            # Initialize some widgets that contain this widget.
+            footer = urwid.Text(u'\u2191: next question, \u2193: previous question, o: open in browser, \u2190: back')
+            shift_to_top = urwid.Filler(self, valign='top')
+            self.frame = urwid.Frame(shift_to_top, header=None, footer=footer)
+
+
+        def keypress(self, size, key):
+            if key in {'down', 'b', 'B'}:
+                self.answer_text.prev_ans()
+            elif key in {'up', 'n', 'N'}:
+                self.answer_text.next_ans()
+            elif key in {'o', 'O'}:
+                import webbrowser
+                HEADER.event('browser', "Opening in your browser..." )
+                webbrowser.open(self.url)
+            elif key == 'left':
+                LOOP.widget = QUESTION_PAGE.frame
+
+
+
+    class Header(urwid.Text):
+        """
+        Header of the question page. Event messages are recorded here.
+        """
+        def __init__(self):
+            self.current_event = None
+            urwid.Text.__init__(self, '')
+
+        def event(self, event, message):
+            self.current_event = event
+            self.set_text(message)
+
+        def clear(self, event):
+            if self.current_event == event:
+                self.set_text('')
+
+
+
+    class AnswerText(urwid.WidgetWrap):
+        """Answers to the question.
+
+        Long answers can be navigated up or down using the mouse.
+        """
+
+        def __init__(self, answers):
+            urwid.WidgetWrap.__init__(self, urwid.Text(''))
+            self._selectable = True # so that we receive keyboard input
+            self.answers = answers
+            self.index = 0
+            self.set_answer()
+
+        def set_answer(self):
+            """
+            We must use a box adapter to get the text to scroll when this widget is already in
+            a Pile from the main question page. Scrolling is necessary for long answers which are longer
+            than the length of the terminal.
+            """
+            content =  [  ('less-important', 'Answer: ') ] + self.answers[self.index].split("\n")
+            self._w = urwid.BoxAdapter(ScrollableTextBox(content), len(content))
+
+        def prev_ans(self):
+            """go to previous answer."""
+            self.index -= 1
+            if self.index < 0:
+                self.index = 0
+                HEADER.event('answer-bounds', "No previous answers." )
+            else:
+                HEADER.clear('answer-bounds')
+            self.set_answer()
+
+        def next_ans(self):
+            """go to next answer."""
+            self.index += 1
+            if self.index > len(self.answers) - 1:
+                self.index = len(self.answers) - 1
+                HEADER.event('answer-bounds', "No more answers.")
+            else:
+                HEADER.clear('answer-bounds')
+            self.set_answer()
+
+    class ScrollableTextBox(urwid.ListBox):
+        """ Display input text, scrolling through when there is not enough room.
+
+        Scrolling through text takes a little work to support on Urwid.
+        """
+
+        def __init__(self, content):
+            """
+            :param content: text string to be displayed
+            """
+            lines = [ urwid.Text(line) for line in content ]
+            body = urwid.SimpleFocusListWalker(lines)
+            urwid.ListBox.__init__(self, body)
+
+        def mouse_event(self, size, event, button, col, row, focus):
+            SCROLL_WHEEL_UP = 4
+            SCROLL_WHEEL_DOWN = 5
+            if button == SCROLL_WHEEL_DOWN:
+                self.keypress(size, 'down')
+            elif button == SCROLL_WHEEL_UP:
+                self.keypress(size, 'up')
+            else:
+                return False
+            return True
+
+
+
+    class QuestionText(urwid.Text):
+        """ Title, description, and stats of the question,"""
+
+        def __init__(self, title, description, stats):
+            text = [ "Question: ", ('title', title), description, ('metadata', stats)]
+            urwid.Text.__init__(self, text)
+
+
+
+    class QuestionURL(urwid.Text):
+        """ url of the question """
+
+        def __init__(self, url):
+            text = [('heading', 'Question URL: '), url]
+            urwid.Text.__init__(self, text)
+
+
+
+    class SelectQuestionPage(urwid.Pile):
+
+        def display_text(self, index, question):
+            question_text, question_desc, _ = question
+            text = [
+                ('warning', "{}. {}\n".format(index, question_text)),
+                question_desc+"\n",
+            ]
+            return urwid.Text(text)
+
+
+        def __init__(self, questions):
+            self.questions = questions
+            widgets = [ self.display_text(i,q) for i, q in enumerate(questions, 1)]
+            urwid.Pile.__init__(self, widgets)
+            self.frame = urwid.Filler(self, valign='top')
+
+        # Override parent method
+        def selectable(self):
+            return True
+
+        def keypress(self, size, key):
+            if key in '012345679':
+            # fetch answers and question info
+                question_url = self.questions[int(key) -1][2]
+                self.select_question(question_url)
+
+        def select_question(self, url):
+            url = sourl + url
+            question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
+
+            if not answers:
+                print_warning("\n\nAnswer:\n\t No answer found for this question...")
                 sys.exit(0)
-        except IndexError:
-            print_warning("No results found...")
-            sys.exit(0)
+
+            questions = QuestionPage( (answers, question_title, question_desc, question_stats, url) )
+            LOOP.widget = questions.frame
+
+
+
+    palette = [('answer', 'default', 'default'),
+               ('title', 'light green, bold', 'default'),
+               ('heading', 'light green, bold', 'default'),
+               ('metadata', 'dark green', 'default'),
+               ('less-important','dark gray', 'default'),
+               ('warning', 'yellow', 'default')
+               ]
+    HEADER = Header()
+
+    try:
+        questions = get_questions_for_query(query)
+        QUESTION_PAGE = SelectQuestionPage(questions)
+        LOOP = urwid.MainLoop(QUESTION_PAGE.frame, palette)
+        LOOP.run()
 
     except UnicodeEncodeError:
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
@@ -270,6 +448,7 @@ def socli_interactive(query):
         print_fail("Please check your internet connectivity...")
     except Exception as e:
         showerror(e)
+        print("exiting...")
         sys.exit(0)
 
 
@@ -502,7 +681,7 @@ def dispres(url):
         return
     except IndexError as e:
         print_warning("\n\nAnswer:\n\t No answer found for this question...")
-        sys.exit(0);
+        sys.exit(0)
 
 
 def main():
@@ -517,7 +696,7 @@ def main():
     global query # query variable
     colorama.init() # for colorama support in windows
     fixCodePage() # For fixing codepage errors in windows
-	
+
     # IF there is no command line options or if it is help argument:
     if (len(sys.argv) == 1) or ((sys.argv[1] == "-h") or (sys.argv[1] == "--help")):
         helpman()
