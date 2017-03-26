@@ -253,39 +253,26 @@ def socli_interactive(query):
             answers, question_title, question_desc, question_stats, question_url = data
             self.url = question_url
             self.answer_text = AnswerText(answers)
-            question_text = QuestionText(question_title, question_desc, question_stats)
-            self.question_rows = question_text.rows((float("inf"),))
-            self.answer_frame = urwid.Frame(
-                body=self.answer_text,
+            answer_frame = urwid.Frame(
                 header= urwid.Pile( [
                     HEADER,
-                    question_text,
+                    QuestionText(question_title, question_desc, question_stats),
                     urwid.Divider('-')
                 ]),
-                footer=QuestionURL(question_url)
+                body=self.answer_text,
+                footer= urwid.Pile([
+                    QuestionURL(question_url),
+                    urwid.Text(u'\u2191: next question, \u2193: previous question, o: open in browser, \u2190: back')
+                ])
             )
-            self.footer = urwid.Text(u'\u2191: next question, \u2193: previous question, o: open in browser, \u2190: back')
-            self.calibrate()
-
-
-        def calibrate(self):
-            """
-            Each time the answer changes, the height of the answer_frame needs to be recalculated.
-            Recalculate height of the answer frame and rebuild this widget
-            """
-            # Calling the parent constructor each time the answer changes is inefficient but does not performance impact.
-            widget_height = len(self.answer_text) + self.question_rows + 2  # 1 for header and 1 for divider
-            filler = urwid.Filler(self.answer_frame, valign='top', height=widget_height)
-            urwid.WidgetWrap.__init__(self, urwid.Frame(filler, footer=self.footer))
+            urwid.WidgetWrap.__init__(self, answer_frame)
 
 
         def keypress(self, size, key):
             if key in {'down', 'b', 'B'}:
                 self.answer_text.prev_ans()
-                self.calibrate()
             elif key in {'up', 'n', 'N'}:
                 self.answer_text.next_ans()
-                self.calibrate()
             elif key in {'o', 'O'}:
                 import webbrowser
                 HEADER.event('browser', "Opening in your browser..." )
