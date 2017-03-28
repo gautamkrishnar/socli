@@ -391,7 +391,7 @@ def socli_interactive(query):
 
 
 
-    class SelectQuestionPage(ScrollableTextBox):
+    class SelectQuestionPage(urwid.WidgetWrap):
 
         def display_text(self, index, question):
             question_text, question_desc, _ = question
@@ -405,12 +405,13 @@ def socli_interactive(query):
         def __init__(self, questions):
             self.questions = questions
             widgets = [ self.display_text(i,q) for i, q in enumerate(questions)]
-            ScrollableTextBox.__init__(self, widgets)
+            questions_box = ScrollableTextBox(widgets)
             header = urwid.Text(('less-important', 'Select a question below:\n'))
             footer = urwid.Text( "0-9: select a question, any other key: exit.")
-            self.frame = urwid.Frame(header=header,
-                                     body=urwid.Filler(self, height=('relative',100), valign='top'),
-                                     footer=footer)
+            frame = urwid.Frame(header=header,
+                                body=urwid.Filler(questions_box, height=('relative',100), valign='top'),
+                                footer=footer)
+            urwid.WidgetWrap.__init__(self, frame)
 
         # Override parent method
         def selectable(self):
