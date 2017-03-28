@@ -241,7 +241,27 @@ def socli_interactive(query):
     :return:
     """
 
-    class QuestionPage(urwid.Pile):
+    class UnicodeText(urwid.Text):
+        """ encode all text to utf-8 """
+
+        def __init__(self, text):
+            # As we were encoding all text to utf-8 in output before with dispstr, do it automatically for all input
+            text = UnicodeText.to_unicode(text)
+            urwid.Text.__init__(self, text)
+
+        @classmethod
+        def to_unicode(cls, markup):
+            """convert urwid text markup object to utf-8"""
+            try:
+                return dispstr(markup)
+            except AttributeError:
+                mapped = [ cls.to_unicode(i) for i in markup]
+                if isinstance(markup, tuple):
+                    return tuple(mapped)
+                else:
+                    return mapped
+
+    class QuestionPage(urwid.WidgetWrap):
         """
         Main container for urwid interactive mode.
         """
@@ -253,18 +273,19 @@ def socli_interactive(query):
             answers, question_title, question_desc, question_stats, question_url = data
             self.url = question_url
             self.answer_text = AnswerText(answers)
-            widgets = [
-                HEADER,
-                QuestionText(question_title, question_desc, question_stats),
-                urwid.Divider('-'),
-                self.answer_text,
-                QuestionURL(question_url),
-            ]
-            urwid.Pile.__init__(self, widgets)
-            # Initialize some widgets that contain this widget.
-            footer = urwid.Text(u'\u2191: next question, \u2193: previous question, o: open in browser, \u2190: back')
-            shift_to_top = urwid.Filler(self, valign='top')
-            self.frame = urwid.Frame(shift_to_top, header=None, footer=footer)
+            answer_frame = urwid.Frame(
+                header= urwid.Pile( [
+                    HEADER,
+                    QuestionText(question_title, question_desc, question_stats),
+                    urwid.Divider('-')
+                ]),
+                body=self.answer_text,
+                footer= urwid.Pile([
+                    QuestionURL(question_url),
+                    UnicodeText(u'\u2191: next question, \u2193: previous question, o: open in browser, \u2190: back')
+                ])
+            )
+            urwid.WidgetWrap.__init__(self, answer_frame)
 
 
         def keypress(self, size, key):
@@ -277,17 +298,17 @@ def socli_interactive(query):
                 HEADER.event('browser', "Opening in your browser..." )
                 webbrowser.open(self.url)
             elif key == 'left':
-                LOOP.widget = QUESTION_PAGE.frame
+                LOOP.widget = QUESTION_PAGE
 
 
 
-    class Header(urwid.Text):
+    class Header(UnicodeText):
         """
         Header of the question page. Event messages are recorded here.
         """
         def __init__(self):
             self.current_event = None
-            urwid.Text.__init__(self, '')
+            UnicodeText.__init__(self, '')
 
         def event(self, event, message):
             self.current_event = event
@@ -306,7 +327,7 @@ def socli_interactive(query):
         """
 
         def __init__(self, answers):
-            urwid.WidgetWrap.__init__(self, urwid.Text(''))
+            urwid.WidgetWrap.__init__(self, UnicodeText(''))
             self._selectable = True # so that we receive keyboard input
             self.answers = answers
             self.index = 0
@@ -318,8 +339,8 @@ def socli_interactive(query):
             a Pile from the main question page. Scrolling is necessary for long answers which are longer
             than the length of the terminal.
             """
-            content =  [  ('less-important', 'Answer: ') ] + self.answers[self.index].split("\n")
-            self._w = urwid.BoxAdapter(ScrollableTextBox(content), len(content))
+            self.content =  [  ('less-important', 'Answer: ') ] + self.answers[self.index].split("\n")
+            self._w = ScrollableTextBox(self.content)
 
         def prev_ans(self):
             """go to previous answer."""
@@ -341,6 +362,10 @@ def socli_interactive(query):
                 HEADER.clear('answer-bounds')
             self.set_answer()
 
+        def __len__(self):
+            """ return number of rows in this widget """
+            return len(self.content)
+
     class ScrollableTextBox(urwid.ListBox):
         """ Display input text, scrolling through when there is not enough room.
 
@@ -351,7 +376,7 @@ def socli_interactive(query):
             """
             :param content: text string to be displayed
             """
-            lines = [ urwid.Text(line) for line in content ]
+            lines = [ UnicodeText(line) for line in content ]
             body = urwid.SimpleFocusListWalker(lines)
             urwid.ListBox.__init__(self, body)
 
@@ -368,40 +393,47 @@ def socli_interactive(query):
 
 
 
-    class QuestionText(urwid.Text):
+
+
+    class QuestionText(UnicodeText):
         """ Title, description, and stats of the question,"""
 
         def __init__(self, title, description, stats):
             text = [ "Question: ", ('title', title), description, ('metadata', stats)]
-            urwid.Text.__init__(self, text)
+            UnicodeText.__init__(self, text)
 
 
 
-    class QuestionURL(urwid.Text):
+    class QuestionURL(UnicodeText):
         """ url of the question """
 
         def __init__(self, url):
             text = [('heading', 'Question URL: '), url]
-            urwid.Text.__init__(self, text)
+            UnicodeText.__init__(self, text)
 
 
 
-    class SelectQuestionPage(urwid.Pile):
+    class SelectQuestionPage(urwid.WidgetWrap):
 
         def display_text(self, index, question):
             question_text, question_desc, _ = question
             text = [
-                ('warning', "{}. {}\n".format(index, question_text)),
+                ("warning", u"{}. {}\n".format(index, question_text)),
                 question_desc+"\n",
             ]
-            return urwid.Text(text)
+            return text
 
 
         def __init__(self, questions):
             self.questions = questions
-            widgets = [ self.display_text(i,q) for i, q in enumerate(questions, 1)]
-            urwid.Pile.__init__(self, widgets)
-            self.frame = urwid.Filler(self, valign='top')
+            widgets = [ self.display_text(i,q) for i, q in enumerate(questions)]
+            self.questions_box = ScrollableTextBox(widgets)
+            header = UnicodeText(('less-important', 'Select a question below:\n'))
+            footer = UnicodeText( "0-9: select a question, any other key: exit.")
+            frame = urwid.Frame(header=header,
+                                body=urwid.Filler(self.questions_box, height=('relative',100), valign='top'),
+                                footer=footer)
+            urwid.WidgetWrap.__init__(self, frame)
 
         # Override parent method
         def selectable(self):
@@ -410,8 +442,12 @@ def socli_interactive(query):
         def keypress(self, size, key):
             if key in '012345679':
             # fetch answers and question info
-                question_url = self.questions[int(key) -1][2]
+                question_url = self.questions[int(key)][2]
                 self.select_question(question_url)
+            elif key in {'down', 'up'}:
+                self.questions_box.keypress(size, key)
+            else:
+                raise urwid.ExitMainLoop()
 
         def select_question(self, url):
             url = sourl + url
@@ -422,7 +458,7 @@ def socli_interactive(query):
                 sys.exit(0)
 
             questions = QuestionPage( (answers, question_title, question_desc, question_stats, url) )
-            LOOP.widget = questions.frame
+            LOOP.widget = questions
 
 
 
@@ -438,7 +474,7 @@ def socli_interactive(query):
     try:
         questions = get_questions_for_query(query)
         QUESTION_PAGE = SelectQuestionPage(questions)
-        LOOP = urwid.MainLoop(QUESTION_PAGE.frame, palette)
+        LOOP = urwid.MainLoop(QUESTION_PAGE, palette)
         LOOP.run()
 
     except UnicodeEncodeError:
