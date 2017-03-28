@@ -477,6 +477,9 @@ def socli_interactive(query):
         LOOP = urwid.MainLoop(QUESTION_PAGE, palette)
         LOOP.run()
 
+    except UnicodeEncodeError:
+        print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        sys.exit(0)
     except requests.exceptions.ConnectionError:
         print_fail("Please check your internet connectivity...")
     except Exception as e:
