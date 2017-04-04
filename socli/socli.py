@@ -13,6 +13,7 @@ import colorama
 import requests
 import urwid
 from bs4 import BeautifulSoup
+import random
 
 
 # Global vars:
@@ -24,7 +25,8 @@ ir = 0  # interactive mode off (for -i arg)
 tag = "" # tag based search
 data = dict() # Data file dictionary
 data_file = os.path.join(os.path.dirname(__file__),"data.json") # Data file location
-query = ""
+query = "" # Query
+uas = [] # User agent list
 
 ### To support python 2:
 if sys.version < '3.0.0':
@@ -636,6 +638,15 @@ def import_json():
     except AttributeError:
         JSONDecodeError = ValueError
 
+def loadseragents():
+    global uas
+    uas = []
+    with open(os.path.join(os.path.dirname(__file__),"user_agents.txt"), 'rb') as uaf:
+        for ua in uaf.readlines():
+            if ua:
+                uas.append(ua.strip()[1:-1-1])
+    random.shuffle(uas)
+
 def wrongsyn(query):
     """
     Exits if query value is empty
@@ -743,7 +754,7 @@ def main():
         except getopt.GetoptError:
             helpman()
             sys.exit(1)
-
+        loadseragents() # Populates the user agents array
         # Gets the CL Args
         if 'options' in locals():
             for opt, arg in options:
