@@ -27,6 +27,7 @@ data = dict() # Data file dictionary
 data_file = os.path.join(os.path.dirname(__file__),"data.json") # Data file location
 query = "" # Query
 uas = [] # User agent list
+header = {} # Request header
 
 ### To support python 2:
 if sys.version < '3.0.0':
@@ -124,7 +125,8 @@ def socli(query):
     """
     query = urlencode(query)
     try:
-        search_res = requests.get(soqurl + query, verify=False)
+        randomheaders()
+        search_res = requests.get(soqurl + query, verify=False, headers=header)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
             res_url = sourl + (soup.find_all("div", class_="question-summary")[0].a.get('href'))
@@ -204,7 +206,8 @@ def get_questions_for_query(query):
     :return: list of [ (question_text, question_description, question_url) ]
     """
     questions = []
-    search_res = requests.get(soqurl + query, verify=False)
+    randomheaders()
+    search_res = requests.get(soqurl + query, verify=False, headers=header)
     soup = BeautifulSoup(search_res.text, 'html.parser')
     try:
         soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
@@ -231,7 +234,8 @@ def get_question_stats_and_answer(url):
     :param url: full url of a StackOverflow question
     :return: tuple of ( question_title, question_desc, question_stats, answers )
     """
-    res_page = requests.get(url, verify=False)
+    randomheaders()
+    res_page = requests.get(url, verify=False, headers=header)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][1:] # first post is question, discard it.
@@ -499,7 +503,8 @@ def socl_manusearch(query, rn):
     """
     query = urlencode(query)
     try:
-        search_res = requests.get(soqurl + query, verify=False)
+        randomheaders()
+        search_res = requests.get(soqurl + query, verify=False, headers=header)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
             res_url = sourl + (soup.find_all("div", class_="question-summary")[rn - 1].a.get('href'))
@@ -638,7 +643,12 @@ def import_json():
     except AttributeError:
         JSONDecodeError = ValueError
 
-def loadseragents():
+
+def loaduseragents():
+    """
+    Loads the list of user agents from user_agents.txt
+    :return:
+    """
     global uas
     uas = []
     with open(os.path.join(os.path.dirname(__file__),"user_agents.txt"), 'rb') as uaf:
@@ -646,6 +656,19 @@ def loadseragents():
             if ua:
                 uas.append(ua.strip()[1:-1-1])
     random.shuffle(uas)
+
+
+def randomheaders():
+    """
+    Sets header variable to a random value
+    :return:
+    """
+    global uas
+    global header
+    ua = random.choice(uas)
+    header = {"User-Agent": ua}
+
+
 
 def wrongsyn(query):
     """
@@ -708,7 +731,8 @@ def dispres(url):
     :param url:
     :return:
     """
-    res_page = requests.get(url + query, verify=False)
+    randomheaders()
+    res_page = requests.get(url + query, verify=False, headers=header)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
 
@@ -754,7 +778,7 @@ def main():
         except getopt.GetoptError:
             helpman()
             sys.exit(1)
-        loadseragents() # Populates the user agents array
+        loaduseragents() # Populates the user agents array
         # Gets the CL Args
         if 'options' in locals():
             for opt, arg in options:
