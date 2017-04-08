@@ -1,6 +1,14 @@
 SoCLI Changelog
 ================
 
+
+Release 3.5 
+---------------------------
+
+* Added code to prevent unwanted captcha checks
+* Made SoCLI more interactive
+* Minor bugfixes
+
 Release 3.4 
 ---------------------------
 

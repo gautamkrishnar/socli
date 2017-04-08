@@ -163,6 +163,7 @@ If you are willing to contribute to SoCLI project, You are awesome! Just follow 
 
 ### Contributors
 Special thanks to these superheroes:
+* [Elliott Beach](https://github.com/e-beach) for improving color support by adding colorama [#29](https://github.com/gautamkrishnar/socli/pull/29), For making SoCLI more interactive [#35](https://github.com/gautamkrishnar/socli/pull/35). [36](https://github.com/gautamkrishnar/socli/pull/36) [#40](https://github.com/gautamkrishnar/socli/pull/40) You rocks...
 * [Killbee](https://github.com/kilbee) for making SoCLI colorful [#3](https://github.com/gautamkrishnar/socli/pull/3)
 * [Sam Dean](https://github.com/deanWombourne) for adding Macintosh SoCLI installation instructions [#1](https://github.com/gautamkrishnar/socli/pull/1)
 * [Plinio89s](https://github.com/Plinio89s) for adding the check for color support [#8](https://github.com/gautamkrishnar/socli/pull/8)
@@ -173,7 +174,6 @@ Special thanks to these superheroes:
 * [Ankit Kr. Singh](https://github.com/kumarankit0411) for fixing some typos PR [#21](https://github.com/gautamkrishnar/socli/pull/21) [#23](https://github.com/gautamkrishnar/socli/pull/23)
 * [Harsha Alva](https://github.com/aharshac) for fixing windows encoding problem PR [#24](https://github.com/gautamkrishnar/socli/pull/21)
 * [Pia Mancini](https://github.com/piamancini) for adding SoCLI to OpenCollective [#27](https://github.com/gautamkrishnar/socli/pull/27)
-* [Elliott Beach](https://github.com/e-beach) for improving color support by adding colorama [#29](https://github.com/gautamkrishnar/socli/pull/29)
 * [Aditya Tandon](https://github.com/adityatandon007) for the issue [#30](https://github.com/gautamkrishnar/socli/issues/30)
 * [Akshatha Nayak](https://github.com/Aksh77) for your first contribution to an open source project. PR [#31](https://github.com/gautamkrishnar/socli/issues/31)
 
