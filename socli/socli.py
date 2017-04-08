@@ -31,6 +31,8 @@ header = {} # Request header
 
 ### To support python 2:
 if sys.version < '3.0.0':
+    global FileNotFoundError
+    FileNotFoundError = IOError
     def urlencode(inp):
         return urllib.quote_plus(inp)
     def dispstr(inp):
