@@ -1,1 +1,2 @@
 recursive-include socli *
+include LICENSE README.rst requirements.txt CHANGELOG.rst
