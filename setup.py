@@ -15,7 +15,9 @@ with open('README.rst') as f:
 
 setup(
     name='socli',
+    include_package_data=True,
     packages=["socli"],
+    data_files=[('socli', ['socli/user_agents.txt'])],
     entry_points = {"console_scripts": ['socli = socli.socli:main']},
     install_requires=['BeautifulSoup4','requests','colorama','Py-stackExchange', 'urwid'],
     requires=['BeautifulSoup4','requests','colorama','PyStackExchange', 'urwid'],
