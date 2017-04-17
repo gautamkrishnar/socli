@@ -15,7 +15,6 @@ import urwid
 from bs4 import BeautifulSoup
 import random
 
-
 # Global vars:
 DEBUG = False # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
@@ -62,7 +61,6 @@ def fixCodePage():
             return
         else:
             return
-
 
 # Bold and underline are not supported by colorama.
 class bcolors:
@@ -957,22 +955,16 @@ def main():
         elif (rn > 0):
             wrongsyn(query)
             socl_manusearch(query, rn)
-            sys.exit(0)
         elif (rn == 0):
             print_warning("Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
-            sys.exit(0)
         elif (ir == 1):
             wrongsyn(query)
             socli_interactive(query)
-            sys.exit(0)
         elif query != "":
             socli(query)
-            sys.exit(0)
         else:
             print_warning("Wrong syntax...!\n")
             helpman()
-            sys.exit(0)
-
 
 if __name__ == '__main__':
     main()
