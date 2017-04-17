@@ -1,8 +1,14 @@
+# Python .gitignore
+
+.DS_Store
 .idea/
-build/
+__pycache__/
 dist/
-socli.egg-info/
-socli/__pycache__/
-socli/data.json
-docs/
+build/
+*.egg-info
+.cache/
+.tox
+.coverage
 *.pyc
+*.egg
+venv
