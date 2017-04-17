@@ -126,7 +126,7 @@ def socli(query):
     query = urlencode(query)
     try:
         randomheaders()
-        search_res = requests.get(soqurl + query, verify=False, headers=header)
+        search_res = requests.get(soqurl + query, headers=header)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
             res_url = sourl + (soup.find_all("div", class_="question-summary")[0].a.get('href'))
@@ -207,7 +207,7 @@ def get_questions_for_query(query):
     """
     questions = []
     randomheaders()
-    search_res = requests.get(soqurl + query, verify=False, headers=header)
+    search_res = requests.get(soqurl + query, headers=header)
     soup = BeautifulSoup(search_res.text, 'html.parser')
     try:
         soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
@@ -235,7 +235,7 @@ def get_question_stats_and_answer(url):
     :return: tuple of ( question_title, question_desc, question_stats, answers )
     """
     randomheaders()
-    res_page = requests.get(url, verify=False, headers=header)
+    res_page = requests.get(url, headers=header)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][1:] # first post is question, discard it.
@@ -249,7 +249,7 @@ def socli_interactive_windows(query):
     :return:
     """
     try:
-        search_res = requests.get(soqurl + query, verify=False)
+        search_res = requests.get(soqurl + query)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
             soup.find_all("div", class_="question-summary")[0]  # For explictly raising exception
@@ -588,7 +588,7 @@ def socl_manusearch(query, rn):
     query = urlencode(query)
     try:
         randomheaders()
-        search_res = requests.get(soqurl + query, verify=False, headers=header)
+        search_res = requests.get(soqurl + query, headers=header)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
             res_url = sourl + (soup.find_all("div", class_="question-summary")[rn - 1].a.get('href'))
@@ -816,7 +816,7 @@ def dispres(url):
     :return:
     """
     randomheaders()
-    res_page = requests.get(url + query, verify=False, headers=header)
+    res_page = requests.get(url + query, headers=header)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
 
