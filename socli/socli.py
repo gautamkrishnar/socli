@@ -372,7 +372,7 @@ def socli_interactive(query):
                 body=self.answer_text,
                 footer= urwid.Pile([
                     QuestionURL(question_url),
-                    UnicodeText(u'\u2191: next question, \u2193: previous question, o: open in browser, \u2190: back')
+                    UnicodeText(u'\u2191: next answer, \u2193: previous answer, o: open in browser, \u2190: back')
                 ])
             )
             urwid.WidgetWrap.__init__(self, answer_frame)
