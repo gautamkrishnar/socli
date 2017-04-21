@@ -239,6 +239,8 @@ def get_question_stats_and_answer(url):
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][1:] # first post is question, discard it.
+    if len(answers) == 0:
+        answers.append('No answers for this question ...')
     return question_title, question_desc, question_stats, answers
 
 
