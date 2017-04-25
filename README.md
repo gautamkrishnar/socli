@@ -172,7 +172,10 @@ Special thanks to these superheroes:
 * [Pia Mancini](https://github.com/piamancini) for adding SoCLI to OpenCollective [#27](https://github.com/gautamkrishnar/socli/pull/27)
 * [Aditya Tandon](https://github.com/adityatandon007) for the issue [#30](https://github.com/gautamkrishnar/socli/issues/30)
 * [Akshatha Nayak](https://github.com/Aksh77) for your first contribution to an open source project. PR [#31](https://github.com/gautamkrishnar/socli/issues/31)
-
+* [Levi Sabah](https://github.com/levisabah) for PR [#43](https://github.com/gautamkrishnar/socli/pull/43)
+* [liamhawkins](https://github.com/liamhawkins) for PR [#44](https://github.com/gautamkrishnar/socli/pull/44) and [#45](https://github.com/gautamkrishnar/socli/pull/45)
+* [Arount](https://github.com/arount) for fixing issue [#48](https://github.com/gautamkrishnar/socli/issues/48) via PR [#47](https://github.com/gautamkrishnar/socli/pull/47)
+* [Cédric Picard](https://github.com/cym13) for the issue [#42](https://github.com/gautamkrishnar/socli/issues/42)
 
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
@@ -189,6 +192,8 @@ If you are experiencing any bugs, don’t forget to open a [new issue](https://g
 	* [jericson.github.io](http://jericson.github.io/2016/08/25/long_tail_docs.html)
 	* [The really big list of really interesting Open Source projects](https://medium.com/@likid.geimfari/the-list-of-interesting-open-source-projects-2daaa2153f7c#.6qm1v3ioa)
 	* [Ostechnix](http://www.ostechnix.com/search-browse-stack-overflow-website-commandline/)
+	* [lamiradadelreplicante.com](lamiradadelreplicante.com/2017/04/17/socli-navegando-por-stack-overflow-sin-salir-de-la-terminal)
+	* [dou.ua](https://dou.ua/lenta/digests/python-digest-13/)
 * Tweets:
  	* [@cyb3rops](https://twitter.com/cyb3rops/status/747380776350650368)
  	* [@pythontrending](https://twitter.com/pythontrending/status/745635512803819521)
