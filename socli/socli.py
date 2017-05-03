@@ -22,11 +22,12 @@ sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
 ir = 0  # interactive mode off (for -i arg)
 tag = "" # tag based search
-data = dict() # Data file dictionary
+app_data = dict() # Data file dictionary
 data_file = os.path.join(os.path.dirname(__file__),"data.json") # Data file location
 query = "" # Query
 uas = [] # User agent list
 header = {} # Request header
+google_search = False # Uses google search. Enabled by default.
 
 ### To support python 2:
 if sys.version < '3.0.0':
@@ -120,20 +121,21 @@ def showerror(e):
 def socli(query):
     """
     SOCLI Code
-    :param query: Query to search on stackoverflow
+    :param query: Query to search on stackoverflow.
+    If google_search is true uses google search to find the best result.
+    Else use stackoverflow default search mechanism.
     :return:
     """
     query = urlencode(query)
     try:
-        randomheaders()
-        search_res = requests.get(soqurl + query, headers=header)
-        soup = BeautifulSoup(search_res.text, 'html.parser')
-        try:
-            res_url = sourl + (soup.find_all("div", class_="question-summary")[0].a.get('href'))
-        except IndexError:
-            print_warning("No results found...")
-            sys.exit(0)
-        dispres(res_url)
+        if google_search:
+            questions = get_questions_for_query_google(query)
+            res_url = questions[0][2] # Gets the first result
+            dispres(res_url)
+        else:
+            questions = get_questions_for_query(query)
+            res_url = questions[0][2]
+            dispres(sourl + res_url) # Returned URL is relative to SO homepage
     except UnicodeEncodeError as e:
         showerror(e)
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
@@ -198,10 +200,11 @@ def helpman():
 
 
 
-def get_questions_for_query(query):
+def get_questions_for_query(query,count=10):
     """
-    Fetch questions for a query. Returned question urls are relative to SO homepage.
-    At most 10 questions are returned.
+    Fetch questions for a query using stackoverflow default search mechanism.
+    Returned question urls are relative to SO homepage.
+    At most 10 questions are returned. (Can be altered by passing count)
     :param query: User-entered query string
     :return: list of [ (question_text, question_description, question_url) ]
     """
@@ -218,7 +221,7 @@ def get_questions_for_query(query):
     tmp1 = (soup.find_all("div", class_="excerpt"))
     i = 0
     while (i < len(tmp)):
-        if i == 10: break  # limiting results
+        if i == count: break  # limiting results
         question_text = ' '.join((tmp[i].a.get_text()).split())
         question_text = question_text.replace("Q: ","")
         question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
@@ -227,6 +230,29 @@ def get_questions_for_query(query):
         questions.append( (question_text, question_desc, question_local_url) )
         i = i + 1
     return questions
+
+
+def get_questions_for_query_google(query,count=10):
+    """
+    Fetch questions for a query using Google search.
+    Returned question urls are URLS to SO homepage.
+    At most 10 questions are returned. (Can be altered by passing count)
+    :param query: User-entered query string
+    :return: list of [ (question_text, question_description, question_url) ]
+    """
+    i=0
+    search_url = "https://www.google.com/search?q=site:stackoverflow.com+"
+    questions = []
+    randomheaders()
+    search_results = requests.get(search_url + query, headers=header)
+    soup = BeautifulSoup(search_results.text, 'html.parser')
+    for result in  soup.find_all("div",class_="g"):
+        question_title = result.find("h3",class_="r").get_text()[:-17]
+        question_desc = result.find("span",class_="st").get_text()
+        question_url = "https://www.google.com/"+result.find("a").get("href")
+        questions.append(question_title,question_desc,question_url)
+    return questions
+
 
 def get_question_stats_and_answer(url):
     """
@@ -615,12 +641,12 @@ def userpage(userid):
     :param userid:
     :return:
     """
-    global data
+    global app_data
     import stackexchange
     try:
-        if "api_key" not in data:
-            data["api_key"] = None
-        userprofile = stackexchange.Site(stackexchange.StackOverflow,app_key=data["api_key"]).user(userid)
+        if "api_key" not in app_data:
+            app_data["api_key"] = None
+        userprofile = stackexchange.Site(stackexchange.StackOverflow,app_key=app_data["api_key"]).user(userid)
         print(bold("\n User: " + userprofile.display_name.format()))
         print("\n\tReputations: " + userprofile.reputation.format())
         print_warning("\n\tBadges:")
@@ -667,36 +693,37 @@ def set_api_key():
     Sets a custom API Key
     :return:
     """
+    global app_data
     import_json()
     api_key = inputs("Type an API key to continue: ")
     if len(api_key) > 0:
-        data["api_key"] = api_key
+        app_data["api_key"] = api_key
         save_datafile()
     print_warning("\nAPI Key saved...")
 
 
 def save_datafile():
     """
-    Saves the data dictionary to a file named data_file
+    Saves the app_data dictionary to a file named data_file
     :return:
     """
     #import json => Json imported globally
-    global data
+    global app_data
     global data_file
     with open(data_file, "w") as dataf:
-        json.dump(data, dataf)
+        json.dump(app_data, dataf)
 
 
 def load_datafile():
     """
-    Loads the data dictionary form a file named data_file
+    Loads the app_data dictionary form a file named data_file
     :return:
     """
     #import json => Json imported globally
-    global data
+    global app_data
     global data_file
     with open(data_file) as dataf:
-        data = json.load(dataf)
+        app_data = json.load(dataf)
 
 
 def del_datafile():
@@ -919,13 +946,13 @@ def main():
                             exit(1)
                     else:
                         global data_file
-                        global data
+                        global app_data
                         try:
                             load_datafile()
-                            if "user" in data:
-                                user = data["user"]
+                            if "user" in app_data:
+                                user = app_data["user"]
                             else:
-                                raise  FileNotFoundError # Manually raising to get value
+                                raise FileNotFoundError # Manually raising to get value
                         except JSONDecodeError:
                             # This maybe some write failures
                             del_datafile()
@@ -936,9 +963,9 @@ def main():
                             print_warning("Default user not set...\n")
                             try:
                                 # Code to execute when first time user runs socli -u
-                                data['user'] = int(inputs("Enter your Stackoverflow User ID: "))
+                                app_data['user'] = int(inputs("Enter your Stackoverflow User ID: "))
                                 save_datafile()
-                                user = data['user']
+                                user = app_data['user']
                                 print_green("\nUserID saved...\n")
                             except ValueError:
                                 print_warning("\nUser ID must be an integer.")
