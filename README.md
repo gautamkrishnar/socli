@@ -45,7 +45,7 @@ sudo pip install --upgrade socli
 ```
 
 ### Usage
-##### Quick search
+##### Quick Search
 Use the **socli** command followed by the search query:
 ```bash
 socli for loop in python syntax
