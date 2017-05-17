@@ -81,7 +81,7 @@ the newest version so that you won't miss any features:
 Usage
 ~~~~~
 
-Quick search
+Quick Search
 ''''''''''''
 
 Use the **socli** command followed by the search query:
@@ -94,7 +94,7 @@ The above command will search for the query "*for loop in python
 syntax*" and displays the first most voted question in Stack Overflow
 with its most voted answer. Pretty quick, right?
 
-Interactive search
+Interactive Search
 ''''''''''''''''''
 
 You can search Stack Overflow interactively by using the command
@@ -112,7 +112,7 @@ You can also browse through the other answers to that question using
 the up and down arrow keys as well as go back to the list of questions
 using the left arrow key.
 
-Manual search 
+Manual Search 
 '''''''''''''
 
 This will allow you to specify a requested question number for your
@@ -125,7 +125,7 @@ query. For example, consider the following command:
 This command searches for "*javascript prototype function*" in Stack Overflow and
 displays the second question that contains it.
 
-Topic based search
+Topic-Based Search
 ''''''''''''''''''
 
 Stack Overflow supports topic by using tags. **socli** allows you to
@@ -144,7 +144,7 @@ You can also specify multiple tags, Just seporate them with a comma:
 
 See the complete list of tags `here <http://stackoverflow.com/tags>`__.
 
-User Profile browsing
+User Profile Browsing
 '''''''''''''''''''''
 
 Just use the command below to set your `user
@@ -168,11 +168,11 @@ You can get an API Key
 `here <http://stackapps.com/apps/oauth/register>`__ by registering as a
 new app. Please don't use SoCLI as app name.
 
-New question
-''''''''''''
+Posting a New Question
+''''''''''''''''''''''
 
 If you can't find an answer for your question in Stack Overflow,
-**socli** allows you to creata a new question via the web browswer. Just
+**socli** allows you to create a new question via the web browser. Just
 type the command below and **socli** will open the new question page of
 Stack Overflow in the web browser for you:
 
@@ -187,7 +187,7 @@ Syntax:
 
 ::
 
-    Usage: socli [ Arguments] < Search Query >
+    Usage: socli [Arguments] < Search Query >
 
 Arguments (optional)
                     
@@ -196,8 +196,8 @@ Arguments (optional)
 | Short     | Long      | Descripti | Example   |
 |           |           | on        |           |
 +===========+===========+===========+===========+
-| -q        | --query   | Used to   | socli -i  |
-|           |           | specify   | -q query  |
+| -q        | --query   | Used to   | **socli   |
+|           |           | specify   | -q query**|
 |           |           | the query |           |
 |           |           | when      |           |
 |           |           | arguments |           |
@@ -219,11 +219,12 @@ Arguments (optional)
 |           |           | "socli    |           |
 |           |           | query".   |           |
 +-----------+-----------+-----------+-----------+
-| -i        | --interac | Used to   | socli -i  |
-|           | tive      | search    | -q query  |
+| -i        | --interac | Used to   | **socli -i|
+|           | tive      | search    | -q query**|
 |           |           | interacti |           |
 |           |           | vely.     |           |
-|           |           | It doesnt |           |
+|           |           | It        |           |
+|           |           | doesn't   |           |
 |           |           | take any  |           |
 |           |           | values.   |           |
 |           |           | It must   |           |
@@ -234,9 +235,9 @@ Arguments (optional)
 |           |           | --query   |           |
 |           |           | after it. |           |
 +-----------+-----------+-----------+-----------+
-| -r        | --res     | Used for  | socli -r  |
+| -r        | --res     | Used for  | **socli -r|
 |           |           | manual    | 4 -q      |
-|           |           | search.   | query     |
+|           |           | search.   | query**   |
 |           |           | It takes  |           |
 |           |           | the       |           |
 |           |           | question  |           |
@@ -251,9 +252,9 @@ Arguments (optional)
 |           |           | --query   |           |
 |           |           | after it. |           |
 +-----------+-----------+-----------+-----------+
-| -t        | --tag     | Specifies | socli -t  |
+| -t        | --tag     | Specifies | **socli -t|
 |           |           | the tag   | js -q     |
-|           |           | to search | query     |
+|           |           | to search | query**   |
 |           |           | for the   |           |
 |           |           | query on  |           |
 |           |           | stack     |           |
@@ -266,8 +267,8 @@ Arguments (optional)
 |           |           | --query   |           |
 |           |           | after it. |           |
 +-----------+-----------+-----------+-----------+
-| -n        | --new     | Opens the | socli     |
-|           |           | web       | --new     |
+| -n        | --new     | Opens the | **socli   |
+|           |           | web       | -new**    |
 |           |           | browser   |           |
 |           |           | to create |           |
 |           |           | a new     |           |
@@ -275,8 +276,8 @@ Arguments (optional)
 |           |           | on stack  |           |
 |           |           | overflow. |           |
 +-----------+-----------+-----------+-----------+
-| -u        | --user    | Displays  | socli -u  |
-|           |           | the user  | 22656     |
+| -u        | --user    | Displays  | **socli -u|
+|           |           | the user  | 22656**   |
 |           |           | profile   |           |
 |           |           | informati |           |
 |           |           | ons.      |           |
@@ -288,12 +289,12 @@ Arguments (optional)
 |           |           | your      |           |
 |           |           | profile.  |           |
 +-----------+-----------+-----------+-----------+
-| -a        | --api     | Sets a    | socli     |
-|           |           | custom    | -api      |
+| -a        | --api     | Sets a    | **socli   |
+|           |           | custom    | --api**   |
 |           |           | API key.  |           |
 +-----------+-----------+-----------+-----------+
-| -d        | --del     | Deletes   | socli -d  |
-|           |           | the       |           |
+| -d        | --del     | Deletes   | **socli   |
+|           |           | the       | -d**      |
 |           |           | configura |           |
 |           |           | tion      |           |
 |           |           | file      |           |
@@ -302,20 +303,20 @@ Arguments (optional)
 |           |           | -u        |           |
 |           |           | manually. |           |
 +-----------+-----------+-----------+-----------+
-| -h        | --help    | Displays  | socli     |
-|           |           | the help  | --help    |
+| -h        | --help    | Displays  | **socli   |
+|           |           | the help  | --help**  |
 |           |           | text.     |           |
 +-----------+-----------+-----------+-----------+
 
 Query
      
 
-It refers to query to search in Stack Overflow.
+This refers to what you're searching for in Stack Overflow
 
 Features
 ~~~~~~~~
 
-These are the amazing features of **socli**: \* Manual Search \*
+These are the amazing features of SoCLI: \* Manual Search \*
 Interactively browse Stack Overflow using the interactive mode \*
 Coloured interface \* Question stats view \* Tag support \* Can open the
 page in a browser \* Can view user profiles \* Can create a new question
@@ -334,7 +335,7 @@ Please check out the list of
 Contributing
 ~~~~~~~~~~~~
 
-If you are willing to contribute to SoCLI project, You are awesome! Just
+If you are willing to contribute to SoCLI project, you are awesome! Just
 follow the steps below:
 
 1. Fork it!
