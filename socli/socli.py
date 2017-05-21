@@ -28,7 +28,7 @@ data_file = os.path.join(os.path.dirname(__file__), "data.json")  # Data file lo
 query = ""  # Query
 uas = []  # User agent list
 header = {}  # Request header
-google_search = True  # Uses google search. Enabled by default.
+google_search = True # Uses google search. Enabled by default.
 google_search_url = "https://www.google.com/search?q=site:stackoverflow.com+" #Google search query URL
 
 
@@ -644,20 +644,20 @@ def socl_manusearch(query, rn):
     query = urlencode(query)
     try:
         randomheaders()
-        if google_search:
-            questions = get_questions_for_query_google(query)
-        else:
-            search_res = requests.get(soqurl + query, headers=header)
-            soup = BeautifulSoup(search_res.text, 'html.parser')
+        #Set count = 99 so you can choose question numbers higher than 10
+        count = 99
+        res_url = None
         try:
             if google_search:
+                questions = get_questions_for_query_google(query, count)
                 res_url = questions[rn - 1][2]
             else:
-                res_url = sourl + (soup.find_all("div", class_="question-summary")[rn - 1].a.get('href'))
+                questions = get_questions_for_query(query, count)
+                res_url = sourl + questions[rn - 1][2]
+            dispres(res_url)
         except IndexError:
             print_warning("No results found...")
             sys.exit(1)
-        dispres(res_url)
     except UnicodeEncodeError:
         print_warning("Encoding error: Use \"chcp 65001\" command before "
                       "using socli...")
