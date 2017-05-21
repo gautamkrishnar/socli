@@ -16,33 +16,26 @@ from bs4 import BeautifulSoup
 import random
 
 # Global vars:
-DEBUG = True  # Set True for enabling debugging
+DEBUG = False # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
 ir = 0  # interactive mode off (for -i arg)
-tag = ""  # tag based search
-app_data = dict()  # Data file dictionary
-data_file = os.path.join(os.path.dirname(__file__), "data.json")  # Data file location
-query = ""  # Query
-uas = []  # User agent list
-header = {}  # Request header
-google_search = True  # Uses google search. Enabled by default.
+tag = "" # tag based search
+data = dict() # Data file dictionary
+data_file = os.path.join(os.path.dirname(__file__),"data.json") # Data file location
+query = "" # Query
+uas = [] # User agent list
+header = {} # Request header
 
 ### To support python 2:
 if sys.version < '3.0.0':
     global FileNotFoundError
     FileNotFoundError = IOError
-
-
     def urlencode(inp):
         return urllib.quote_plus(inp)
-
-
     def dispstr(inp):
         return inp.encode('utf-8')
-
-
     def inputs(str=""):
         sys.stdout.write(str)
         tempx = raw_input()
@@ -50,30 +43,24 @@ if sys.version < '3.0.0':
 else:
     def urlencode(inp):
         return urllib.parse.quote_plus(inp)
-
-
     def dispstr(inp):
         return inp
-
-
     def inputs(str=""):
         sys.stdout.write(str)
         tempx = input()
         return tempx
-
 
 ### Fixes windows active page code errors
 def fixCodePage():
     if sys.platform == 'win32':
         if sys.stdout.encoding != 'cp65001':
             os.system("echo off")
-            os.system("chcp 65001")  # Change active page code
-            sys.stdout.write("\x1b[A")  # Removes the output of chcp command
+            os.system("chcp 65001") # Change active page code
+            sys.stdout.write("\x1b[A") # Removes the output of chcp command
             sys.stdout.flush()
             return
         else:
             return
-
 
 # Bold and underline are not supported by colorama.
 class bcolors:
@@ -106,7 +93,7 @@ def print_fail(str):
 
 
 def print_white(str):
-    print(format_str(str, colorama.Fore.WHITE))
+    print(format_str(str,colorama.Fore.WHITE))
 
 
 def bold(str):
@@ -116,38 +103,37 @@ def bold(str):
 def underline(str):
     return (format_str(str, bcolors.UNDERLINE))
 
-
 ## For testing exceptions
 def showerror(e):
     if DEBUG == True:
         import traceback
-        print("Error name: " + e.__doc__)
+        print("Error name: "+ e.__doc__)
         print()
-        print("Description: " + str(e))
+        print("Description: "+str(e))
         print()
         traceback.print_exc()
     else:
         return
 
 
+
 def socli(query):
     """
     SOCLI Code
-    :param query: Query to search on stackoverflow.
-    If google_search is true uses google search to find the best result.
-    Else use stackoverflow default search mechanism.
+    :param query: Query to search on stackoverflow
     :return:
     """
     query = urlencode(query)
     try:
-        if google_search:
-            questions = get_questions_for_query_google(query)
-            res_url = questions[0][2]  # Gets the first result
-            dispres(res_url)
-        else:
-            questions = get_questions_for_query(query)
-            res_url = questions[0][2]
-            dispres(sourl + res_url)  # Returned URL is relative to SO homepage
+        randomheaders()
+        search_res = requests.get(soqurl + query, headers=header)
+        soup = BeautifulSoup(search_res.text, 'html.parser')
+        try:
+            res_url = sourl + (soup.find_all("div", class_="question-summary")[0].a.get('href'))
+        except IndexError:
+            print_warning("No results found...")
+            sys.exit(0)
+        dispres(res_url)
     except UnicodeEncodeError as e:
         showerror(e)
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
@@ -208,14 +194,14 @@ def helpman():
     print(bold("socli") + " for loop in python")
     print(bold("socli -iq") + " while loop in python")
     print("\n\n SoCLI is an open source project hosted on github. Don't forget to star it if you liked it. Use GitHub"
-          " issues to report problems: " + underline("http://github.com/gautamkrishnar/socli"))
+          " issues to report problems: "+ underline("http://github.com/gautamkrishnar/socli"))
 
 
-def get_questions_for_query(query, count=10):
+
+def get_questions_for_query(query):
     """
-    Fetch questions for a query using stackoverflow default search mechanism.
-    Returned question urls are relative to SO homepage.
-    At most 10 questions are returned. (Can be altered by passing count)
+    Fetch questions for a query. Returned question urls are relative to SO homepage.
+    At most 10 questions are returned.
     :param query: User-entered query string
     :return: list of [ (question_text, question_description, question_url) ]
     """
@@ -232,55 +218,15 @@ def get_questions_for_query(query, count=10):
     tmp1 = (soup.find_all("div", class_="excerpt"))
     i = 0
     while (i < len(tmp)):
-        if i == count: break  # limiting results
+        if i == 10: break  # limiting results
         question_text = ' '.join((tmp[i].a.get_text()).split())
-        question_text = question_text.replace("Q: ", "")
+        question_text = question_text.replace("Q: ","")
         question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
         question_desc = ' '.join(question_desc.split())
         question_local_url = tmp[i].a.get("href")
-        questions.append((question_text, question_desc, question_local_url))
+        questions.append( (question_text, question_desc, question_local_url) )
         i = i + 1
     return questions
-
-
-def get_questions_for_query_google(query, count=10):
-    """
-    Fetch questions for a query using Google search.
-    Returned question urls are URLS to SO homepage.
-    At most 10 questions are returned. (Can be altered by passing count)
-    :param query: User-entered query string
-    :return: list of [ (question_text, question_description, question_url) ]
-    """
-    i = 0
-    search_url = "https://www.google.com/search?q=site:stackoverflow.com+"
-    questions = []
-    randomheaders()
-    search_results = requests.get(search_url + query, headers=header)
-    soup = BeautifulSoup(search_results.text, 'html.parser')
-    try:
-        soup.find_all("div", class_="g")[0]  # For explicitly raising exception
-    except IndexError:
-        print_warning("No results found...")
-        sys.exit(0)
-    for result in soup.find_all("div", class_="g"):
-        if i == count:
-            break
-        i += 1
-        try:
-            question_title = result.find("h3", class_="r").get_text()[:-17]
-            question_desc = result.find("span", class_="st").get_text()
-            if question_desc=="": # For avoiding instant answers
-                raise NameError #Explicit raising
-            question_url = "https://www.google.com/" + result.find("a").get("href")
-            questions.append([question_title, question_desc, question_url])
-        except NameError:
-            i -= 1
-            continue
-        except AttributeError:
-            i -= 1
-            continue
-    return questions
-
 
 def get_question_stats_and_answer(url):
     """
@@ -292,8 +238,7 @@ def get_question_stats_and_answer(url):
     res_page = requests.get(url, headers=header)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
-    answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][
-              1:]  # first post is question, discard it.
+    answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][1:] # first post is question, discard it.
     if len(answers) == 0:
         answers.append('No answers for this question ...')
     return question_title, question_desc, question_stats, answers
@@ -318,7 +263,7 @@ def socli_interactive_windows(query):
             while (i < len(tmp)):
                 if i == 10: break  # limiting results
                 question_text = ' '.join((tmp[i].a.get_text()).split())
-                question_text = question_text.replace("Q: ", "")
+                question_text = question_text.replace("Q: ","")
                 question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
                 question_desc = ' '.join(question_desc.split())
                 print_warning(str(i + 1) + ". " + dispstr(question_text))
@@ -333,12 +278,10 @@ def socli_interactive_windows(query):
                         cnt = 1  # this is because the 1st post is the question itself
                         while 1:
                             global tmpsoup
-                            qna = inputs(
-                                "Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, " + bold(
-                                    "b") + " for previous answer or any other key to exit:")
+                            qna = inputs("Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, "+ bold("b") + " for previous answer or any other key to exit:")
                             if qna in ["n", "N"]:
                                 try:
-                                    answer = (tmpsoup.find_all("div", class_="post-text")[cnt + 1].get_text())
+                                    answer = (tmpsoup.find_all("div",class_="post-text")[cnt + 1].get_text())
                                     print_green("\n\nAnswer:\n")
                                     print("-------\n" + answer + "\n-------\n")
                                     cnt = cnt + 1
@@ -350,7 +293,7 @@ def socli_interactive_windows(query):
                                 if cnt == 1:
                                     print_warning(" You cant go further back. You are on the first answer!")
                                     continue
-                                answer = (tmpsoup.find_all("div", class_="post-text")[cnt - 1].get_text())
+                                answer = (tmpsoup.find_all("div",class_="post-text")[cnt - 1].get_text())
                                 print_green("\n\nAnswer:\n")
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
@@ -404,7 +347,7 @@ def socli_interactive(query):
             try:
                 return dispstr(markup)
             except AttributeError:
-                mapped = [cls.to_unicode(i) for i in markup]
+                mapped = [ cls.to_unicode(i) for i in markup]
                 if isinstance(markup, tuple):
                     return tuple(mapped)
                 else:
@@ -414,7 +357,6 @@ def socli_interactive(query):
         """
         Main container for urwid interactive mode.
         """
-
         def __init__(self, data):
             """
             Construct the Question Page.
@@ -424,36 +366,38 @@ def socli_interactive(query):
             self.url = question_url
             self.answer_text = AnswerText(answers)
             answer_frame = urwid.Frame(
-                header=urwid.Pile([
+                header= urwid.Pile( [
                     HEADER,
                     QuestionText(question_title, question_desc, question_stats),
                     urwid.Divider('-')
                 ]),
                 body=self.answer_text,
-                footer=urwid.Pile([
+                footer= urwid.Pile([
                     QuestionURL(question_url),
                     UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back')
                 ])
             )
             urwid.WidgetWrap.__init__(self, answer_frame)
 
+
         def keypress(self, size, key):
             if key in {'down', 'n', 'N'}:
-                self.answer_text.next_ans()
-            elif key in {'up', 'b', 'B'}:
                 self.answer_text.prev_ans()
+            elif key in {'up', 'b', 'B'}:
+                self.answer_text.next_ans()
             elif key in {'o', 'O'}:
                 import webbrowser
-                HEADER.event('browser', "Opening in your browser...")
+                HEADER.event('browser', "Opening in your browser..." )
                 webbrowser.open(self.url)
             elif key == 'left':
                 LOOP.widget = QUESTION_PAGE
+
+
 
     class Header(UnicodeText):
         """
         Header of the question page. Event messages are recorded here.
         """
-
         def __init__(self):
             self.current_event = None
             UnicodeText.__init__(self, '')
@@ -466,6 +410,8 @@ def socli_interactive(query):
             if self.current_event == event:
                 self.set_text('')
 
+
+
     class AnswerText(urwid.WidgetWrap):
         """Answers to the question.
 
@@ -474,7 +420,7 @@ def socli_interactive(query):
 
         def __init__(self, answers):
             urwid.WidgetWrap.__init__(self, UnicodeText(''))
-            self._selectable = True  # so that we receive keyboard input
+            self._selectable = True # so that we receive keyboard input
             self.answers = answers
             self.index = 0
             self.set_answer()
@@ -485,7 +431,7 @@ def socli_interactive(query):
             a Pile from the main question page. Scrolling is necessary for long answers which are longer
             than the length of the terminal.
             """
-            self.content = [('less-important', 'Answer: ')] + self.answers[self.index].split("\n")
+            self.content =  [  ('less-important', 'Answer: ') ] + self.answers[self.index].split("\n")
             self._w = ScrollableTextBox(self.content)
 
         def prev_ans(self):
@@ -493,7 +439,7 @@ def socli_interactive(query):
             self.index -= 1
             if self.index < 0:
                 self.index = 0
-                HEADER.event('answer-bounds', "No previous answers.")
+                HEADER.event('answer-bounds', "No previous answers." )
             else:
                 HEADER.clear('answer-bounds')
             self.set_answer()
@@ -522,7 +468,7 @@ def socli_interactive(query):
             """
             :param content: text string to be displayed
             """
-            lines = [UnicodeText(line) for line in content]
+            lines = [ UnicodeText(line) for line in content ]
             body = urwid.SimpleFocusListWalker(lines)
             urwid.ListBox.__init__(self, body)
 
@@ -537,12 +483,18 @@ def socli_interactive(query):
                 return False
             return True
 
+
+
+
+
     class QuestionText(UnicodeText):
         """ Title, description, and stats of the question,"""
 
         def __init__(self, title, description, stats):
-            text = ["Question: ", ('title', title), description, ('metadata', stats)]
+            text = [ "Question: ", ('title', title), description, ('metadata', stats)]
             UnicodeText.__init__(self, text)
+
+
 
     class QuestionURL(UnicodeText):
         """ url of the question """
@@ -551,24 +503,27 @@ def socli_interactive(query):
             text = [('heading', 'Question URL: '), url]
             UnicodeText.__init__(self, text)
 
+
+
     class SelectQuestionPage(urwid.WidgetWrap):
 
         def display_text(self, index, question):
             question_text, question_desc, _ = question
             text = [
                 ("warning", u"{}. {}\n".format(index, question_text)),
-                question_desc + "\n",
+                question_desc+"\n",
             ]
             return text
 
+
         def __init__(self, questions):
             self.questions = questions
-            widgets = [self.display_text(i, q) for i, q in enumerate(questions)]
+            widgets = [ self.display_text(i,q) for i, q in enumerate(questions)]
             self.questions_box = ScrollableTextBox(widgets)
             header = UnicodeText(('less-important', 'Select a question below:\n'))
-            footer = UnicodeText("0-9: select a question, any other key: exit.")
+            footer = UnicodeText( "0-9: select a question, any other key: exit.")
             frame = urwid.Frame(header=header,
-                                body=urwid.Filler(self.questions_box, height=('relative', 100), valign='top'),
+                                body=urwid.Filler(self.questions_box, height=('relative',100), valign='top'),
                                 footer=footer)
             urwid.WidgetWrap.__init__(self, frame)
 
@@ -578,7 +533,7 @@ def socli_interactive(query):
 
         def keypress(self, size, key):
             if key in '012345679':
-                # fetch answers and question info
+            # fetch answers and question info
                 question_url = self.questions[int(key)][2]
                 self.select_question(question_url)
             elif key in {'down', 'up'}:
@@ -594,14 +549,16 @@ def socli_interactive(query):
                 print_warning("\n\nAnswer:\n\t No answer found for this question...")
                 sys.exit(0)
 
-            questions = QuestionPage((answers, question_title, question_desc, question_stats, url))
+            questions = QuestionPage( (answers, question_title, question_desc, question_stats, url) )
             LOOP.widget = questions
+
+
 
     palette = [('answer', 'default', 'default'),
                ('title', 'light green, bold', 'default'),
                ('heading', 'light green, bold', 'default'),
                ('metadata', 'dark green', 'default'),
-               ('less-important', 'dark gray', 'default'),
+               ('less-important','dark gray', 'default'),
                ('warning', 'yellow', 'default')
                ]
     HEADER = Header()
@@ -658,12 +615,12 @@ def userpage(userid):
     :param userid:
     :return:
     """
-    global app_data
+    global data
     import stackexchange
     try:
-        if "api_key" not in app_data:
-            app_data["api_key"] = None
-        userprofile = stackexchange.Site(stackexchange.StackOverflow, app_key=app_data["api_key"]).user(userid)
+        if "api_key" not in data:
+            data["api_key"] = None
+        userprofile = stackexchange.Site(stackexchange.StackOverflow,app_key=data["api_key"]).user(userid)
         print(bold("\n User: " + userprofile.display_name.format()))
         print("\n\tReputations: " + userprofile.reputation.format())
         print_warning("\n\tBadges:")
@@ -676,7 +633,7 @@ def userpage(userid):
         unaccepted_questions = len(userprofile.unaccepted_questions.fetch())
         accepted = total_questions - unaccepted_questions
         rate = accepted / float(total_questions) * 100
-        print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
+        print("\t\t Total Questions Asked: "+ str(len(userprofile.questions.fetch())))
         print('\t\t        Accept rate is: %.2f%%.' % rate)
         print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
         print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
@@ -685,11 +642,11 @@ def userpage(userid):
         exit(1)
     except Exception as e:
         showerror(e)
-        if str(e) == "400 [bad_parameter]: `key` doesn't match a known application":
+        if  str(e) == "400 [bad_parameter]: `key` doesn't match a known application":
             print_warning("Wrong API key... Deleting the data file...")
             del_datafile()
             exit(1)
-        elif str(e) in ("not enough values to unpack (expected 1, got 0)", "400 [bad_parameter]: ids"):
+        elif  str(e) in ("not enough values to unpack (expected 1, got 0)" , "400 [bad_parameter]: ids"):
             global manual
             if manual == 1:
                 print_warning("Wrong user ID specified...")
@@ -700,49 +657,46 @@ def userpage(userid):
             exit(1)
 
         # Reaches here when rate limit exceeds
-        print_warning(
-            "Stackoverflow exception. This might be caused due to the rate limiting: http://stackapps.com/questions/3055/is-there-a-limit-of-api-requests")
+        print_warning("Stackoverflow exception. This might be caused due to the rate limiting: http://stackapps.com/questions/3055/is-there-a-limit-of-api-requests")
         print("Use http://stackapps.com/apps/oauth/register to register a new API key.")
         set_api_key()
         exit(1)
-
 
 def set_api_key():
     """
     Sets a custom API Key
     :return:
     """
-    global app_data
     import_json()
     api_key = inputs("Type an API key to continue: ")
     if len(api_key) > 0:
-        app_data["api_key"] = api_key
+        data["api_key"] = api_key
         save_datafile()
     print_warning("\nAPI Key saved...")
 
 
 def save_datafile():
     """
-    Saves the app_data dictionary to a file named data_file
+    Saves the data dictionary to a file named data_file
     :return:
     """
-    # import json => Json imported globally
-    global app_data
+    #import json => Json imported globally
+    global data
     global data_file
     with open(data_file, "w") as dataf:
-        json.dump(app_data, dataf)
+        json.dump(data, dataf)
 
 
 def load_datafile():
     """
-    Loads the app_data dictionary form a file named data_file
+    Loads the data dictionary form a file named data_file
     :return:
     """
-    # import json => Json imported globally
-    global app_data
+    #import json => Json imported globally
+    global data
     global data_file
     with open(data_file) as dataf:
-        app_data = json.load(dataf)
+        data = json.load(dataf)
 
 
 def del_datafile():
@@ -764,7 +718,7 @@ def import_json():
     fixes #33(https://github.com/gautamkrishnar/socli/issues/33)
     :return:
     """
-    global json  # Importing json globally
+    global json # Importing json globally
     global JSONDecodeError
     try:
         import simplejson as json
@@ -783,10 +737,10 @@ def loaduseragents():
     """
     global uas
     uas = []
-    with open(os.path.join(os.path.dirname(__file__), "user_agents.txt"), 'rb') as uaf:
+    with open(os.path.join(os.path.dirname(__file__),"user_agents.txt"), 'rb') as uaf:
         for ua in uaf.readlines():
             if ua:
-                uas.append(ua.strip()[1:-1 - 1])
+                uas.append(ua.strip()[1:-1-1])
     random.shuffle(uas)
 
 
@@ -799,6 +753,7 @@ def randomheaders():
     global header
     ua = random.choice(uas)
     header = {"User-Agent": ua}
+
 
 
 def wrongsyn(query):
@@ -821,10 +776,10 @@ def get_stats(soup):
     :param soup:
     :return:
     """
-    question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
-    question_stats = (soup.find_all("span", class_="vote-count-post")[0].get_text())
-    question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0]
-                                                            .get_text()).replace("\n", " ")).replace("     "," | "))
+    question_title = (soup.find_all("a",class_="question-hyperlink")[0].get_text())
+    question_stats = (soup.find_all("span",class_="vote-count-post")[0].get_text())
+    question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div",\
+                        class_="module question-stats")[0].get_text()).replace("\n", " ")).replace("     "," | "))
     question_desc = (soup.find_all("div", class_="post-text")[0])
     add_urls(question_desc)
     question_desc = question_desc.get_text()
@@ -859,11 +814,11 @@ def hastags():
 def dispres(url):
     """
     Display result page
-    :param url: URL of the search result
+    :param url:
     :return:
     """
     randomheaders()
-    res_page = requests.get(url, headers=header)
+    res_page = requests.get(url + query, headers=header)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
 
@@ -879,7 +834,7 @@ def dispres(url):
         print_green("\n\nAnswer:\n")
         print("-------\n" + dispstr(answer) + "\n-------\n")
         print(bold("Question URL:"))
-        print_blue(underline(url) + "\n")
+        print_blue(underline(url)+"\n")
         return
     except IndexError as e:
         print_warning("\n\nAnswer:\n\t No answer found for this question...")
@@ -894,10 +849,10 @@ def main():
 
     global rn  # Result number (for -r arg)
     global ir  # interactive mode off (for -i arg)
-    global tag  # tag based search (for -t arg)
-    global query  # query variable
-    colorama.init()  # for colorama support in windows
-    fixCodePage()  # For fixing codepage errors in windows
+    global tag # tag based search (for -t arg)
+    global query # query variable
+    colorama.init() # for colorama support in windows
+    fixCodePage() # For fixing codepage errors in windows
 
     # IF there is no command line options or if it is help argument:
     if (len(sys.argv) == 1) or ((sys.argv[1] == "-h") or (sys.argv[1] == "--help")):
@@ -905,29 +860,28 @@ def main():
         sys.exit(0)
     else:
         try:
-            options, rem = getopt.getopt(sys.argv[1:], "niudat:r:q:",
-                                         ["new", "interactive", "user", "debug", "api", "tag=", "res=", "query="])
+            options, rem = getopt.getopt(sys.argv[1:],"niudat:r:q:", [ "new" , "interactive" , "user" , "debug" , "api" ,"tag=" , "res=" ,"query=" ])
         except getopt.GetoptError:
             helpman()
             sys.exit(1)
-        loaduseragents()  # Populates the user agents array
+        loaduseragents() # Populates the user agents array
         # Gets the CL Args
         if 'options' in locals():
             for opt, arg in options:
-                if opt in ("-d", "--debug"):
+                if opt in ("-d","--debug"):
                     global DEBUG
                     DEBUG = True
                 if opt in ("-i", "--interactive"):
                     ir = 1  # interactive mode on
                 if opt in ("-r", "--res"):
                     try:
-                        rn = int(arg)  # Result Number
+                        rn = int(arg) # Result Number
                     except ValueError:
                         print_warning("Wrong syntax...!\n")
                         helpman()
                         sys.exit(1)
                 if opt in ("-t", "--tag"):
-                    if len(arg) == 0:
+                    if len(arg)==0:
                         print_warning("Wrong syntax...!\n")
                         helpman()
                         sys.exit(1)
@@ -953,26 +907,25 @@ def main():
                     # Stackoverflow user profile support
                     import_json()
                     user = 0
-                    if len(rem) == 1:
+                    if len(rem)==1:
                         try:
                             user = int(rem[0])
-                            global manual  # Manual mode from command line
+                            global manual # Manual mode from command line
                             manual = 1
                         except ValueError:
-                            print_warning(
-                                "Wrong syntax. User ID must be an integer. Follow the instructions on this page "
-                                "to get your User ID: http://meta.stackexchange.com/a/111130\n")
+                            print_warning("Wrong syntax. User ID must be an integer. Follow the instructions on this page "
+                                          "to get your User ID: http://meta.stackexchange.com/a/111130\n")
                             helpman()
                             exit(1)
                     else:
                         global data_file
-                        global app_data
+                        global data
                         try:
                             load_datafile()
-                            if "user" in app_data:
-                                user = app_data["user"]
+                            if "user" in data:
+                                user = data["user"]
                             else:
-                                raise FileNotFoundError  # Manually raising to get value
+                                raise  FileNotFoundError # Manually raising to get value
                         except JSONDecodeError:
                             # This maybe some write failures
                             del_datafile()
@@ -983,14 +936,13 @@ def main():
                             print_warning("Default user not set...\n")
                             try:
                                 # Code to execute when first time user runs socli -u
-                                app_data['user'] = int(inputs("Enter your Stackoverflow User ID: "))
+                                data['user'] = int(inputs("Enter your Stackoverflow User ID: "))
                                 save_datafile()
-                                user = app_data['user']
+                                user = data['user']
                                 print_green("\nUserID saved...\n")
                             except ValueError:
                                 print_warning("\nUser ID must be an integer.")
-                                print(
-                                    "\nFollow the instructions on this page to get your User ID: http://meta.stackexchange.com/a/111130")
+                                print("\nFollow the instructions on this page to get your User ID: http://meta.stackexchange.com/a/111130")
                                 exit(1)
                     userpage(user)
                     exit(0)
@@ -1006,8 +958,7 @@ def main():
             wrongsyn(query)
             socl_manusearch(query, rn)
         elif (rn == 0):
-            print_warning(
-                "Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
+            print_warning("Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
         elif (ir == 1):
             wrongsyn(query)
             socli_interactive(query)
@@ -1016,7 +967,6 @@ def main():
         else:
             print_warning("Wrong syntax...!\n")
             helpman()
-
 
 if __name__ == '__main__':
     main()
