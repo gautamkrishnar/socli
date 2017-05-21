@@ -14,6 +14,7 @@ import requests
 import urwid
 from bs4 import BeautifulSoup
 import random
+import re
 
 # Global vars:
 DEBUG = True  # Set True for enabling debugging
@@ -271,7 +272,17 @@ def get_questions_for_query_google(query, count=10):
             question_desc = result.find("span", class_="st").get_text()
             if question_desc=="": # For avoiding instant answers
                 raise NameError #Explicit raising
-            question_url = "https://www.google.com/" + result.find("a").get("href")
+            question_url = result.find("a").get("href") #Retrieves the Stack Overflow link
+
+            if "/url?q=" in question_url[0:7]:
+                question_url = question_url[7:] #Removes the "/url?q=" prefix
+            if question_url[:30] == "http://www.google.com/url?url=": #Used to get rid of this header and just retrieve the Stack Overflow link
+                question_url = question_url[30:]
+            if "http" not in question_url[:4]: 
+                question_url = "https://" + question_url #Add the protocol if it doesn't already exist
+            if not bool(re.search("/questions/[0-9]+", question_url)): #Makes sure that we stay in the questions section of Stack Overflow
+                i -= 1
+                continue
             questions.append([question_title, question_desc, question_url])
         except NameError:
             i -= 1
@@ -823,8 +834,11 @@ def get_stats(soup):
     """
     question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
     question_stats = (soup.find_all("span", class_="vote-count-post")[0].get_text())
-    question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0]
-                                                            .get_text()).replace("\n", " ")).replace("     "," | "))
+    try:
+        question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0]
+                                                                .get_text()).replace("\n", " ")).replace("     "," | "))
+    except IndexError as e:
+        print("Could not load statistics.")
     question_desc = (soup.find_all("div", class_="post-text")[0])
     add_urls(question_desc)
     question_desc = question_desc.get_text()
