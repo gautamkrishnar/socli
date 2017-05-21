@@ -592,7 +592,6 @@ def socli_interactive(query):
                 raise urwid.ExitMainLoop()
 
         def select_question(self, url):
-            global google_search
             if not google_search:
                 url = sourl + url
             question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
