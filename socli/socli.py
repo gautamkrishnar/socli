@@ -14,6 +14,7 @@ import requests
 import urwid
 from bs4 import BeautifulSoup
 import random
+import re
 
 # Global vars:
 DEBUG = True  # Set True for enabling debugging
@@ -27,7 +28,9 @@ data_file = os.path.join(os.path.dirname(__file__), "data.json")  # Data file lo
 query = ""  # Query
 uas = []  # User agent list
 header = {}  # Request header
-google_search = True  # Uses google search. Enabled by default.
+google_search = True # Uses google search. Enabled by default.
+google_search_url = "https://www.google.com/search?q=site:stackoverflow.com+" #Google search query URL
+
 
 ### To support python 2:
 if sys.version < '3.0.0':
@@ -252,10 +255,9 @@ def get_questions_for_query_google(query, count=10):
     :return: list of [ (question_text, question_description, question_url) ]
     """
     i = 0
-    search_url = "https://www.google.com/search?q=site:stackoverflow.com+"
     questions = []
     randomheaders()
-    search_results = requests.get(search_url + query, headers=header)
+    search_results = requests.get(google_search_url + query, headers=header)
     soup = BeautifulSoup(search_results.text, 'html.parser')
     try:
         soup.find_all("div", class_="g")[0]  # For explicitly raising exception
@@ -265,19 +267,22 @@ def get_questions_for_query_google(query, count=10):
     for result in soup.find_all("div", class_="g"):
         if i == count:
             break
-        i += 1
         try:
             question_title = result.find("h3", class_="r").get_text()[:-17]
             question_desc = result.find("span", class_="st").get_text()
             if question_desc=="": # For avoiding instant answers
                 raise NameError #Explicit raising
-            question_url = "https://www.google.com/" + result.find("a").get("href")
+            question_url = result.find("a").get("href") #Retrieves the Stack Overflow link
+            question_url = fixGoogleURL(question_url)
+
+            if question_url is None:
+                continue
+
             questions.append([question_title, question_desc, question_url])
+            i += 1
         except NameError:
-            i -= 1
             continue
         except AttributeError:
-            i -= 1
             continue
     return questions
 
@@ -587,7 +592,8 @@ def socli_interactive(query):
                 raise urwid.ExitMainLoop()
 
         def select_question(self, url):
-            url = sourl + url
+            if not google_search:
+                url = sourl + url
             question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
 
             if not answers:
@@ -607,7 +613,10 @@ def socli_interactive(query):
     HEADER = Header()
 
     try:
-        questions = get_questions_for_query(query)
+        if google_search:
+            questions = get_questions_for_query_google(query)
+        else:
+            questions = get_questions_for_query(query)
         QUESTION_PAGE = SelectQuestionPage(questions)
         LOOP = urwid.MainLoop(QUESTION_PAGE, palette)
         LOOP.run()
@@ -615,7 +624,8 @@ def socli_interactive(query):
     except UnicodeEncodeError:
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
-    except requests.exceptions.ConnectionError:
+    except requests.exceptions.ConnectionError as e:
+        print(e)
         print_fail("Please check your internet connectivity...")
     except Exception as e:
         showerror(e)
@@ -633,14 +643,20 @@ def socl_manusearch(query, rn):
     query = urlencode(query)
     try:
         randomheaders()
-        search_res = requests.get(soqurl + query, headers=header)
-        soup = BeautifulSoup(search_res.text, 'html.parser')
+        #Set count = 99 so you can choose question numbers higher than 10
+        count = 99
+        res_url = None
         try:
-            res_url = sourl + (soup.find_all("div", class_="question-summary")[rn - 1].a.get('href'))
+            if google_search:
+                questions = get_questions_for_query_google(query, count)
+                res_url = questions[rn - 1][2]
+            else:
+                questions = get_questions_for_query(query, count)
+                res_url = sourl + questions[rn - 1][2]
+            dispres(res_url)
         except IndexError:
             print_warning("No results found...")
             sys.exit(1)
-        dispres(res_url)
     except UnicodeEncodeError:
         print_warning("Encoding error: Use \"chcp 65001\" command before "
                       "using socli...")
@@ -823,8 +839,11 @@ def get_stats(soup):
     """
     question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
     question_stats = (soup.find_all("span", class_="vote-count-post")[0].get_text())
-    question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0]
-                                                            .get_text()).replace("\n", " ")).replace("     "," | "))
+    try:
+        question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0]
+                                                                .get_text()).replace("\n", " ")).replace("     "," | "))
+    except IndexError as e:
+        print("Could not load statistics.")
     question_desc = (soup.find_all("div", class_="post-text")[0])
     add_urls(question_desc)
     question_desc = question_desc.get_text()
@@ -885,6 +904,27 @@ def dispres(url):
         print_warning("\n\nAnswer:\n\t No answer found for this question...")
         sys.exit(0)
 
+def fixGoogleURL(url): 
+    """
+    Fixes the url extracted from HTML when 
+    performing a google search
+    :param url:
+    :return: Correctly formatted URL to be used in requests.get
+    """
+    if "/url?q=" in url[0:7]:
+        url = url[7:] #Removes the "/url?q=" prefix
+
+    if url[:30] == "http://www.google.com/url?url=": #Used to get rid of this header and just retrieve the Stack Overflow link
+        url = url[30:]
+
+    if "http" not in url[:4]: 
+        url = "https://" + url #Add the protocol if it doesn't already exist
+
+    if not bool(re.search("/questions/[0-9]+", url)): #Makes sure that we stay in the questions section of Stack Overflow
+        i -= 1
+        return None
+
+    return url
 
 def main():
     """
