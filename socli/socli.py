@@ -582,8 +582,7 @@ def socli_interactive(query):
             return True
 
         def keypress(self, size, key):
-            if key in '012345679':
-                # fetch answers and question info
+            if key in '0123456789':
                 question_url = self.questions[int(key)][2]
                 self.select_question(question_url)
             elif key in {'down', 'up'}:
