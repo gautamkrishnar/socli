@@ -227,6 +227,7 @@ def get_questions_for_query(query, count=10):
     questions = []
     randomheaders()
     search_res = requests.get(soqurl + query, headers=header)
+    captchacheck(search_res.url)
     soup = BeautifulSoup(search_res.text, 'html.parser')
     try:
         soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
@@ -260,6 +261,7 @@ def get_questions_for_query_google(query, count=10):
     questions = []
     randomheaders()
     search_results = requests.get(google_search_url + query, headers=header)
+    captchacheck(search_results.url)
     soup = BeautifulSoup(search_results.text, 'html.parser')
     try:
         soup.find_all("div", class_="g")[0]  # For explicitly raising exception
@@ -278,6 +280,7 @@ def get_questions_for_query_google(query, count=10):
             question_url = fixGoogleURL(question_url)
 
             if question_url is None:
+                i = i-1
                 continue
 
             questions.append([question_title, question_desc, question_url])
@@ -297,6 +300,7 @@ def get_question_stats_and_answer(url):
     """
     randomheaders()
     res_page = requests.get(url, headers=header)
+    captchacheck(res_page.url)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][
@@ -314,6 +318,7 @@ def socli_interactive_windows(query):
     """
     try:
         search_res = requests.get(soqurl + query)
+        captchacheck(search_res.url)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
             soup.find_all("div", class_="question-summary")[0]  # For explictly raising exception
@@ -884,6 +889,7 @@ def dispres(url):
     """
     randomheaders()
     res_page = requests.get(url, headers=header)
+    captchacheck(res_page.url)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
 
@@ -905,6 +911,7 @@ def dispres(url):
         print_warning("\n\nAnswer:\n\t No answer found for this question...")
         sys.exit(0)
 
+
 def fixGoogleURL(url): 
     """
     Fixes the url extracted from HTML when 
@@ -922,10 +929,24 @@ def fixGoogleURL(url):
         url = "https://" + url #Add the protocol if it doesn't already exist
 
     if not bool(re.search("/questions/[0-9]+", url)): #Makes sure that we stay in the questions section of Stack Overflow
-        i -= 1
         return None
 
     return url
+
+
+def captchacheck(url):
+    """
+    Exits program when their is a captcha. Prevents errors.
+    Users will have to manually verfify their identity.
+    :param url: URL of stackoverflow
+    :return:
+    """
+    if re.search(".com/nocaptcha", url): # Searching for stackoverflow captcha check
+        print_warning("Stackoverflow captcha check triggered. Please verfify your identity by visiting: "+url)
+        exit(0)
+
+    ### TODO: Add captcha check for Google
+
 
 def main():
     """
