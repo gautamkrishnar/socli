@@ -437,16 +437,16 @@ def socli_interactive(query):
                 body=self.answer_text,
                 footer=urwid.Pile([
                     QuestionURL(question_url),
-                    UnicodeText(u'\u2191: next answer, \u2193: previous answer, o: open in browser, \u2190: back')
+                    UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back')
                 ])
             )
             urwid.WidgetWrap.__init__(self, answer_frame)
 
         def keypress(self, size, key):
             if key in {'down', 'b', 'B'}:
-                self.answer_text.prev_ans()
-            elif key in {'up', 'n', 'N'}:
                 self.answer_text.next_ans()
+            elif key in {'up', 'n', 'N'}:
+                self.answer_text.prev_ans()
             elif key in {'o', 'O'}:
                 import webbrowser
                 HEADER.event('browser', "Opening in your browser...")
