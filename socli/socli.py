@@ -17,7 +17,7 @@ import random
 import re
 
 # Global vars:
-DEBUG = True  # Set True for enabling debugging
+DEBUG = False  # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
@@ -30,7 +30,9 @@ uas = []  # User agent list
 header = {}  # Request header
 google_search = True # Uses google search. Enabled by default.
 google_search_url = "https://www.google.com/search?q=site:stackoverflow.com+" #Google search query URL
-
+# Suppressing InsecureRequestWarning
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 ### To support python 2:
 if sys.version < '3.0.0':
