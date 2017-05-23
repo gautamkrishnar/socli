@@ -21,7 +21,7 @@ setup(
     entry_points = {"console_scripts": ['socli = socli.socli:main']},
     install_requires=['BeautifulSoup4','requests','colorama','Py-stackExchange', 'urwid'],
     requires=['BeautifulSoup4','requests','colorama','PyStackExchange', 'urwid'],
-    version='3.5',
+    version='3.6',
     url='http://www.github.com/gautamkrishnar/socli',
     keywords="stack overflow cli",
     license='BSD',

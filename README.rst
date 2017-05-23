@@ -301,6 +301,25 @@ Arguments (optional)
 |           |           | -u        |           |
 |           |           | manually. |           |
 +-----------+-----------+-----------+-----------+
+| -s        | --sosearc | SoCLI     | **socli   |
+|           | h         | uses      | -s -q for |
+|           |           | Google    | loop      |
+|           |           | search by | python**  |
+|           |           | default   |           |
+|           |           | to search |           |
+|           |           | for       |           |
+|           |           | questions |           |
+|           |           | .         |           |
+|           |           | To        |           |
+|           |           | override  |           |
+|           |           | this and  |           |
+|           |           | use       |           |
+|           |           | stackover |           |
+|           |           | flow's    |           |
+|           |           | default   |           |
+|           |           | search    |           |
+|           |           | instead.  |           |
++-----------+-----------+-----------+-----------+
 | -h        | --help    | Displays  | **socli   |
 |           |           | the help  | --help**  |
 |           |           | text.     |           |
@@ -462,7 +481,7 @@ Sponsor SoCLI on
 Liked it?
 ~~~~~~~~~
 
-Hope you liked this project, don't forget to give it a star on GitHub
+Hope you liked this project, don't forget to give it a star
 
 .. |PyPI version| image:: https://badge.fury.io/py/socli.svg
    :target: https://badge.fury.io/py/socli

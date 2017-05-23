@@ -1,6 +1,13 @@
 SoCLI Changelog
 ================
 
+Release 3.6 
+---------------------------
+
+* Implemented usage of Google search instead of stackoverflow's default search
+* Added code to test captcha checks
+* Many bugs fixed
+
 
 Release 3.5 
 ---------------------------
