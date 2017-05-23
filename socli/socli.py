@@ -842,7 +842,7 @@ def get_stats(soup):
         question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0]
                                                                 .get_text()).replace("\n", " ")).replace("     "," | "))
     except IndexError as e:
-        print("Could not load statistics.")
+        question_stats = "Could not load statistics."
     question_desc = (soup.find_all("div", class_="post-text")[0])
     add_urls(question_desc)
     question_desc = question_desc.get_text()
