@@ -30,9 +30,8 @@ uas = []  # User agent list
 header = {}  # Request header
 google_search = True # Uses google search. Enabled by default.
 google_search_url = "https://www.google.com/search?q=site:stackoverflow.com+" #Google search query URL
-# Suppressing InsecureRequestWarning
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+# Suppressing InsecureRequestWarning and many others
+requests.packages.urllib3.disable_warnings()
 
 ### To support python 2:
 if sys.version < '3.0.0':
@@ -921,6 +920,8 @@ def fixGoogleURL(url):
     :param url:
     :return: Correctly formatted URL to be used in requests.get
     """
+    if "&sa=" in url:
+        url=url.split("&")[0]
     if "/url?q=" in url[0:7]:
         url = url[7:] #Removes the "/url?q=" prefix
 
