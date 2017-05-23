@@ -37,7 +37,6 @@ Install **python** and just use **pip** command to install **socli**:
 
 For Windows
 '''''''''''
-    
 
 `Download and install Python <https://www.python.org/downloads/>`__.
 Don't forget to check the option "Add to path".
@@ -49,7 +48,7 @@ command to install **socli**:
 
     pip install socli
 
-Use **easy\_install** if your Python path has a space in it. `Read
+Use **easy\_install** if your python path have a space in it. `Read
 more: "Failed to create
 process" <https://github.com/gautamkrishnar/socli/issues/6>`__:
 
@@ -97,8 +96,7 @@ with its most voted answer. Pretty quick, right?
 Interactive Search
 ''''''''''''''''''
 
-You can search Stack Overflow interactively by using the command
-below:
+You can search Stack Overflow interactively by using the command below:
 
 .. code:: sh
 
@@ -108,11 +106,11 @@ This will display a list of questions from Stack Overflow for the query
 "*html error 404*" and it will allow you to choose any of the questions
 you like interactively. When you choose a question, it will display the
 complete description of the chosen question with its most voted answer.
-You can also browse through the other answers to that question using
-the up and down arrow keys as well as go back to the list of questions
-using the left arrow key.
+You can also browse through the other answers to that question using the
+up and down arrow keys as well as go back to the list of questions using
+the left arrow key.
 
-Manual Search 
+Manual Search
 '''''''''''''
 
 This will allow you to specify a requested question number for your
@@ -122,8 +120,8 @@ query. For example, consider the following command:
 
     socli -r 2 -q javascript prototype function
 
-This command searches for "*javascript prototype function*" in Stack Overflow and
-displays the second question that contains it.
+This command searches for "*javascript prototype function*" in Stack
+Overflow and displays the second question that contains it.
 
 Topic-Based Search
 ''''''''''''''''''
@@ -187,7 +185,7 @@ Syntax:
 
 ::
 
-    Usage: socli [Arguments] < Search Query >
+    Usage: socli [ Arguments] < Search Query >
 
 Arguments (optional)
                     
@@ -197,8 +195,8 @@ Arguments (optional)
 |           |           | on        |           |
 +===========+===========+===========+===========+
 | -q        | --query   | Used to   | **socli   |
-|           |           | specify   | -q query**|
-|           |           | the query |           |
+|           |           | specify   | -q        |
+|           |           | the query | query**   |
 |           |           | when      |           |
 |           |           | arguments |           |
 |           |           | are used. |           |
@@ -216,12 +214,12 @@ Arguments (optional)
 |           |           | display   |           |
 |           |           | the same  |           |
 |           |           | result as |           |
-|           |           | "socli    |           |
-|           |           | query".   |           |
+|           |           | **socli   |           |
+|           |           | query**.  |           |
 +-----------+-----------+-----------+-----------+
-| -i        | --interac | Used to   | **socli -i|
-|           | tive      | search    | -q query**|
-|           |           | interacti |           |
+| -i        | --interac | Used to   | **socli   |
+|           | tive      | search    | -i -q     |
+|           |           | interacti | query**   |
 |           |           | vely.     |           |
 |           |           | It        |           |
 |           |           | doesn't   |           |
@@ -235,8 +233,8 @@ Arguments (optional)
 |           |           | --query   |           |
 |           |           | after it. |           |
 +-----------+-----------+-----------+-----------+
-| -r        | --res     | Used for  | **socli -r|
-|           |           | manual    | 4 -q      |
+| -r        | --res     | Used for  | **socli   |
+|           |           | manual    | -r 4 -q   |
 |           |           | search.   | query**   |
 |           |           | It takes  |           |
 |           |           | the       |           |
@@ -252,13 +250,13 @@ Arguments (optional)
 |           |           | --query   |           |
 |           |           | after it. |           |
 +-----------+-----------+-----------+-----------+
-| -t        | --tag     | Specifies | **socli -t|
-|           |           | the tag   | js -q     |
+| -t        | --tag     | Specifies | **socli   |
+|           |           | the tag   | -t js -q  |
 |           |           | to search | query**   |
 |           |           | for the   |           |
 |           |           | query on  |           |
-|           |           | stack     |           |
-|           |           | overflow. |           |
+|           |           | Stack     |           |
+|           |           | Overflow. |           |
 |           |           | It must   |           |
 |           |           | be        |           |
 |           |           | followed  |           |
@@ -268,17 +266,17 @@ Arguments (optional)
 |           |           | after it. |           |
 +-----------+-----------+-----------+-----------+
 | -n        | --new     | Opens the | **socli   |
-|           |           | web       | -new**    |
+|           |           | web       | --new**   |
 |           |           | browser   |           |
 |           |           | to create |           |
 |           |           | a new     |           |
 |           |           | question  |           |
-|           |           | on stack  |           |
-|           |           | overflow. |           |
+|           |           | on Stack  |           |
+|           |           | Overflow. |           |
 +-----------+-----------+-----------+-----------+
-| -u        | --user    | Displays  | **socli -u|
-|           |           | the user  | 22656**   |
-|           |           | profile   |           |
+| -u        | --user    | Displays  | **socli   |
+|           |           | the user  | -u        |
+|           |           | profile   | 22656**   |
 |           |           | informati |           |
 |           |           | ons.      |           |
 |           |           | If no     |           |
@@ -311,7 +309,7 @@ Arguments (optional)
 Query
      
 
-This refers to what you're searching for in Stack Overflow
+This term refers to what you're searching for in Stack Overflow.
 
 Features
 ~~~~~~~~
@@ -349,7 +347,7 @@ follow the steps below:
 7. Commit your changes: ``git commit -am 'Added new feature'``
 8. Push to the branch: ``git push``
 9. Submit a `new pull
-   request <https://github.com/gautamkrishnar/socli/pull/new>`__ :smile:
+   request <https://github.com/gautamkrishnar/socli/pull/new>`__ 
 
 Contributors
 ~~~~~~~~~~~~
@@ -362,7 +360,13 @@ SoCLI more interactive
 `#35 <https://github.com/gautamkrishnar/socli/pull/35>`__.
 `36 <https://github.com/gautamkrishnar/socli/pull/36>`__
 `#40 <https://github.com/gautamkrishnar/socli/pull/40>`__ You rocks...
-\* `Killbee <https://github.com/kilbee>`__ for making SoCLI colorful
+\* `Aaxu <https://github.com/aaxu>`__ for the PR:
+`#59 <https://github.com/gautamkrishnar/socli/pull/59>`__,
+`#58 <https://github.com/gautamkrishnar/socli/pull/58>`__,
+`#56 <https://github.com/gautamkrishnar/socli/pull/56>`__,
+`#54 <https://github.com/gautamkrishnar/socli/pull/54>`__, and
+`#53 <https://github.com/gautamkrishnar/socli/pull/53>`__. High Five! \*
+`Killbee <https://github.com/kilbee>`__ for making SoCLI colorful
 `#3 <https://github.com/gautamkrishnar/socli/pull/3>`__ \* `Sam
 Dean <https://github.com/deanWombourne>`__ for adding Macintosh SoCLI
 installation instructions
@@ -393,7 +397,19 @@ OpenCollective `#27 <https://github.com/gautamkrishnar/socli/pull/27>`__
 `#30 <https://github.com/gautamkrishnar/socli/issues/30>`__ \* `Akshatha
 Nayak <https://github.com/Aksh77>`__ for your first contribution to an
 open source project. PR
-`#31 <https://github.com/gautamkrishnar/socli/issues/31>`__
+`#31 <https://github.com/gautamkrishnar/socli/issues/31>`__ \* `Levi
+Sabah <https://github.com/levisabah>`__ for PR
+`#43 <https://github.com/gautamkrishnar/socli/pull/43>`__ \*
+`liamhawkins <https://github.com/liamhawkins>`__ for PR
+`#44 <https://github.com/gautamkrishnar/socli/pull/44>`__ and
+`#45 <https://github.com/gautamkrishnar/socli/pull/45>`__ \*
+`Arount <https://github.com/arount>`__ for fixing issue
+`#48 <https://github.com/gautamkrishnar/socli/issues/48>`__ via PR
+`#47 <https://github.com/gautamkrishnar/socli/pull/47>`__ \* `Cédric
+Picard <https://github.com/cym13>`__ for the issue
+`#42 <https://github.com/gautamkrishnar/socli/issues/42>`__ \* `Amartya
+Chaudhuri <https://github.com/amartyaamp>`__ for his first contribution
+to SOCLI `#51 <https://github.com/gautamkrishnar/socli/pull/51>`__
 
 Bugs
 ~~~~
@@ -422,6 +438,8 @@ Thanks
    -  `The really big list of really interesting Open Source
       projects <https://medium.com/@likid.geimfari/the-list-of-interesting-open-source-projects-2daaa2153f7c#.6qm1v3ioa>`__
    -  `Ostechnix <http://www.ostechnix.com/search-browse-stack-overflow-website-commandline/>`__
+   -  `lamiradadelreplicante.com <lamiradadelreplicante.com/2017/04/17/socli-navegando-por-stack-overflow-sin-salir-de-la-terminal>`__
+   -  `dou.ua <https://dou.ua/lenta/digests/python-digest-13/>`__
 
 -  Tweets:
 
@@ -430,6 +448,16 @@ Thanks
 
 -  Thanks to my favourite IDE JetBrains PyCharm
 
+Sponsors
+~~~~~~~~
+
+Sponsor SoCLI on
+`Collaborizm <https://www.collaborizm.com/project/S1cbUui6>`__ or on
+`Open Collective <https://opencollective.com/socli>`__:
+
+-  Thanks `Steven Reubenstone <https://www.collaborizm.com/profile/1>`__
+   for contributing $5 for the issue
+   `#22 <https://github.com/gautamkrishnar/socli/issues/22>`__
 
 Liked it?
 ~~~~~~~~~
