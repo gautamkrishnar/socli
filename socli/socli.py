@@ -632,7 +632,6 @@ def socli_interactive(query):
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError as e:
-        print(e)
         print_fail("Please check your internet connectivity...")
     except Exception as e:
         showerror(e)
@@ -940,15 +939,22 @@ def fixGoogleURL(url):
 def captchacheck(url):
     """
     Exits program when their is a captcha. Prevents errors.
-    Users will have to manually verfify their identity.
+    Users will have to manually verify their identity.
     :param url: URL of stackoverflow
     :return:
     """
-    if re.search(".com/nocaptcha", url): # Searching for stackoverflow captcha check
-        print_warning("Stackoverflow captcha check triggered. Please verfify your identity by visiting: "+url)
-        exit(0)
-
-    ### TODO: Add captcha check for Google
+    if google_search:
+        googleErrorDisplayMessage = "Google thinks you're a bot because you're issuing too many queries too quickly! " + \
+                                    "Now you'll have to wait about an hour before you're unblocked... :(. Use the -s tag " + \
+                                    "to search via Stack Overflow instead."
+        #Check if google detects user as a bot
+        if re.search("ipv4\.google\.com/sorry", url):
+            print_warning(googleErrorDisplayMessage)
+            exit(0)
+    else:
+        if re.search("\.com/nocaptcha", url): # Searching for stackoverflow captcha check
+            print_warning("StackOverflow captcha check triggered. Please wait a few seconds before trying again.")
+            exit(0)
 
 
 def main():
