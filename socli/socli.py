@@ -451,9 +451,9 @@ def socli_interactive(query):
             urwid.WidgetWrap.__init__(self, answer_frame)
 
         def keypress(self, size, key):
-            if key in {'down', 'b', 'B'}:
+            if key in {'down', 'n', 'N'}:
                 self.answer_text.next_ans()
-            elif key in {'up', 'n', 'N'}:
+            elif key in {'up', 'b', 'B'}:
                 self.answer_text.prev_ans()
             elif key in {'o', 'O'}:
                 import webbrowser
