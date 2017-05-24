@@ -15,6 +15,7 @@ import urwid
 from bs4 import BeautifulSoup
 import random
 import re
+import subprocess
 
 # Global vars:
 DEBUG = False  # Set True for enabling debugging
@@ -30,6 +31,7 @@ uas = []  # User agent list
 header = {}  # Request header
 google_search = True # Uses google search. Enabled by default.
 google_search_url = "https://www.google.com/search?q=site:stackoverflow.com+" #Google search query URL
+question_post = None #Used to see whether we are currently displaying a question post
 # Suppressing InsecureRequestWarning and many others
 requests.packages.urllib3.disable_warnings()
 
@@ -84,6 +86,18 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+class EditedMainLoop(urwid.MainLoop):
+    def __init__(self, widget, palette=(), screen=None,
+            handle_mouse=True, input_filter=None, unhandled_input=None,
+            event_loop=None, pop_ups=False):
+        super(EditedMainLoop, self).__init__(widget, palette, screen, handle_mouse, input_filter, unhandled_input, event_loop, pop_ups)
+
+    def process_input(self, keys):
+        super(EditedMainLoop, self).process_input(keys)
+        global question_post
+        if question_post != None:
+            if 'window resize' in keys:
+                question_post.keypress(question_post, 'window resize')
 
 def format_str(str, color):
     return "{0}{1}{2}".format(color, str, colorama.Style.RESET_ALL)
@@ -433,22 +447,34 @@ def socli_interactive(query):
             Construct the Question Page.
             :param data: tuple of  (answers, question_title, question_desc, question_stats, question_url)
             """
+            answer_frame = self.makeFrame(data)
+            urwid.WidgetWrap.__init__(self, answer_frame)
+
+        def makeFrame(self, data):
             answers, question_title, question_desc, question_stats, question_url = data
+            self.data = data
+            self.question_desc = question_desc
             self.url = question_url
             self.answer_text = AnswerText(answers)
+            self.screenHeight, screenWidth = subprocess.check_output(['stty', 'size']).split()
+            self.question_text = urwid.BoxAdapter(QuestionDescription(question_desc), int(max(1, (int(self.screenHeight) - 7) / 2)))
             answer_frame = urwid.Frame(
-                header=urwid.Pile([
+                header= urwid.Pile( [
                     HEADER,
-                    QuestionText(question_title, question_desc, question_stats),
+                    QuestionTitle(question_title),
+                    self.question_text,
+                    QuestionStats(question_stats),
                     urwid.Divider('-')
                 ]),
                 body=self.answer_text,
-                footer=urwid.Pile([
+                footer= urwid.Pile([    
                     QuestionURL(question_url),
-                    UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back')
+                    UnicodeText(u'\u2191: next answer, \u2193: previous answer, o: open in browser, \u2190: back')
                 ])
             )
             urwid.WidgetWrap.__init__(self, answer_frame)
+
+            return answer_frame
 
         def keypress(self, size, key):
             if key in {'down', 'b', 'B'}:
@@ -460,7 +486,16 @@ def socli_interactive(query):
                 HEADER.event('browser', "Opening in your browser...")
                 webbrowser.open(self.url)
             elif key == 'left':
+                global question_post
+                question_post = None
                 LOOP.widget = QUESTION_PAGE
+            elif key == 'window resize':
+                screenHeight, screenWidth = subprocess.check_output(['stty', 'size']).split()
+                if self.screenHeight != screenHeight:
+                    self._invalidate()
+                    answer_frame = self.makeFrame(self.data)
+                    urwid.WidgetWrap.__init__(self, answer_frame)
+
 
     class Header(UnicodeText):
         """
@@ -550,18 +585,47 @@ def socli_interactive(query):
                 return False
             return True
 
-    class QuestionText(UnicodeText):
-        """ Title, description, and stats of the question,"""
+    class QuestionTitle(UnicodeText):
+        """ Title of the question,"""
 
-        def __init__(self, title, description, stats):
-            text = ["Question: ", ('title', title), description, ('metadata', stats)]
+        def __init__(self, title):
+            text = ["Question: ", ('title', title), "\n"]
+            UnicodeText.__init__(self, text)
+
+    #Must convert to BoxAdapter object if used as a flow widget.
+    class QuestionDescription(urwid.WidgetWrap):
+        """ Description of the question """
+
+        def __init__(self, description):
+            urwid.WidgetWrap.__init__(self, UnicodeText(''))
+            self.description = description
+            self.set_description()
+
+        def set_description(self):
+            """
+            We must use a box adapter to get the text to scroll when this widget is already in
+            a Pile from the main question page. Scrolling is necessary for long questions which are longer
+            than the length of the terminal.
+            """
+            self.content =  self.description.strip("\n").split("\n")
+            self._w = ScrollableTextBox(self.content)
+
+        def __len__(self):
+            """ return number of rows in this widget """
+            return len(self.content)
+
+    class QuestionStats(UnicodeText):
+        """ Stats of the question,"""
+
+        def __init__(self, stats):
+            text = ["\n", ('metadata', stats)]
             UnicodeText.__init__(self, text)
 
     class QuestionURL(UnicodeText):
         """ url of the question """
 
         def __init__(self, url):
-            text = [('heading', 'Question URL: '), url]
+            text = ["\n", ('heading', 'Question URL: '), url]
             UnicodeText.__init__(self, text)
 
     class SelectQuestionPage(urwid.WidgetWrap):
@@ -607,8 +671,9 @@ def socli_interactive(query):
                 print_warning("\n\nAnswer:\n\t No answer found for this question...")
                 sys.exit(0)
 
-            questions = QuestionPage((answers, question_title, question_desc, question_stats, url))
-            LOOP.widget = questions
+            global question_post
+            question_post = QuestionPage((answers, question_title, question_desc, question_stats, url))
+            LOOP.widget = question_post
 
     palette = [('answer', 'default', 'default'),
                ('title', 'light green, bold', 'default'),
@@ -625,7 +690,7 @@ def socli_interactive(query):
         else:
             questions = get_questions_for_query(query)
         QUESTION_PAGE = SelectQuestionPage(questions)
-        LOOP = urwid.MainLoop(QUESTION_PAGE, palette)
+        LOOP = EditedMainLoop(QUESTION_PAGE, palette)
         LOOP.run()
 
     except UnicodeEncodeError:
@@ -636,6 +701,7 @@ def socli_interactive(query):
         print_fail("Please check your internet connectivity...")
     except Exception as e:
         showerror(e)
+        print(e)
         print("exiting...")
         sys.exit(0)
 
