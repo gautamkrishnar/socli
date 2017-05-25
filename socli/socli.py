@@ -177,7 +177,7 @@ class QuestionPage(urwid.WidgetWrap):
             body=self.answer_text,
             footer= urwid.Pile([    
                 QuestionURL(question_url),
-                UnicodeText(u'\u2191: next answer, \u2193: previous answer, o: open in browser, \u2190: back')
+                UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back')
             ])
         )
         urwid.WidgetWrap.__init__(self, answer_frame)
@@ -185,9 +185,9 @@ class QuestionPage(urwid.WidgetWrap):
         return answer_frame
 
     def keypress(self, size, key):
-        if key in {'down', 'b', 'B'}:
+        if key in {'down', 'n', 'N'}:
             self.answer_text.next_ans()
-        elif key in {'up', 'n', 'N'}:
+        elif key in {'up', 'b', 'B'}:
             self.answer_text.prev_ans()
         elif key in {'o', 'O'}:
             import webbrowser
@@ -640,167 +640,6 @@ def socli_interactive(query):
     """
     if sys.platform == 'win32':
         return socli_interactive_windows(query)
-
-    class UnicodeText(urwid.Text):
-        """ encode all text to utf-8 """
-
-        def __init__(self, text):
-            # As we were encoding all text to utf-8 in output before with dispstr, do it automatically for all input
-            text = UnicodeText.to_unicode(text)
-            urwid.Text.__init__(self, text)
-
-        @classmethod
-        def to_unicode(cls, markup):
-            """convert urwid text markup object to utf-8"""
-            try:
-                return dispstr(markup)
-            except AttributeError:
-                mapped = [cls.to_unicode(i) for i in markup]
-                if isinstance(markup, tuple):
-                    return tuple(mapped)
-                else:
-                    return mapped
-
-    class QuestionPage(urwid.WidgetWrap):
-        """
-        Main container for urwid interactive mode.
-        """
-
-        def __init__(self, data):
-            """
-            Construct the Question Page.
-            :param data: tuple of  (answers, question_title, question_desc, question_stats, question_url)
-            """
-            answers, question_title, question_desc, question_stats, question_url = data
-            self.url = question_url
-            self.answer_text = AnswerText(answers)
-            answer_frame = urwid.Frame(
-                header=urwid.Pile([
-                    HEADER,
-                    QuestionText(question_title, question_desc, question_stats),
-                    urwid.Divider('-')
-                ]),
-                body=self.answer_text,
-                footer=urwid.Pile([
-                    QuestionURL(question_url),
-                    UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back')
-                ])
-            )
-            urwid.WidgetWrap.__init__(self, answer_frame)
-
-        def keypress(self, size, key):
-            if key in {'down', 'n', 'N'}:
-                self.answer_text.next_ans()
-            elif key in {'up', 'b', 'B'}:
-                self.answer_text.prev_ans()
-            elif key in {'o', 'O'}:
-                import webbrowser
-                HEADER.event('browser', "Opening in your browser...")
-                webbrowser.open(self.url)
-            elif key == 'left':
-                LOOP.widget = QUESTION_PAGE
-
-    class Header(UnicodeText):
-        """
-        Header of the question page. Event messages are recorded here.
-        """
-
-        def __init__(self):
-            self.current_event = None
-            UnicodeText.__init__(self, '')
-
-        def event(self, event, message):
-            self.current_event = event
-            self.set_text(message)
-
-        def clear(self, event):
-            if self.current_event == event:
-                self.set_text('')
-
-    class AnswerText(urwid.WidgetWrap):
-        """Answers to the question.
-
-        Long answers can be navigated up or down using the mouse.
-        """
-
-        def __init__(self, answers):
-            urwid.WidgetWrap.__init__(self, UnicodeText(''))
-            self._selectable = True  # so that we receive keyboard input
-            self.answers = answers
-            self.index = 0
-            self.set_answer()
-
-        def set_answer(self):
-            """
-            We must use a box adapter to get the text to scroll when this widget is already in
-            a Pile from the main question page. Scrolling is necessary for long answers which are longer
-            than the length of the terminal.
-            """
-            self.content = [('less-important', 'Answer: ')] + self.answers[self.index].split("\n")
-            self._w = ScrollableTextBox(self.content)
-
-        def prev_ans(self):
-            """go to previous answer."""
-            self.index -= 1
-            if self.index < 0:
-                self.index = 0
-                HEADER.event('answer-bounds', "No previous answers.")
-            else:
-                HEADER.clear('answer-bounds')
-            self.set_answer()
-
-        def next_ans(self):
-            """go to next answer."""
-            self.index += 1
-            if self.index > len(self.answers) - 1:
-                self.index = len(self.answers) - 1
-                HEADER.event('answer-bounds', "No more answers.")
-            else:
-                HEADER.clear('answer-bounds')
-            self.set_answer()
-
-        def __len__(self):
-            """ return number of rows in this widget """
-            return len(self.content)
-
-    class ScrollableTextBox(urwid.ListBox):
-        """ Display input text, scrolling through when there is not enough room.
-
-        Scrolling through text takes a little work to support on Urwid.
-        """
-
-        def __init__(self, content):
-            """
-            :param content: text string to be displayed
-            """
-            lines = [UnicodeText(line) for line in content]
-            body = urwid.SimpleFocusListWalker(lines)
-            urwid.ListBox.__init__(self, body)
-
-        def mouse_event(self, size, event, button, col, row, focus):
-            SCROLL_WHEEL_UP = 4
-            SCROLL_WHEEL_DOWN = 5
-            if button == SCROLL_WHEEL_DOWN:
-                self.keypress(size, 'down')
-            elif button == SCROLL_WHEEL_UP:
-                self.keypress(size, 'up')
-            else:
-                return False
-            return True
-
-    class QuestionText(UnicodeText):
-        """ Title, description, and stats of the question,"""
-
-        def __init__(self, title, description, stats):
-            text = ["Question: ", ('title', title), description, ('metadata', stats)]
-            UnicodeText.__init__(self, text)
-
-    class QuestionURL(UnicodeText):
-        """ url of the question """
-
-        def __init__(self, url):
-            text = [('heading', 'Question URL: '), url]
-            UnicodeText.__init__(self, text)
 
     class SelectQuestionPage(urwid.WidgetWrap):
 
