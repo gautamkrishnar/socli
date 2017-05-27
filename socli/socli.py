@@ -290,6 +290,11 @@ def get_questions_for_query_google(query, count=10):
             continue
         except AttributeError:
             continue
+            
+    #Check if there are any valid question posts
+    if not questions:
+        print_warning("No results found...")
+        sys.exit(0)
     return questions
 
 
@@ -930,8 +935,12 @@ def fixGoogleURL(url):
     if "http" not in url[:4]: 
         url = "https://" + url #Add the protocol if it doesn't already exist
 
-    if not bool(re.search("/questions/[0-9]+", url)): #Makes sure that we stay in the questions section of Stack Overflow
+    #Makes sure that we stay in the questions section of Stack Overflow
+    if not bool(re.search("/questions/[0-9]+", url)) and not bool(re.search("\.com/a/[0-9]", url)):
         return None
+
+    if url[:17] == "https:///url?url=": #Resolves rare bug in which this is a prefix
+        url = url[17:]
 
     return url
 
