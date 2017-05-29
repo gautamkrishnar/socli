@@ -229,7 +229,6 @@ def helpman():
     if sys.stdout.isatty(): #if not running in a pipe
 	#pager(output_text) #launches $PAGER or less 
 	pipepager(output_text, cmd="less -r")
-	a = 1
     else:
 	print(output_text)    
 	
