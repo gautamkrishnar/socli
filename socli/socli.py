@@ -331,7 +331,7 @@ def socli_interactive_windows(query):
     """
     try:
         
-	search_res = requests.get(soqurl + query)
+        search_res = requests.get(soqurl + query)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
             soup.find_all("div", class_="question-summary")[0]  # For explictly raising exception
