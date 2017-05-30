@@ -15,6 +15,9 @@ import urwid
 from bs4 import BeautifulSoup
 import random
 import re
+from pydoc import pager
+from pydoc import pipepager
+from StringIO import StringIO
 
 # Global vars:
 DEBUG = False  # Set True for enabling debugging
@@ -168,6 +171,12 @@ def helpman():
     Displays help
     :return:
     """
+    #Printing on pager
+    old_stdout = sys.stdout
+    result = StringIO()
+    sys.stdout = result
+    output_text = ''
+    
     print_header("Stack Overflow command line client:")
     print_green("\n\n\tUsage: socli [ Arguments ] < Search Query >\n\n")
     print_header("\n[ Arguments ] (optional):\n")
@@ -216,6 +225,16 @@ def helpman():
     print("\n\n SoCLI is an open source project hosted on github. Don't forget to star it if you liked it.\n Use GitHub"
           " issues to report problems: " + underline("http://github.com/gautamkrishnar/socli"))
 
+    #pager stuff
+    sys.stdout = old_stdout
+    output_text = result.getvalue()
+    
+    if sys.stdout.isatty(): #if not running in a pipe
+	#pager(output_text) #launches $PAGER or less 
+	pipepager(output_text, cmd="less -r")
+    else:
+	print(output_text)    
+	
 
 def get_questions_for_query(query, count=10):
     """
@@ -323,6 +342,7 @@ def socli_interactive_windows(query):
     :return:
     """
     try:
+        
         search_res = requests.get(soqurl + query)
         captchacheck(search_res.url)
         soup = BeautifulSoup(search_res.text, 'html.parser')
@@ -389,6 +409,7 @@ def socli_interactive_windows(query):
         except IndexError:
             print_warning("No results found...")
             sys.exit(0)
+
 
     except UnicodeEncodeError:
         print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
@@ -688,7 +709,14 @@ def userpage(userid):
     global app_data
     import stackexchange
     try:
-        if "api_key" not in app_data:
+        
+    	#Printing on pager
+	old_stdout = sys.stdout
+	result = StringIO()
+	sys.stdout = result
+	output_text = ''
+
+	if "api_key" not in app_data:
             app_data["api_key"] = None
         userprofile = stackexchange.Site(stackexchange.StackOverflow, app_key=app_data["api_key"]).user(userid)
         print(bold("\n User: " + userprofile.display_name.format()))
@@ -707,6 +735,17 @@ def userpage(userid):
         print('\t\t        Accept rate is: %.2f%%.' % rate)
         print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
         print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
+
+
+	#pager stuff
+	sys.stdout = old_stdout
+	output_text = result.getvalue()
+    
+    	if sys.stdout.isatty(): #if not running in a pipe
+		pipepager(output_text, cmd="less -r")
+    	else:
+		print(output_text)    
+
     except urllib.error.URLError:
         print_fail("Please check your internet connectivity...")
         exit(1)
@@ -892,6 +931,13 @@ def dispres(url):
     :param url: URL of the search result
     :return:
     """
+
+    #Printing on pager
+    old_stdout = sys.stdout
+    result = StringIO()
+    sys.stdout = result
+    output_text = ''
+
     randomheaders()
     res_page = requests.get(url, headers=header)
     captchacheck(res_page.url)
@@ -911,6 +957,16 @@ def dispres(url):
         print("-------\n" + dispstr(answer) + "\n-------\n")
         print(bold("Question URL:"))
         print_blue(underline(url) + "\n")
+    
+	#pager stuff
+    	sys.stdout = old_stdout
+    	output_text = result.getvalue()
+    
+    	if sys.stdout.isatty(): #if not running in a pipe
+		pipepager(output_text, cmd="less -r")
+    	else:
+		print(output_text)    
+
         return
     except IndexError as e:
         print_warning("\n\nAnswer:\n\t No answer found for this question...")
