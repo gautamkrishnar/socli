@@ -6,6 +6,7 @@
 """
 
 import getopt
+import argparse
 import os
 import sys
 import urllib
@@ -651,6 +652,10 @@ def socl_manusearch(query, rn):
     :param rn:
     :return:
     """
+    if rn < 1:
+        print_warning(
+            "Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
+        sys.exit(0)
     query = urlencode(query)
     try:
         randomheaders()
@@ -882,7 +887,7 @@ def hastags():
     """
     global soqurl
     global tag
-    for tags in tag.split(","):
+    for tags in tag:
         soqurl = soqurl + "[" + tags + "]" + "+"
 
 
@@ -965,141 +970,118 @@ def captchacheck(url):
             print_warning("StackOverflow captcha check triggered. Please wait a few seconds before trying again.")
             exit(0)
 
+def parseArguments(command):
+    """
+    Parses the command into arguments and flags
+    :param command: the command in list form
+    :return: an object that contains the values for all arguments
+    """
+
+    parser = argparse.ArgumentParser(description="Process SoCLI input")
+
+    #Flags that return true if present and false if not
+    parser.add_argument('--new', '-n', action='store_true')
+    parser.add_argument('--interactive', '-i', action='store_true')
+    parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--sosearch', '-s', action='store_true')
+    parser.add_argument('--api', '-a', action='store_true')
+    parser.add_argument('--delete', '-d', action='store_true')
+
+    #Accepts 1 argument. Returns None if flag is not present and 
+    #'STORED_USER' if flag is present, but no argument is supplied
+    parser.add_argument('--user', '-u', nargs='?', const='STORED_USER', type=int)
+
+    #Accepts one or more arguments
+    parser.add_argument('--tag', '-t', nargs='+')
+    parser.add_argument('--query', '-q', nargs='+', default=[])
+
+    #Accepts 0 or more arguments. Used to catch query if no flags are present
+    parser.add_argument('userQuery', nargs='*')
+
+    #Accepts 1 argument
+    parser.add_argument('--res', '-r', type=int)
+
+    namespace = parser.parse_args(command)
+    return namespace
+
+def retrieveSavedProfile():
+    global data_file
+    global app_data
+    user = None
+    try:
+        load_datafile()
+        if "user" in app_data:
+            user = app_data["user"]
+        else:
+            raise FileNotFoundError  # Manually raising to get value
+    except JSONDecodeError:
+        # This maybe some write failures
+        del_datafile()
+        print_warning("Error in parsing the data file, it will be now deleted. Please rerun the "
+                      "socli -u command.")
+        exit(1)
+    except FileNotFoundError:
+        print_warning("Default user not set...\n")
+        try:
+            # Code to execute when first time user runs socli -u
+            app_data['user'] = int(inputs("Enter your Stackoverflow User ID: "))
+            save_datafile()
+            user = app_data['user']
+            print_green("\nUserID saved...\n")
+        except ValueError:
+            print_warning("\nUser ID must be an integer.")
+            print(
+                "\nFollow the instructions on this page to get your User ID: http://meta.stackexchange.com/a/111130")
+            exit(1)
+    return user
 
 def main():
-    """
-    Main Function
-    :return:
-    """
-
-    global rn  # Result number (for -r arg)
-    global ir  # interactive mode off (for -i arg)
-    global tag  # tag based search (for -t arg)
-    global query  # query variable
-    colorama.init()  # for colorama support in windows
-    fixCodePage()  # For fixing codepage errors in windows
-
-    # IF there is no command line options or if it is help argument:
-    if (len(sys.argv) == 1) or ((sys.argv[1] == "-h") or (sys.argv[1] == "--help")):
-        helpman()
+    global query
+    namespace = parseArguments(sys.argv[1:])
+    print(namespace)
+    loaduseragents() #Populates the user agents array
+    query = ' '.join(namespace.query) + ' ' + ' '.join(namespace.userQuery)
+    if namespace.debug:
+        global DEBUG 
+        DEBUG = True
+    if namespace.new:
+        import webbrowser
+        print_warning("Opening stack overflow in your browser...")
+        webbrowser.open(sourl + "/questions/ask")
         sys.exit(0)
-    else:
-        try:
-            options, rem = getopt.getopt(sys.argv[1:], "niudsat:r:q:",
-                                         ["new", "interactive", "user", "debug", "sosearch","api", "tag=", "res=", "query="])
-        except getopt.GetoptError:
-            helpman()
-            sys.exit(1)
-        loaduseragents()  # Populates the user agents array
-        # Gets the CL Args
-        if 'options' in locals():
-            for opt, arg in options:
-                if opt in ("--debug"):
-                    global DEBUG
-                    DEBUG = True
-                if opt in ("-s","--sosearch"):
-                    global google_search
-                    google_search = False
-                if opt in ("-i", "--interactive"):
-                    ir = 1  # interactive mode on
-                if opt in ("-r", "--res"):
-                    try:
-                        rn = int(arg)  # Result Number
-                    except ValueError:
-                        print_warning("Wrong syntax...!\n")
-                        helpman()
-                        sys.exit(1)
-                if opt in ("-t", "--tag"):
-                    if len(arg) == 0:
-                        print_warning("Wrong syntax...!\n")
-                        helpman()
-                        sys.exit(1)
-                    tag = arg
-                    hastags()
-                if opt in ("-q", "--query"):
-                    query = arg
-                    if len(rem) > 0:
-                        query = query + " " + " ".join(rem)
-                if opt in ("-n", "--new"):
-                    import webbrowser
-                    print_warning("Opening stack overflow in your browser...")
-                    webbrowser.open(sourl + "/questions/ask")
-                    sys.exit(0)
-                if opt in ("-a", "--api"):
-                    set_api_key()
-                    exit(0)
-                if opt in ("-d", "--del"):
-                    del_datafile()
-                    print_warning("Data files deleted...")
-                    exit(0)
-                if opt in ("-u", "--user"):
-                    # Stackoverflow user profile support
-                    import_json()
-                    user = 0
-                    if len(rem) == 1:
-                        try:
-                            user = int(rem[0])
-                            global manual  # Manual mode from command line
-                            manual = 1
-                        except ValueError:
-                            print_warning(
-                                "Wrong syntax. User ID must be an integer. Follow the instructions on this page "
-                                "to get your User ID: http://meta.stackexchange.com/a/111130\n")
-                            helpman()
-                            exit(1)
-                    else:
-                        global data_file
-                        global app_data
-                        try:
-                            load_datafile()
-                            if "user" in app_data:
-                                user = app_data["user"]
-                            else:
-                                raise FileNotFoundError  # Manually raising to get value
-                        except JSONDecodeError:
-                            # This maybe some write failures
-                            del_datafile()
-                            print_warning("Error in parsing the data file, it will be now deleted. Please rerun the "
-                                          "socli -u command.")
-                            exit(1)
-                        except FileNotFoundError:
-                            print_warning("Default user not set...\n")
-                            try:
-                                # Code to execute when first time user runs socli -u
-                                app_data['user'] = int(inputs("Enter your Stackoverflow User ID: "))
-                                save_datafile()
-                                user = app_data['user']
-                                print_green("\nUserID saved...\n")
-                            except ValueError:
-                                print_warning("\nUser ID must be an integer.")
-                                print(
-                                    "\nFollow the instructions on this page to get your User ID: http://meta.stackexchange.com/a/111130")
-                                exit(1)
-                    userpage(user)
-                    exit(0)
-
-        if tag != "":
-            wrongsyn(query)
-        if (rn == -1) and (ir == 0) and tag == "":
-            if sys.argv[1] in ['-q', '--query']:
-                socli(" ".join(sys.argv[2:]))
-            else:
-                socli(" ".join(sys.argv[1:]))
-        elif (rn > 0):
-            wrongsyn(query)
-            socl_manusearch(query, rn)
-        elif (rn == 0):
-            print_warning(
-                "Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
-        elif (ir == 1):
-            wrongsyn(query)
-            socli_interactive(query)
-        elif query != "":
-            socli(query)
+    if namespace.api:
+        set_api_key()
+        sys.exit(0)
+    if namespace.user:
+        # Stackoverflow user profile support
+        import_json()
+        user = None
+        if namespace.user != 'STORED_USER':
+            global manual  # Manual mode from command line
+            manual = 1
+            user = namespace.user
         else:
-            print_warning("Wrong syntax...!\n")
-            helpman()
-
+            user = retrieveSavedProfile()
+        userpage(user)
+        sys.exit(0)
+    if namespace.delete:
+        del_datafile()
+        print_warning("Data files deleted...")
+        sys.exit(0)
+    if namespace.sosearch:
+        global google_search
+        google_search = False
+    if namespace.tag:
+        global tag
+        tag = namespace.tag
+        hastags()
+    if namespace.res:
+        questionNumber = namespace.res
+        socl_manusearch(query, questionNumber)
+    elif namespace.interactive:
+        socli_interactive(query)
+    else:
+        socli(query)
 
 if __name__ == '__main__':
     main()
