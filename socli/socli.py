@@ -5,7 +5,6 @@
 # And open source contributors at GitHub: https://github.com/gautamkrishnar/socli#contributors
 """
 
-import getopt
 import argparse
 import os
 import sys
@@ -22,8 +21,6 @@ import textwrap
 DEBUG = False  # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
-rn = -1  # Result number (for -r and --res)
-ir = 0  # interactive mode off (for -i arg)
 tag = ""  # tag based search
 app_data = dict()  # Data file dictionary
 data_file = os.path.join(os.path.dirname(__file__), "data.json")  # Data file location
@@ -1020,8 +1017,10 @@ def parseArguments(command):
 
     parser = argparse.ArgumentParser(description=textwrap.dedent('Stack Overflow command line client'), add_help=False)
 
-    #Flags that return true if present and false if not
+    #Comment this line out if you want to use argparse's default help function
     parser.add_argument('--help', '-h', action='store_true', help='Show this help message and exit')
+
+    #Flags that return true if present and false if not
     parser.add_argument('--new', '-n', action='store_true', help=textwrap.dedent("Opens the stack overflow new questions page in your " 
                                                                 "default browser. You can create a new question using it."))
     parser.add_argument('--interactive', '-i', action='store_true', help=textwrap.dedent("To search in Stack Overflow and display the matching results. You can choose and browse any of the results interactively"))
