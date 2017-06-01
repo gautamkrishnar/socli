@@ -978,6 +978,12 @@ def captchacheck(url):
             exit(0)
 
 def retrieveSavedProfile():
+    """
+    Retrieves the user's saved profile after a "socli -u" command.
+    Asks the user to enter a User ID and saves it if a previous file is not found.
+
+    :return: The user's ID as an integer
+    """
     global data_file
     global app_data
     user = None
@@ -1058,6 +1064,10 @@ def parseArguments(command):
     return namespace
 
 def main():
+    """
+    The main logic for how options in a command is checked.
+    """
+    
     global query
     namespace = parseArguments(sys.argv[1:])
     loaduseragents() #Populates the user agents array
