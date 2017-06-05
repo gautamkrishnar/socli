@@ -21,7 +21,7 @@ DEBUG = False  # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
-ir = 0  # interactive mode off (for -i arg)
+ir = False  # interactive mode off (for -i arg)
 tr = False  # terminal mode off (for --terminal arg)
 tag = ""  # tag based search
 app_data = dict()  # Data file dictionary
@@ -1018,7 +1018,7 @@ def main():
                     global google_search
                     google_search = False
                 if opt in ("-i", "--interactive"):
-                    ir = 1  # interactive mode on
+                    ir = True  # interactive mode on
                 if opt in ("-r", "--res"):
                     try:
                         rn = int(arg)  # Result Number
@@ -1112,7 +1112,7 @@ def main():
         elif (rn == 0):
             print_warning(
                 "Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
-        elif (ir == 1):
+        elif ir:
             wrongsyn(query)
             socli_interactive(query)
         elif query != "":
