@@ -177,7 +177,7 @@ def helpman():
           " : If any of the following commands are used then you " \
           "must specify search query after the query argument")
     print(" " + bold("--interactive or -i") + " : To search in stack overflow"
-                                              " and display the matching results. You can chose and "
+                                              " and display the matching results. You can choose and "
                                               "browse any of the result interactively")
     print(" " + bold("--res or -r") +
           " : To select and display a result manually and display "
