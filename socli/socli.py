@@ -22,6 +22,7 @@ soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
 ir = 0  # interactive mode off (for -i arg)
+tr = False  # terminal mode off (for --terminal arg)
 tag = ""  # tag based search
 app_data = dict()  # Data file dictionary
 data_file = os.path.join(os.path.dirname(__file__), "data.json")  # Data file location
@@ -203,6 +204,8 @@ def helpman():
           " : Sets a custom API key for socli")
     print(" " + bold("--sosearch or -s") +
           " : SoCLI uses google search by default. Override this and use default stack overflow search.")
+    print(" " + bold("--terminal") +
+          " : To search in terminal mode. Ctrl + D to Quit.")
     print_header("\n\n< Search Query >:")
     print("\n Query to search on Stack overflow")
     print("\nIf no commands are specified then socli will search the stack "
@@ -674,6 +677,34 @@ def socl_manusearch(query, rn):
         showerror(e)
         sys.exit(0)
 
+# TODO : Autocompletion
+def socli_terminal(query):
+    """
+    Terminal mode
+    :return:
+    """
+
+    from prompt_toolkit import prompt
+    from prompt_toolkit.history import InMemoryHistory
+
+    history = InMemoryHistory()  # storing query history
+
+    if query:
+        history.append(query)
+
+    print ('Press Ctrl + D to Quit.')
+
+    while True:
+        try:
+            if query:
+                socli_interactive(query)
+                query = ''
+            else:
+                query = prompt(u'>> ', history=history)
+
+        except EOFError:  # Ctrl + D - Quit event
+            print ('Bye!')
+            sys.exit(0)
 
 def userpage(userid):
     """
@@ -959,6 +990,7 @@ def main():
 
     global rn  # Result number (for -r arg)
     global ir  # interactive mode off (for -i arg)
+    global tr  # terminal mode off (for --terminal arg)
     global tag  # tag based search (for -t arg)
     global query  # query variable
     colorama.init()  # for colorama support in windows
@@ -971,7 +1003,7 @@ def main():
     else:
         try:
             options, rem = getopt.getopt(sys.argv[1:], "niudsat:r:q:",
-                                         ["new", "interactive", "user", "debug", "sosearch","api", "tag=", "res=", "query="])
+                                         ["new", "interactive", "user", "debug", "sosearch", "api", "terminal", "tag=", "res=", "query="])
         except getopt.GetoptError:
             helpman()
             sys.exit(1)
@@ -1062,10 +1094,14 @@ def main():
                                 exit(1)
                     userpage(user)
                     exit(0)
+                if opt == '--terminal':
+                    tr = True  # terminal mode on
 
         if tag != "":
             wrongsyn(query)
-        if (rn == -1) and (ir == 0) and tag == "":
+        if tr:
+            socli_terminal(query)
+        elif (rn == -1) and (not ir) and tag == "":
             if sys.argv[1] in ['-q', '--query']:
                 socli(" ".join(sys.argv[2:]))
             else:
