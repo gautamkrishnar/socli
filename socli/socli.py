@@ -477,8 +477,8 @@ def helpman():
         "If a command is specified then it will work according to the " + \
               "command." + '\n' + \
         make_header("\n\nExamples:\n") + '\n' + \
-        '\t' + make_warning(bold("socli for loop in python")) + '\n' + \
-        '\t' + make_warning(bold("socli -iq while loop in python")) + '\n' + \
+        '\t' + make_warning(("socli for loop in python")) + '\n' + \
+        '\t' + make_warning(("socli -iq while loop in python")) + '\n' + \
         "\n\nSoCLI is an open source project hosted on github. Don't forget to star it if you liked it.\nUse GitHub" + \
               " issues to report problems: " + underline("http://github.com/gautamkrishnar/socli")
 
