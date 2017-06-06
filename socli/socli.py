@@ -677,6 +677,36 @@ def socl_manusearch(query, rn):
         showerror(e)
         sys.exit(0)
 
+def update_tags():
+    """
+    Updates search tags
+    :return:
+    """
+
+    global soqurl
+
+    soqurl = sourl + '/search?q='
+    if tag:
+        hastags()
+
+def update_search_type(search_type):
+    """
+    Updates search type
+    :param: search_type:
+    :return: True if successfully switched to search_type
+             else False
+    """
+
+    global google_search
+
+    if search_type == "GOOGLE":
+        google_search = True
+    elif search_type == "STACKO":
+        google_search = False
+    else:
+        return False
+    return True
+
 # TODO : Autocompletion
 def socli_terminal(query):
     """
@@ -684,19 +714,50 @@ def socli_terminal(query):
     :return:
     """
 
+    global tag
+
     from prompt_toolkit import prompt
     from prompt_toolkit.history import InMemoryHistory
 
     history = InMemoryHistory()  # storing query history
 
     if query:
-        history.append(query)
+        history.strings.append(u''+query)
+
+    if google_search:
+        print ('Searching on Google Search...\n')
+    else:
+        print ('Searching on StackOverflow Search...')
+        if tag:
+            print ('Active tags: {0}\n'.format(tag))
+
+        print ('To set/update tag, type "CHANGE TAGS <tag_names>" [mention tag_names separated by commas, to unset the tags - do not write tag names. Eg- "CHANGE TAGS " will unset the tags, "CHANGE TAGS python,c++" will set the tags as Python and C++.]')
+
+    print ('To change the search type (GOOGLE/STACKO), type "CHANGE SEARCHTYPE <type>"\n')
 
     print ('Press Ctrl + D to Quit.')
 
     while True:
         try:
-            if query:
+            if query.startswith('CHANGE TAGS'):
+                tag = query[12:]
+                tag = tag.strip()
+                update_tags()
+
+                if tag:
+                    print ('Successfully changed tags to {0}'.format(tag))
+                else:
+                    print ('Successfully removed the tags')
+                query = ''
+            if query.startswith('CHANGE SEARCHTYPE'):
+                stype = query[18:]
+                stype = stype.strip()
+                if update_search_type(stype):
+                    print ('Successfully updated search type to {0}'.format(stype))
+                else:
+                    print ('You didn\'t write the type correctly. Search Type should be "GOOGLE" or "STACKO".')
+                query = ''
+            elif query:
                 socli_interactive(query)
                 query = ''
             else:
@@ -1094,11 +1155,12 @@ def main():
                                 exit(1)
                     userpage(user)
                     exit(0)
-                if opt == '--terminal':
+                if opt in ('--terminal', ):
                     tr = True  # terminal mode on
 
         if tag != "":
-            wrongsyn(query)
+            if not tr:
+                wrongsyn(query)
         if tr:
             socli_terminal(query)
         elif (rn == -1) and (not ir) and tag == "":
