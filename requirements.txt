@@ -3,3 +3,4 @@ requests
 colorama
 Py-StackExchange
 urwid
+prompt-toolkit==1.0.14
