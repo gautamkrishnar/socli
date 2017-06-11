@@ -22,7 +22,8 @@ DEBUG = False  # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
 rn = -1  # Result number (for -r and --res)
-ir = 0  # interactive mode off (for -i arg)
+ir = False  # interactive mode off (for -i arg)
+tr = False  # terminal mode off (for --terminal arg)
 tag = ""  # tag based search
 app_data = dict()  # Data file dictionary
 data_file = os.path.join(os.path.dirname(__file__), "data.json")  # Data file location
@@ -414,7 +415,7 @@ def helpman():
           " : If any of the following commands are used then you " \
           "must specify search query after the query argument")
     print(" " + bold("--interactive or -i") + " : To search in stack overflow"
-                                              " and display the matching results. You can chose and "
+                                              " and display the matching results. You can choose and "
                                               "browse any of the result interactively")
     print(" " + bold("--res or -r") +
           " : To select and display a result manually and display "
@@ -441,6 +442,8 @@ def helpman():
           " : Sets a custom API key for socli")
     print(" " + bold("--sosearch or -s") +
           " : SoCLI uses google search by default. Override this and use default stack overflow search.")
+    print(" " + bold("--terminal") +
+          " : To search in terminal mode. Ctrl + D to Quit.")
     print_header("\n\n< Search Query >:")
     print("\n Query to search on Stack overflow")
     print("\nIf no commands are specified then socli will search the stack "
@@ -753,6 +756,95 @@ def socl_manusearch(query, rn):
         showerror(e)
         sys.exit(0)
 
+def update_tags():
+    """
+    Updates search tags
+    :return:
+    """
+
+    global soqurl
+
+    soqurl = sourl + '/search?q='
+    if tag:
+        hastags()
+
+def update_search_type(search_type):
+    """
+    Updates search type
+    :param: search_type:
+    :return: True if successfully switched to search_type
+             else False
+    """
+
+    global google_search
+
+    if search_type == "GOOGLE":
+        google_search = True
+    elif search_type == "STACKO":
+        google_search = False
+    else:
+        return False
+    return True
+
+# TODO : Autocompletion
+def socli_terminal(query):
+    """
+    Terminal mode
+    :return:
+    """
+
+    global tag
+
+    from prompt_toolkit import prompt
+    from prompt_toolkit.history import InMemoryHistory
+
+    history = InMemoryHistory()  # storing query history
+
+    if query:
+        history.strings.append(u''+query)
+
+    if google_search:
+        print ('Searching on Google Search...\n')
+    else:
+        print ('Searching on StackOverflow Search...')
+        if tag:
+            print ('Active tags: {0}\n'.format(tag))
+
+        print ('To set/update tag, type "CHANGE TAGS <tag_names>" [mention tag_names separated by commas, to unset the tags - do not write tag names. Eg- "CHANGE TAGS " will unset the tags, "CHANGE TAGS python,c++" will set the tags as Python and C++.]')
+
+    print ('To change the search type (GOOGLE/STACKO), type "CHANGE SEARCHTYPE <type>"\n')
+
+    print ('Press Ctrl + D to Quit.')
+
+    while True:
+        try:
+            if query.startswith('CHANGE TAGS'):
+                tag = query[12:]
+                tag = tag.strip()
+                update_tags()
+
+                if tag:
+                    print ('Successfully changed tags to {0}'.format(tag))
+                else:
+                    print ('Successfully removed the tags')
+                query = ''
+            if query.startswith('CHANGE SEARCHTYPE'):
+                stype = query[18:]
+                stype = stype.strip()
+                if update_search_type(stype):
+                    print ('Successfully updated search type to {0}'.format(stype))
+                else:
+                    print ('You didn\'t write the type correctly. Search Type should be "GOOGLE" or "STACKO".')
+                query = ''
+            elif query:
+                socli_interactive(query)
+                query = ''
+            else:
+                query = prompt(u'>> ', history=history)
+
+        except EOFError:  # Ctrl + D - Quit event
+            print ('Bye!')
+            sys.exit(0)
 
 def userpage(userid):
     """
@@ -1038,6 +1130,7 @@ def main():
 
     global rn  # Result number (for -r arg)
     global ir  # interactive mode off (for -i arg)
+    global tr  # terminal mode off (for --terminal arg)
     global tag  # tag based search (for -t arg)
     global query  # query variable
     colorama.init()  # for colorama support in windows
@@ -1050,7 +1143,7 @@ def main():
     else:
         try:
             options, rem = getopt.getopt(sys.argv[1:], "niudsat:r:q:",
-                                         ["new", "interactive", "user", "debug", "sosearch","api", "tag=", "res=", "query="])
+                                         ["new", "interactive", "user", "debug", "sosearch", "api", "terminal", "tag=", "res=", "query="])
         except getopt.GetoptError:
             helpman()
             sys.exit(1)
@@ -1065,7 +1158,7 @@ def main():
                     global google_search
                     google_search = False
                 if opt in ("-i", "--interactive"):
-                    ir = 1  # interactive mode on
+                    ir = True  # interactive mode on
                 if opt in ("-r", "--res"):
                     try:
                         rn = int(arg)  # Result Number
@@ -1141,10 +1234,15 @@ def main():
                                 exit(1)
                     userpage(user)
                     exit(0)
+                if opt in ('--terminal', ):
+                    tr = True  # terminal mode on
 
         if tag != "":
-            wrongsyn(query)
-        if (rn == -1) and (ir == 0) and tag == "":
+            if not tr:
+                wrongsyn(query)
+        if tr:
+            socli_terminal(query)
+        elif (rn == -1) and (not ir) and tag == "":
             if sys.argv[1] in ['-q', '--query']:
                 socli(" ".join(sys.argv[2:]))
             else:
@@ -1155,7 +1253,7 @@ def main():
         elif (rn == 0):
             print_warning(
                 "Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
-        elif (ir == 1):
+        elif ir:
             wrongsyn(query)
             socli_interactive(query)
         elif query != "":
