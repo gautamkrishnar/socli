@@ -658,6 +658,7 @@ def socli_interactive(query):
 
         def __init__(self, questions):
             self.questions = questions
+            self.cachedQuestions = [None for _ in range(10)]
             widgets = [self.display_text(i, q) for i, q in enumerate(questions)]
             self.questions_box = ScrollableTextBox(widgets)
             header = UnicodeText(('less-important', 'Select a question below:\n'))
@@ -674,24 +675,24 @@ def socli_interactive(query):
         def keypress(self, size, key):
             if key in '0123456789':
                 question_url = self.questions[int(key)][2]
-                self.select_question(question_url)
+                self.select_question(question_url, int(key))
             elif key in {'down', 'up'}:
                 self.questions_box.keypress(size, key)
             else:
                 raise urwid.ExitMainLoop()
 
-        def select_question(self, url):
-            if not google_search:
-                url = sourl + url
-            question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
-
-            if not answers:
-                print_warning("\n\nAnswer:\n\t No answer found for this question...")
-                sys.exit(0)
-
+        def select_question(self, url, index):
             global question_post
-            question_post = QuestionPage((answers, question_title, question_desc, question_stats, url))
-            LOOP.widget = question_post
+            if self.cachedQuestions[index] != None:
+                question_post = self.cachedQuestions[index]
+                LOOP.widget = question_post
+            else:
+                if not google_search:
+                    url = sourl + url
+                question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
+                question_post = QuestionPage((answers, question_title, question_desc, question_stats, url))
+                self.cachedQuestions[index] = question_post
+                LOOP.widget = question_post
 
     global header_for_display
     global question_page
