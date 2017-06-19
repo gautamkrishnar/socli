@@ -1040,6 +1040,7 @@ def main():
     global ir  # interactive mode off (for -i arg)
     global tag  # tag based search (for -t arg)
     global query  # query variable
+    global google_search
     colorama.init()  # for colorama support in windows
     fixCodePage()  # For fixing codepage errors in windows
 
@@ -1062,7 +1063,6 @@ def main():
                     global DEBUG
                     DEBUG = True
                 if opt in ("-s","--sosearch"):
-                    global google_search
                     google_search = False
                 if opt in ("-i", "--interactive"):
                     ir = 1  # interactive mode on
@@ -1078,6 +1078,7 @@ def main():
                         print_warning("Wrong syntax...!\n")
                         helpman()
                         sys.exit(1)
+                    google_search = False
                     tag = arg
                     hastags()
                 if opt in ("-q", "--query"):
