@@ -1175,6 +1175,7 @@ def main():
     """
     
     global query
+    global google_search
     namespace = parseArguments(sys.argv[1:])
     loaduseragents() #Populates the user agents array
     query = ' '.join(namespace.query) + ' ' + ' '.join(namespace.userQuery)
@@ -1209,10 +1210,10 @@ def main():
         print_warning("Data files deleted...")
         sys.exit(0)
     if namespace.sosearch: #If --sosearch flag is present
-        global google_search
         google_search = False
     if namespace.tag: #If --tag flag is present
         global tag
+        google_search = False
         tag = namespace.tag
         hastags()
     if namespace.res != None: #If --res flag is present
