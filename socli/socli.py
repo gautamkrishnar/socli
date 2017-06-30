@@ -153,12 +153,17 @@ class QuestionPage(urwid.WidgetWrap):
     def __init__(self, data):
         """
         Construct the Question Page.
-        :param data: tuple of  (answers, question_title, question_desc, question_stats, question_url)
+        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url)
         """
         answer_frame = self.makeFrame(data)
         urwid.WidgetWrap.__init__(self, answer_frame)
 
     def makeFrame(self, data):
+        """
+        Returns a new frame that is formatted correctly with respect to the window's dimensions.
+        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url)
+        :return: a new urwid.Frame object
+        """
         answers, question_title, question_desc, question_stats, question_url = data
         self.data = data
         self.question_desc = question_desc
@@ -180,8 +185,6 @@ class QuestionPage(urwid.WidgetWrap):
                 UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back')
             ])
         )
-        urwid.WidgetWrap.__init__(self, answer_frame)
-
         return answer_frame
 
     def keypress(self, size, key):
