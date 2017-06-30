@@ -700,11 +700,16 @@ def socli_interactive(query):
             self.cachedQuestions = [None for _ in range(10)]
             widgets = [self.display_text(i, q) for i, q in enumerate(questions)]
             self.questions_box = ScrollableTextBox(widgets)
-            header = UnicodeText(('less-important', 'Select a question below:\n'))
-            footer = UnicodeText("0-9: select a question, any other key: exit.")
-            frame = urwid.Frame(header=header,
+            self.header = UnicodeText(('less-important', 'Select a question below:\n'))
+            self.footerText = '0-' + str(len(self.questions) - 1) + ': select a question, any other key: exit.'
+            self.errorText = UnicodeText.to_unicode('Question numbers range from 0-' + 
+                                                    str(len(self.questions) - 1) + 
+                                                    ". Please select a valid question number.")
+            self.footer = UnicodeText(self.footerText)
+            self.footerText = UnicodeText.to_unicode(self.footerText)
+            frame = urwid.Frame(header=self.header,
                                 body=urwid.Filler(self.questions_box, height=('relative', 100), valign='top'),
-                                footer=footer)
+                                footer=self.footer)
             urwid.WidgetWrap.__init__(self, frame)
 
         # Override parent method
@@ -713,8 +718,12 @@ def socli_interactive(query):
 
         def keypress(self, size, key):
             if key in '0123456789':
-                question_url = self.questions[int(key)][2]
-                self.select_question(question_url, int(key))
+                try:
+                    question_url = self.questions[int(key)][2]
+                    self.footer.set_text(self.footerText)
+                    self.select_question(question_url, int(key))
+                except IndexError as e:
+                    self.footer.set_text(self.errorText)
             elif key in {'down', 'up'}:
                 self.questions_box.keypress(size, key)
             else:
