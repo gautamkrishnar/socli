@@ -460,7 +460,7 @@ def socli_interactive(query):
                 if sys.platform == 'darwin':
                     import subprocess
                     subprocess.Popen(['open', self.url])
-                elif: sys.platform == 'win32':
+                elif sys.platform == 'win32':
                     os.startfile(self.url)
                 else:
                     import webbrowser
