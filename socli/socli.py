@@ -456,9 +456,15 @@ def socli_interactive(query):
             elif key in {'up', 'n', 'N'}:
                 self.answer_text.prev_ans()
             elif key in {'o', 'O'}:
-                import webbrowser
                 HEADER.event('browser', "Opening in your browser...")
-                webbrowser.open(self.url)
+                if sys.platform == 'darwin':
+                    import subprocess
+                    subprocess.Popen(['open', self.url])
+                elif sys.platform == 'win32':
+                    os.startfile(self.url)
+                else:
+                    import webbrowser
+                    webbrowser.open(self.url)
             elif key == 'left':
                 LOOP.widget = QUESTION_PAGE
 
