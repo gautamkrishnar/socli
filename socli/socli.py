@@ -707,8 +707,15 @@ def userpage(userid):
         rate = accepted / float(total_questions) * 100
         print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
         print('\t\t        Accept rate is: %.2f%%.' % rate)
-        print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
-        print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
+        #check if the user have answers and questions or no. 
+        if userprofile.top_answer_tags.fetch():
+            print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
+        else:
+            print("You have 0 answers")
+        if userprofile.top_question_tags.fetch():
+            print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
+        else:
+            print("You have 0 questions")
     except urllib.error.URLError:
         print_fail("Please check your internet connectivity...")
         exit(1)
