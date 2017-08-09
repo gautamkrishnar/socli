@@ -681,12 +681,64 @@ def socl_manusearch(query, rn):
         sys.exit(0)
 
 
-def userpage(userid):
-    """
-    Stackoverflow user profile browsing
-    :param userid:
-    :return:
-    """
+def exceptionHandlerPy2(userid):
+    global app_data
+    import stackexchange
+    import urllib2
+    try:
+        if "api_key" not in app_data:
+            app_data["api_key"] = None
+        userprofile = stackexchange.Site(stackexchange.StackOverflow, app_key=app_data["api_key"]).user(userid)
+        print(bold("\n User: " + userprofile.display_name.format()))
+        print("\n\tReputations: " + userprofile.reputation.format())
+        print_warning("\n\tBadges:")
+        print("\t\t   Gold: " + str(userprofile.gold_badges))
+        print("\t\t Silver: " + str(userprofile.silver_badges))
+        print("\t\t Bronze: " + str(userprofile.bronze_badges))
+        print("\t\t  Total: " + str(userprofile.badge_total))
+        print_warning("\n\tStats:")
+        total_questions = len(userprofile.questions.fetch())
+        unaccepted_questions = len(userprofile.unaccepted_questions.fetch())
+        accepted = total_questions - unaccepted_questions
+        rate = accepted / float(total_questions) * 100
+        print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
+        print('\t\t        Accept rate is: %.2f%%.' % rate)
+        if userprofile.top_answer_tags.fetch():
+            print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
+        else:
+            print("You have 0 answers")
+        if userprofile.top_question_tags.fetch():
+            print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
+        else:
+            print("You have 0 questions")
+        
+    except urllib2.URLError:
+        print_fail("Please check your internet connectivity...")
+        exit(1)
+    except Exception as e:
+        showerror(e)
+        if str(e) == "400 [bad_parameter]: `key` doesn't match a known application":
+            print_warning("Wrong API key... Deleting the data file...")
+            del_datafile()
+            exit(1)
+        elif str(e) in ("not enough values to unpack (expected 1, got 0)", "400 [bad_parameter]: ids"):
+            global manual
+            if manual == 1:
+                print_warning("Wrong user ID specified...")
+                helpman()
+                exit(1)
+            print_warning("Wrong user ID... Deleting the data file...")
+            del_datafile()
+            exit(1)
+
+        # Reaches here when rate limit exceeds
+        print_warning(
+            "Stackoverflow exception. This might be caused due to the rate limiting: http://stackapps.com/questions/3055/is-there-a-limit-of-api-requests")
+        print("Use http://stackapps.com/apps/oauth/register to register a new API key.")
+        set_api_key()
+        exit(1)
+
+def exceptionHandlerPy3(userid):
     global app_data
     import stackexchange
     try:
@@ -707,7 +759,6 @@ def userpage(userid):
         rate = accepted / float(total_questions) * 100
         print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
         print('\t\t        Accept rate is: %.2f%%.' % rate)
-        #check if the user have answers and questions or no. 
         if userprofile.top_answer_tags.fetch():
             print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
         else:
@@ -741,6 +792,12 @@ def userpage(userid):
         print("Use http://stackapps.com/apps/oauth/register to register a new API key.")
         set_api_key()
         exit(1)
+
+def userpage(userid):
+    if sys.version < '3.0.0':
+        exceptionHandlerPy2(userid)
+    else:
+        exceptionHandlerPy3(userid)
 
 
 def set_api_key():
