@@ -827,7 +827,12 @@ def userpage(userid):
     """
     global app_data
     import stackexchange
-
+    
+    try: 
+        from urllib.error import URLError
+    except ImportError:
+        from urllib2 import URLError
+        
     try:
         userid = int(userid)
     except ValueError as e:
@@ -863,7 +868,7 @@ def userpage(userid):
             print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
         else:
             print("You have 0 questions")
-    except urllib.error.URLError:
+    except URLError:
         print_fail("Please check your internet connectivity...")
         exit(1)
     except Exception as e:
