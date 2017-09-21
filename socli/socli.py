@@ -370,8 +370,12 @@ def socli_interactive_windows(query):
                                 continue
                             elif qna in ["o", "O"]:
                                 import webbrowser
+                                if sys.platform.startswith('darwin'):
+                                    browser = webbrowser.get('safari')
+                                else:
+                                    browser = webbrowser.get()
                                 print_warning("Opening in your browser...")
-                                webbrowser.open(sourl + question_local_url[op - 1])
+                                browser.open(sourl + question_local_url[op - 1])
                             else:
                                 break
                         sys.exit(0)
@@ -464,7 +468,11 @@ def socli_interactive(query):
                     os.startfile(self.url)
                 else:
                     import webbrowser
-                    webbrowser.open(self.url)
+                    if sys.platform.startswith('darwin'):
+                        browser = webbrowser.get('safari')
+                    else:
+                        browser = webbrowser.get()
+                    browser.open(self.url)
             elif key == 'left':
                 LOOP.widget = QUESTION_PAGE
 
@@ -1013,8 +1021,12 @@ def main():
                         query = query + " " + " ".join(rem)
                 if opt in ("-n", "--new"):
                     import webbrowser
+                    if sys.platform.startswith('darwin'):
+                        browser = webbrowser.get('safari')
+                    else:
+                        browser = webbrowser.get()
                     print_warning("Opening stack overflow in your browser...")
-                    webbrowser.open(sourl + "/questions/ask")
+                    browser.open(sourl + "/questions/ask")
                     sys.exit(0)
                 if opt in ("-a", "--api"):
                     set_api_key()
