@@ -230,6 +230,7 @@ def get_questions_for_query(query, count=10):
     search_res = requests.get(soqurl + query, headers=header)
     captchacheck(search_res.url)
     soup = BeautifulSoup(search_res.text, 'html.parser')
+    print 'ABCD'
     try:
         soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
     except IndexError:
