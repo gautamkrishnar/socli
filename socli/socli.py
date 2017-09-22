@@ -204,8 +204,12 @@ class QuestionPage(urwid.WidgetWrap):
             self.answer_text.prev_ans()
         elif key in {'o', 'O'}:
             import webbrowser
-            header_for_display.event('browser', "Opening in your browser...")
-            webbrowser.open(self.url)
+            if sys.platform.startswith('darwin'):
+                browser = webbrowser.get('safari')
+            else:
+                browser = webbrowser.get()
+            print_warning("Opening in your browser...")
+            browser.open(self.url)
         elif key == 'left':
             global question_post
             global question_page
@@ -608,7 +612,7 @@ def get_question_stats_and_answer(url):
 
 def socli_interactive_windows(query):
     """
-    Interactive mode
+    Interactive mode basic implimentation for windows, since urwind doesn't suports CMD.
     :param query:
     :return:
     """
