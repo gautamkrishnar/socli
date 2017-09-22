@@ -701,7 +701,7 @@ def socli_interactive(query):
     """
     if sys.platform == 'win32':
         return socli_interactive_windows(query)
-      
+
     class SelectQuestionPage(urwid.WidgetWrap):
 
         def display_text(self, index, question):
