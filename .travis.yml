@@ -10,7 +10,7 @@ python:
 - nightly
 install: sudo pip install -r requirements.txt
 script:
-- echo "Just making tests pass... TODO: Add tests here..."
+- python --version
 deploy:
   provider: pypi
   user: gautamkrishnar
