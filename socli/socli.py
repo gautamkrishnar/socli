@@ -192,7 +192,7 @@ class QuestionPage(urwid.WidgetWrap):
             body=self.answer_text,
             footer= urwid.Pile([
                 QuestionURL(question_url),
-                UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back')
+                UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit')
             ])
         )
         return answer_frame
@@ -224,6 +224,8 @@ class QuestionPage(urwid.WidgetWrap):
                 self._invalidate()
                 answer_frame = self.makeFrame(self.data)
                 urwid.WidgetWrap.__init__(self, answer_frame)
+        elif key in {'q', 'Q'}:
+            sys.exit(0)
 
 
 class AnswerText(urwid.WidgetWrap):
