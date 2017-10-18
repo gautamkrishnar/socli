@@ -15,7 +15,6 @@ import urwid
 from bs4 import BeautifulSoup
 import random
 import re
-import textwrap
 import subprocess
 import textwrap
 
