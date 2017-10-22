@@ -17,7 +17,7 @@ Stack Overflow command line written in python. Using SoCLI you can search and br
 Install **python** and just use **pip** command to install **socli**:
 ```bash
 sudo apt-get install python python-pip
-sudo pip install socli
+pip install socli
 ```
 ##### For Windows
 [Download and install Python](https://www.python.org/downloads/). Don't forget to check the option "Add to path".
@@ -41,7 +41,7 @@ pip install socli
 ### Updating
 Use the command below to update your existing version of **socli** to the newest version so that you won't miss any features:
 ```bash
-sudo pip install --upgrade socli
+pip install --upgrade socli
 ```
 
 ### Usage
@@ -140,6 +140,15 @@ Command line interface for:
 - [ ] Browsing stackoverflow home page
 
 Please check out the list of [issues](https://github.com/gautamkrishnar/socli/issues).
+
+### Testing
+Automated tests are setup by using
+[pytest](https://docs.pytest.org/en/latest/contents.html), the tests can be run
+locally by invoking a `python setup.py test`.
+
+All tests are in the `/tests/` subdirectory of this repository.
+
+TravisCI is supposed to run the test-suite on build.
 
 ### Contributing
 If you are willing to contribute to SoCLI project, you are awesome! Just follow the steps below:
