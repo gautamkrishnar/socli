@@ -63,6 +63,7 @@ if sys.version < '3.0.0':
     global FileNotFoundError
     FileNotFoundError = IOError
 
+    from urllib2 import URLError as urlerror
 
     def urlencode(inp):
         return urllib.quote_plus(inp)
@@ -76,7 +77,10 @@ if sys.version < '3.0.0':
         sys.stdout.write(str)
         tempx = raw_input()
         return tempx
+
 else:
+    from urllib.error import URLError as urlerror
+
     def urlencode(inp):
         return urllib.parse.quote_plus(inp)
 
@@ -872,7 +876,7 @@ def userpage(userid):
             print('\t\t Most experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
         else:
             print("\t\t You have 0 answers")
-    except urllib.error.URLError:
+    except urlerror:
         print_fail("Please check your internet connectivity...")
         exit(1)
     except Exception as e:
