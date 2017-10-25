@@ -1,2 +1,5 @@
 BeautifulSoup4
 requests
+colorama
+Py-StackExchange
+urwid

@@ -1,20 +1,22 @@
 language: python
 sudo: required
 python:
-  - "2.6"
-  - "2.7"
-  - "3.2"
-  - "3.3"
-  - "3.4"
-  - "3.5"
-  - "nightly" # currently points to 3.6-dev
-# command to install dependencies
-install: "sudo pip install -r requirements.txt"
-# command to run tests
-script: 
-  - "sudo python setup.py sdist"
-  - "sudo python setup.py install"
-  - "socli"
-  - "socli for loop in java"
-  - "socli unit test in java"
-  - "socli --help"
+- '2.6'
+- '2.7'
+- '3.2'
+- '3.3'
+- '3.4'
+- '3.5'
+- nightly
+install: sudo pip install -r requirements.txt
+script:
+- python --version
+deploy:
+  provider: pypi
+  user: gautamkrishnar
+  password:
+    secure: bMWz7FrCvoNzhMovpJKfYhCg6yUouih2I3ofKdb/n/GtiUpebo3XbwsBKJWaRnFlProcDNEaod+jynrC8PT7ArU9R03D3z3D/oRbzWWDeAuNcjfP2QEtPuBBQRADs1spgyjOJQ7XNxKV/YQeSOSy7/eD7upviALCxythsyidlrABzvk8soH39HTGe4/auHgmM620e4w4xpX9NNFo2gcBEl33cjCw7Qn3mMB1nI2BVikhLm5tFwcQjkhs7yNb0M38vF9Gf6Qjm/M8FxcHFYvxHPSlK9ixSOtqoghmskPQeNKPmeWXPZsGxdatntoR64Y0lj/3X2CNxzeQVP60TBO72ll95FeE8ooK4OKTD7wrRBGCLDvbMfEj6CUEpY4PVr8s8zP6VMQzhpQ5CoCeYY25Y/jrou/HM0MVKz4nVHXeIWU9/RDAG0cZs0NqPkwWvFp2Wt/fIEy3TveapPmsoG6SSMSe8kWIfBTONMorx8FGW7asyzYol2ZiZqyxpqEFFaEiM/wYrAvHP9HWbHFW+f6HgTqRrP4kL1jw/SCbb3c/uaukPPpaWlKxKC+D8WxFdXzB7ECFfPZ2qZ4PIJiNQ9cSMKrW884jZUQYNOxwepQXYimn6h8CMx0SNwgR5vJL4Ux8rJ6E4lCVxqHJmLBdDGXUlFOzRfWrZ2GFk/7bmeLNxuQ=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: gautamkrishnar/socli
