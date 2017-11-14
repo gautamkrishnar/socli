@@ -10,13 +10,7 @@ python:
 - nightly
 install: sudo pip install -r requirements.txt
 script:
-- sudo python setup.py sdist
-- sudo python setup.py install
-- socli
-- socli for loop in java
-- socli unit test in java
-- socli --help
-- socli -u 22656
+- python --version
 deploy:
   provider: pypi
   user: gautamkrishnar
