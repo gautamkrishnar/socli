@@ -3,6 +3,7 @@ import os
 from functools import wraps
 from getpass import getpass
 
+from bs4 import BeautifulSoup
 from requests import Session
 
 # Supporting input in Python 2/3
@@ -20,6 +21,44 @@ except ImportError:
 COOKIES_FILE_PATH = '.cookies'
 BASE_URL = 'https://stackoverflow.com/'
 LOGIN_URL = BASE_URL + 'users/login'
+LOGOUT_URL = BASE_URL + 'users/logout'
+
+
+def login_required(func):
+    """
+    :desc: decorator method to check user's login status
+    """
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        """
+        :desc: Wrapper to check if user is logged in, if the
+               stored cookies contain cookie named `acct`
+               and is not expired.
+        """
+
+        is_login = False
+        resp = {'success': False, 'message': 'You are not logged in!'}
+
+        if os.path.exists(COOKIES_FILE_PATH):
+            cookiejar = LWPCookieJar(filename=COOKIES_FILE_PATH)
+            cookiejar.load()
+
+            for cookie in cookiejar:
+                if cookie.name == 'acct':
+                    expiry_time_obj = datetime.utcfromtimestamp(cookie.expires)
+
+                    if datetime.now() > expiry_time_obj:
+                        is_login = True
+
+            if not is_login:
+                os.remove(COOKIES_FILE_PATH)
+            else:
+                return func(*args, **kwargs)
+
+        return resp
+
+    return wrapper
 
 
 def get_session():
@@ -59,9 +98,9 @@ def login(email, password):
     """
 
     if email == '' or password == '':
-        return {'error': 'Email/Password field left blank.'}
+        return {'success': False, 'message': 'Email/Password field left blank.'}
 
-    resp = {}
+    resp = {'success': False}
     data = {'email': email, 'password': password}
     session = get_session()
     session.cookies = LWPCookieJar(filename=COOKIES_FILE_PATH)
@@ -71,37 +110,43 @@ def login(email, password):
     if resp_obj.status_code == 200:
         if resp_obj.url == BASE_URL:
             session.cookies.save(ignore_expires=True, ignore_discard=True)
-            resp['error'] = None
+            resp['success'] = True
+            resp['message'] = 'Successfully Logged In!'
         else:
-            resp['error'] = 'Incorrect credentials'
+            resp['message'] = 'Incorrect credentials'
     else:
-        resp['error'] = 'Stackoverflow is probably down. Please try again.'
+        resp['message'] = 'Stackoverflow is probably down. Please try again.'
 
     return resp
 
 
-def login_required(func):
+@login_required
+def logout():
     """
-    :desc: decorator method to check user's login status
+    :desc: Logout a user. Deletes the cookies.
     """
 
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        is_login = False
-        if os.path.exists(COOKIES_FILE_PATH):
-            cookiejar = LWPCookieJar(filename=COOKIES_FILE_PATH)
-            cookiejar.load()
+    session = get_session()
+    logout_page_resp = session.get(LOGOUT_URL)
+    resp = {'success': False}
 
-            if len(cookiejar):
-                is_login = True
-            else:
+    soup = BeautifulSoup(logout_page_resp.content, 'html.parser')
+    fkey_input = soup.find('input', attrs={'name': 'fkey'})
+
+    if fkey_input:
+        data = {'fkey': fkey_input['value']}
+        resp_obj = session.post(LOGOUT_URL, data=data)
+
+        if resp_obj.url == BASE_URL:
+            if os.path.exists(COOKIES_FILE_PATH):
                 os.remove(COOKIES_FILE_PATH)
 
-        if not is_login:
-            print('You are not logged in.')
-            return None
+            resp['success'] = True
+            resp['message'] = 'Successfully Logged Out!'
         else:
-            return func(*args, **kwargs)
+            resp['message'] = 'There were some problems. Please try again!'
+    else:
+        resp['message'] = 'There were some problems. Please try again!'
 
-    return wrapper
+    return resp
 

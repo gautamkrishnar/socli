@@ -18,7 +18,7 @@ import re
 import textwrap
 import subprocess
 import textwrap
-from .auth import login_prompt, login
+from .auth import login_prompt, login, logout
 
 try:
     import simplejson as json
@@ -486,7 +486,9 @@ def helpman():
         " " + bold("--sosearch or -s") + \
               " : SoCLI uses google search by default. Use this option to search Stack Overflow directly." + '\n' + \
         " " + bold("--login or -l") + \
-              " : Login to Stack Overflow using your email and password."
+              " : Login to Stack Overflow using your email and password." + '\n' + \
+        " " + bold("--logout") + \
+              " : Logout of Stack Overflow."
 
     helpText = make_header("\n\n< Search Query >:") + '\n' + \
         "\nQuery to search on Stack Overflow" + '\n' + \
@@ -1139,16 +1141,16 @@ def retrieveSavedProfile():
             exit(1)
     return user
 
-def login_callback(response):
+def auth_callback(response):
     """
     :desc: Callback method to print the appropriate response after login procedure.
     :param: response - `dict` object containing response message.
     """
 
-    if response.get('error', None):
-        print_fail("\n " + response['error']  + " \n")
+    if response.get('success', False):
+        print_green("\n " + response['message']  + " \n")
     else:
-        print_green("\nSuccessfully logged in!\n")
+        print_fail("\n " + response['message']  + " \n")
 
 def parseArguments(command):
     """
@@ -1198,6 +1200,7 @@ def parseArguments(command):
                                                   "foo bar: Displays the second search result of the query"
                                                   " \"foo bar\"'s most voted answer")
     parser.add_argument('--login', '-l', action='store_true', help="Prompt a user for email and password to login to StackOverflow.")
+    parser.add_argument('--logout', action='store_true', help="Log a user out of StackOverflow")
 
     namespace = parser.parse_args(command)
     return namespace
@@ -1256,10 +1259,13 @@ def main():
             print_warning('You must specify a query or a tag. For example, use: "socli -r 3 -q python for loop" '
                 'to retrieve the third result when searching about "python for loop". You can also use "socli -r 3 -t python" '
                 'to retrieve the third result when searching for posts with the "python" tag.')
-    if namespace.login: #If --login flag is present
+    elif namespace.login: #If --login flag is present
         username, password = login_prompt()
         resp_data = login(username, password)
-        login_callback(resp_data)
+        auth_callback(resp_data)
+    elif namespace.logout:
+        resp_data = logout()
+        auth_callback(resp_data)
     elif namespace.query != [] or namespace.tag != None: #If query and tag are not both empty
         if namespace.interactive:
             socli_interactive(query)
