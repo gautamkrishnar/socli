@@ -33,18 +33,23 @@ except AttributeError:
 DEBUG = False  # Set True for enabling debugging
 soqurl = "http://stackoverflow.com/search?q="  # Query url
 sourl = "http://stackoverflow.com"  # Site url
+sburl="https://stackoverflow.com/?tab="
 tag = ""  # tag based search
 app_data = dict()  # Data file dictionary
 data_file = os.path.join(os.path.dirname(__file__), "data.json")  # Data file location
 query = ""  # Query
 uas = []  # User agent list
 header = {}  # Request header
+br = True
 google_search = True # Uses google search. Enabled by default.
 google_search_url = "https://www.google.com/search?q=site:stackoverflow.com+" #Google search query URL
 question_post = None #Used to see whether we are currently displaying a question post
 question_page = None #Not None only if in interactive mode. Displays all the questions found.
 header_for_display = None #Used as header to display question post
 LOOP = None #Main Loop used to render widgets
+
+int_url="https://api.stackexchange.com/2.2/questions?pagesize=1&fromdate=1505865600&order=desc&sort=hot&site=stackoverflow&filter=!Of_8jOSDGzxt79jzpisa)vWRNvJcb7(XI)6wn.qe(De&key=5SPES3J0Z4i7Yh)ov3ZKMA(("
+
 
 #Palette for question post colors
 palette = [('answer', 'default', 'default'),
@@ -192,7 +197,7 @@ class QuestionPage(urwid.WidgetWrap):
             body=self.answer_text,
             footer= urwid.Pile([
                 QuestionURL(question_url),
-                UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit')
+                UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit').encode('utf-8'))
             ])
         )
         return answer_frame
@@ -204,12 +209,8 @@ class QuestionPage(urwid.WidgetWrap):
             self.answer_text.prev_ans()
         elif key in {'o', 'O'}:
             import webbrowser
-            if sys.platform.startswith('darwin'):
-                browser = webbrowser.get('safari')
-            else:
-                browser = webbrowser.get()
-            print_warning("Opening in your browser...")
-            browser.open(self.url)
+            header_for_display.event('browser', "Opening in your browser...")
+            webbrowser.open(self.url)
         elif key == 'left':
             global question_post
             global question_page
@@ -521,28 +522,53 @@ def get_questions_for_query(query, count=10):
     :param query: User-entered query string
     :return: list of [ (question_text, question_description, question_url) ]
     """
+   
     questions = []
     randomheaders()
-    search_res = requests.get(soqurl + query, headers=header)
-    captchacheck(search_res.url)
-    soup = BeautifulSoup(search_res.text, 'html.parser')
-    try:
-        soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
-    except IndexError:
-        print_warning("No results found...")
-        sys.exit(0)
-    tmp = (soup.find_all("div", class_="question-summary"))
-    tmp1 = (soup.find_all("div", class_="excerpt"))
-    i = 0
-    while (i < len(tmp)):
-        if i == count: break  # limiting results
-        question_text = ' '.join((tmp[i].a.get_text()).split())
-        question_text = question_text.replace("Q: ", "")
-        question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
-        question_desc = ' '.join(question_desc.split())
-        question_local_url = tmp[i].a.get("href")
-        questions.append((question_text, question_desc, question_local_url))
-        i = i + 1
+    
+    if br==True:
+        search_res = requests.get(sburl + query, headers=header)
+        captchacheck(search_res.url)
+        soup = BeautifulSoup(search_res.text, 'html.parser')
+        try:
+            soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
+        except IndexError:
+            print_warning("No results found...")
+            sys.exit(0)
+        tmp = (soup.find_all("div", class_="question-summary"))
+        i = 0
+        while (i < len(tmp)):
+            if i == count: break  # limiting results
+            question_text = ' '.join((tmp[i].a.get_text()).split())
+            question_text = question_text.replace("Q: ", "")
+            q_tag = (soup.find_all("div", class_="question-summary"))[i]
+            answers = [s.get_text() for s in q_tag.find_all("a", class_="post-tag")][0:]
+            ques_tags = " ".join(str(x) for x in answers)
+            question_local_url = tmp[i].a.get("href")
+            questions.append((question_text,ques_tags, question_local_url))
+            i = i + 1
+    elif br==False:
+        search_res = requests.get(soqurl + query, headers=header)
+        captchacheck(search_res.url)
+        soup = BeautifulSoup(search_res.text, 'html.parser')
+        try:
+            soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
+        except IndexError:
+            print_warning("No results found...")
+            sys.exit(0)
+        tmp = (soup.find_all("div", class_="question-summary"))
+        tmp1 = (soup.find_all("div", class_="excerpt"))
+        i = 0
+        while (i < len(tmp)):
+            if i == count: break  # limiting results
+            question_text = ' '.join((tmp[i].a.get_text()).split())
+            question_text = question_text.replace("Q: ", "")
+            question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
+            question_desc = ' '.join(question_desc.split())
+            question_local_url = tmp[i].a.get("href")
+            questions.append((question_text, question_desc, question_local_url))
+            i = i + 1
+        
     return questions
 
 
@@ -614,7 +640,7 @@ def get_question_stats_and_answer(url):
 
 def socli_interactive_windows(query):
     """
-    Interactive mode basic implimentation for windows, since urwind doesn't suports CMD.
+    Interactive mode
     :param query:
     :return:
     """
@@ -671,12 +697,8 @@ def socli_interactive_windows(query):
                                 continue
                             elif qna in ["o", "O"]:
                                 import webbrowser
-                                if sys.platform.startswith('darwin'):
-                                    browser = webbrowser.get('safari')
-                                else:
-                                    browser = webbrowser.get()
                                 print_warning("Opening in your browser...")
-                                browser.open(sourl + question_local_url[op - 1])
+                                webbrowser.open(sourl + question_local_url[op - 1])
                             else:
                                 break
                         sys.exit(0)
@@ -1161,6 +1183,7 @@ def parseArguments(command):
     parser.add_argument('--api', '-a', action='store_true', help="Sets a custom API key for socli")
     parser.add_argument('--delete', '-d', action='store_true', help="Deletes the configuration file generated by socli -u command")
 
+    
     #Accepts 1 argument. Returns None if flag is not present and
     #'STORED_USER' if flag is present, but no argument is supplied
     parser.add_argument('--user', '-u', nargs='?', const='(RANDOM_STRING_CONSTANT)', type=str, help="Displays information about the user "
@@ -1176,7 +1199,7 @@ def parseArguments(command):
                                                       " \"foo bar\" in stack overflow's javascript and node.js tags")
     parser.add_argument('--query', '-q', nargs='+', default=[], help="If any of the following commands are used then you " \
           "must specify this option and a query following it.")
-
+    parser.add_argument('--browse', '-b', nargs='+', default=[], help="Searches for ten hot,week and interesting questions on today's page ")
     #Accepts 0 or more arguments. Used to catch query if no flags are present
     parser.add_argument('userQuery', nargs='*', help=argparse.SUPPRESS)
 
@@ -1189,6 +1212,111 @@ def parseArguments(command):
     namespace = parser.parse_args(command)
     return namespace
 
+
+def socli_browse_interactive(query_tag):
+    """
+    Interactive mode
+    :return:
+    """
+    if sys.platform == 'win32':
+        return socli_browse_interactive_windows(query_tag)
+
+    class SelectQuestionPage(urwid.WidgetWrap):
+
+        def display_text(self, index, question):
+            question_text, question_desc, _ = question
+            text = [
+                ("warning", u"{}. {}\n".format(index, question_text)),
+                question_desc + "\n",
+            ]
+            return text
+
+        def __init__(self, questions):
+            self.questions = questions
+            self.cachedQuestions = [None for _ in range(10)]
+            widgets = [self.display_text(i, q) for i, q in enumerate(questions)]
+            self.questions_box = ScrollableTextBox(widgets)
+            self.header = UnicodeText(('less-important', 'Select a question below:\n'))
+            self.footerText = '0-' + str(len(self.questions) - 1) + ': select a question, any other key: exit.'
+            self.errorText = UnicodeText.to_unicode('Question numbers range from 0-' + 
+                                                    str(len(self.questions) - 1) + 
+                                                    ". Please select a valid question number.")
+            self.footer = UnicodeText(self.footerText)
+            self.footerText = UnicodeText.to_unicode(self.footerText)
+            frame = urwid.Frame(header=self.header,
+                                body=urwid.Filler(self.questions_box, height=('relative', 100), valign='top'),
+                                footer=self.footer)
+            urwid.WidgetWrap.__init__(self, frame)
+
+        # Override parent method
+        def selectable(self):
+            return True
+
+        def keypress(self, size, key):
+            if key in '0123456789':
+                try:
+                    question_url = self.questions[int(key)][2]
+                    self.footer.set_text(self.footerText)
+                    self.select_question(question_url, int(key))
+                except IndexError as e:
+                    self.footer.set_text(self.errorText)
+            elif key in {'down', 'up'}:
+                self.questions_box.keypress(size, key)
+            else:
+                raise urwid.ExitMainLoop()
+
+        def select_question(self, url, index):
+            global question_post
+            if self.cachedQuestions[index] != None:
+                question_post = self.cachedQuestions[index]
+                LOOP.widget = question_post
+            else:
+                if not google_search:
+                    url = sourl + url
+                question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
+                question_post = QuestionPage((answers, question_title, question_desc, question_stats, url))
+                self.cachedQuestions[index] = question_post
+                LOOP.widget = question_post
+
+    global header_for_display
+    global question_page
+    global LOOP
+    header_for_display = Header()
+
+    try:
+        if google_search:
+            questions = get_questions_for_query_google(query)
+        else:
+            #print('hurr')
+            questions = get_questions_for_query(query_tag)
+            #print(questions)  
+
+        question_page = SelectQuestionPage(questions)
+
+        LOOP = EditedMainLoop(question_page, palette)
+        LOOP.run()
+
+    except UnicodeEncodeError:
+        print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        sys.exit(0)
+    except requests.exceptions.ConnectionError as e:
+        print_fail("Please check your internet connectivity...")
+    except Exception as e:
+        showerror(e)
+        #print("Hurra")
+        print("exiting...")
+        sys.exit(0)
+
+    except UnicodeEncodeError:
+        print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        sys.exit(0)
+    except requests.exceptions.ConnectionError:
+        print_fail("Please check your internet connectivity...")
+    except Exception as e:
+        showerror(e)
+        sys.exit(0)
+
+
 def main():
     """
     The main logic for how options in a command is checked.
@@ -1198,7 +1326,11 @@ def main():
     global google_search
     namespace = parseArguments(sys.argv[1:])
     loaduseragents() #Populates the user agents array
+    query_tag=' '.join(namespace.browse)
+    #print (namespace.userQuery)
     query = ' '.join(namespace.query) + ' ' + ' '.join(namespace.userQuery)
+    #print(query1)
+
     if namespace.help:
         helpman()
         sys.exit(0)
@@ -1243,12 +1375,15 @@ def main():
             print_warning('You must specify a query or a tag. For example, use: "socli -r 3 -q python for loop" '
                 'to retrieve the third result when searching about "python for loop". You can also use "socli -r 3 -t python" '
                 'to retrieve the third result when searching for posts with the "python" tag.')
+    if namespace.browse:
+            google_search=False
+            socli_browse_interactive(query_tag)
     elif namespace.query != [] or namespace.tag != None: #If query and tag are not both empty
         if namespace.interactive:
-            socli_interactive(query)
+            socli_interactive(query)   
         else:
             socli(query)
-    elif query != ' ' and not (namespace.tag or namespace.res or namespace.interactive): #If there are no flags
+    elif query != ' ' and not (namespace.tag or namespace.res or namespace.interactive or namespace.browse): #If there are no flags
         socli(query)
     else:
         #Help text for interactive mode
