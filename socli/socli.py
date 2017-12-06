@@ -68,6 +68,7 @@ if sys.version < '3.0.0':
     global FileNotFoundError
     FileNotFoundError = IOError
 
+    from urllib2 import URLError as urlerror
 
     def urlencode(inp):
         return urllib.quote_plus(inp)
@@ -81,7 +82,10 @@ if sys.version < '3.0.0':
         sys.stdout.write(str)
         tempx = raw_input()
         return tempx
+
 else:
+    from urllib.error import URLError as urlerror
+
     def urlencode(inp):
         return urllib.parse.quote_plus(inp)
 
@@ -747,8 +751,8 @@ def socli_interactive(query):
             self.questions_box = ScrollableTextBox(widgets)
             self.header = UnicodeText(('less-important', 'Select a question below:\n'))
             self.footerText = '0-' + str(len(self.questions) - 1) + ': select a question, any other key: exit.'
-            self.errorText = UnicodeText.to_unicode('Question numbers range from 0-' + 
-                                                    str(len(self.questions) - 1) + 
+            self.errorText = UnicodeText.to_unicode('Question numbers range from 0-' +
+                                                    str(len(self.questions) - 1) +
                                                     ". Please select a valid question number.")
             self.footer = UnicodeText(self.footerText)
             self.footerText = UnicodeText.to_unicode(self.footerText)
@@ -880,22 +884,23 @@ def userpage(userid):
         print("\t\t Bronze: " + str(userprofile.bronze_badges))
         print("\t\t  Total: " + str(userprofile.badge_total))
         print_warning("\n\tStats:")
-        total_questions = len(userprofile.questions.fetch())
-        unaccepted_questions = len(userprofile.unaccepted_questions.fetch())
-        accepted = total_questions - unaccepted_questions
-        rate = accepted / float(total_questions) * 100
-        print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
-        print('\t\t        Accept rate is: %.2f%%.' % rate)
-        #check if the user have answers and questions or no. 
+        # Check if user has asked questions, and how many accepted
+        if userprofile.questions:
+            total_questions = len(userprofile.questions.fetch())
+            unaccepted_questions = len(userprofile.unaccepted_questions.fetch())
+            accepted = total_questions - unaccepted_questions
+            rate = accepted / float(total_questions) * 100
+            print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
+            print('\t\t        Accept rate is: %.2f%%.' % rate)
+            print('\t\t Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
+        else:
+            print("\t\t You have 0 questions")
+        # Check if the user has answers
         if userprofile.top_answer_tags.fetch():
-            print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
+            print('\t\t Most experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
         else:
-            print("You have 0 answers")
-        if userprofile.top_question_tags.fetch():
-            print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
-        else:
-            print("You have 0 questions")
-    except urllib.error.URLError:
+            print("\t\t You have 0 answers")
+    except urlerror:
         print_fail("Please check your internet connectivity...")
         exit(1)
     except Exception as e:
