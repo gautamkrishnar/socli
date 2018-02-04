@@ -48,8 +48,8 @@ question_page = None #Not None only if in interactive mode. Displays all the que
 header_for_display = None #Used as header to display question post
 LOOP = None #Main Loop used to render widgets
 
-int_url="https://api.stackexchange.com/2.2/questions?pagesize=1&fromdate=1505865600&order=desc&sort=hot&site=stackoverflow&filter=!Of_8jOSDGzxt79jzpisa)vWRNvJcb7(XI)6wn.qe(De&key=5SPES3J0Z4i7Yh)ov3ZKMA(("
 
+int_url="https://api.stackexchange.com/2.2/questions?pagesize=1&fromdate=1505865600&order=desc&sort=hot&site=stackoverflow&filter=!Of_8jOSDGzxt79jzpisa)vWRNvJcb7(XI)6wn.qe(De&key=5SPES3J0Z4i7Yh)ov3ZKMA(("
 
 #Palette for question post colors
 palette = [('answer', 'default', 'default'),
@@ -640,7 +640,7 @@ def get_question_stats_and_answer(url):
 
 def socli_interactive_windows(query):
     """
-    Interactive mode
+    Interactive mode basic implimentation for windows, since urwind doesn't suports CMD.
     :param query:
     :return:
     """
@@ -697,8 +697,12 @@ def socli_interactive_windows(query):
                                 continue
                             elif qna in ["o", "O"]:
                                 import webbrowser
+                                if sys.platform.startswith('darwin'):
+                                    browser = webbrowser.get('safari')
+                                else:
+                                    browser = webbrowser.get()
                                 print_warning("Opening in your browser...")
-                                webbrowser.open(sourl + question_local_url[op - 1])
+                                browser.open(sourl + question_local_url[op - 1])
                             else:
                                 break
                         sys.exit(0)
@@ -869,6 +873,18 @@ def userpage(userid):
         exit(1)
 
     try:
+        from urllib.error import URLError
+    except ImportError:
+        from urllib2 import URLError
+    try:
+        userid = int(userid)
+    except ValueError as e:
+        print_warning("\nUser ID must be an integer.")
+        print(
+            "\nFollow the instructions on this page to get your User ID: http://meta.stackexchange.com/a/111130")
+        exit(1)
+
+    try:
         if "api_key" not in app_data:
             app_data["api_key"] = None
         userprofile = stackexchange.Site(stackexchange.StackOverflow, app_key=app_data["api_key"]).user(userid)
@@ -895,7 +911,7 @@ def userpage(userid):
             print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
         else:
             print("You have 0 questions")
-    except urllib.error.URLError:
+    except URLError:
         print_fail("Please check your internet connectivity...")
         exit(1)
     except Exception as e:
@@ -1404,7 +1420,6 @@ def main():
     """
     The main logic for how options in a command is checked.
     """
-
     global query
     global google_search
     namespace = parseArguments(sys.argv[1:])
@@ -1413,7 +1428,6 @@ def main():
     #print (namespace.userQuery)
     query = ' '.join(namespace.query) + ' ' + ' '.join(namespace.userQuery)
     #print(query1)
-
     if namespace.help:
         helpman()
         sys.exit(0)
