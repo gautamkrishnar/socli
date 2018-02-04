@@ -197,7 +197,7 @@ class QuestionPage(urwid.WidgetWrap):
             body=self.answer_text,
             footer= urwid.Pile([
                 QuestionURL(question_url),
-                UnicodeText((u"\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back").encode('utf-8'))
+                UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit').encode('utf-8'))
             ])
         )
         return answer_frame
@@ -225,6 +225,8 @@ class QuestionPage(urwid.WidgetWrap):
                 self._invalidate()
                 answer_frame = self.makeFrame(self.data)
                 urwid.WidgetWrap.__init__(self, answer_frame)
+        elif key in {'q', 'Q'}:
+            sys.exit(0)
 
 
 class AnswerText(urwid.WidgetWrap):
@@ -1210,6 +1212,7 @@ def parseArguments(command):
     namespace = parser.parse_args(command)
     return namespace
 
+
 def socli_browse_interactive_windows(query_tag):
     """
     Interactive mode for -b browse
@@ -1292,7 +1295,7 @@ def socli_browse_interactive_windows(query_tag):
     except Exception as e:
         showerror(e)
         sys.exit(0)
-        
+
 def socli_browse_interactive(query_tag):
     """
     Interactive mode
