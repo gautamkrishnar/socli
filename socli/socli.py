@@ -1213,6 +1213,89 @@ def parseArguments(command):
     return namespace
 
 
+def socli_browse_interactive_windows(query_tag):
+    """
+    Interactive mode for -b browse
+    :param query:
+    :return:
+    """
+    try:
+        search_res = requests.get(sburl + query_tag)
+        captchacheck(search_res.url)
+        soup = BeautifulSoup(search_res.text, 'html.parser')
+        try:
+            soup.find_all("div", class_="question-summary")[0]  # For explictly raising exception
+            tmp = (soup.find_all("div", class_="question-summary"))
+            i = 0
+            question_local_url = []
+            print(bold("\nSelect a question below:\n"))
+            while (i < len(tmp)):
+                if i == 10: break  # limiting results
+                question_text = ' '.join((tmp[i].a.get_text()).split())
+                question_text = question_text.replace("Q: ", "")
+                print_warning(str(i + 1) + ". " + dispstr(question_text))
+                q_tag = (soup.find_all("div", class_="question-summary"))[i]
+                answers = [s.get_text() for s in q_tag.find_all("a", class_="post-tag")][0:]
+                ques_tags = " ".join(str(x) for x in answers)
+                question_local_url.append(tmp[i].a.get("href"))
+                print("  " + dispstr(ques_tags) + "\n")
+                i = i + 1
+            try:
+                op = int(inputs("\nType the option no to continue or any other key to exit:"))
+                while 1:
+                    if (op > 0) and (op <= i):
+                        dispres(sburl + question_local_url[op - 1])
+                        cnt = 1  # this is because the 1st post is the question itself
+                        while 1:
+                            global tmpsoup
+                            qna = inputs(
+                                "Type " + bold("o") + " to open in browser, " + bold("n") + " to next answer, " + bold(
+                                    "b") + " for previous answer or any other key to exit:")
+                            if qna in ["n", "N"]:
+                                try:
+                                    answer = (tmpsoup.find_all("div", class_="post-text")[cnt + 1].get_text())
+                                    print_green("\n\nAnswer:\n")
+                                    print("-------\n" + answer + "\n-------\n")
+                                    cnt = cnt + 1
+                                except IndexError as e:
+                                    print_warning(" No more answers found for this question. Exiting...")
+                                    sys.exit(0)
+                                continue
+                            elif qna in ["b", "B"]:
+                                if cnt == 1:
+                                    print_warning(" You cant go further back. You are on the first answer!")
+                                    continue
+                                answer = (tmpsoup.find_all("div", class_="post-text")[cnt - 1].get_text())
+                                print_green("\n\nAnswer:\n")
+                                print("-------\n" + answer + "\n-------\n")
+                                cnt = cnt - 1
+                                continue
+                            elif qna in ["o", "O"]:
+                                import webbrowser
+                                print_warning("Opening in your browser...")
+                                webbrowser.open(sburl + question_local_url[op - 1])
+                            else:
+                                break
+                        sys.exit(0)
+                    else:
+                        op = int(input("\n\nWrong option. select the option no to continue:"))
+            except Exception as e:
+                showerror(e)
+                print_warning("\n Exiting...")
+                sys.exit(0)
+        except IndexError:
+            print_warning("No results found...")
+            sys.exit(0)
+
+    except UnicodeEncodeError:
+        print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        sys.exit(0)
+    except requests.exceptions.ConnectionError:
+        print_fail("Please check your internet connectivity...")
+    except Exception as e:
+        showerror(e)
+        sys.exit(0)
+
 def socli_browse_interactive(query_tag):
     """
     Interactive mode
