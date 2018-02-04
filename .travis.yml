@@ -8,9 +8,9 @@ python:
 - '3.4'
 - '3.5'
 - nightly
-install: sudo pip install -r requirements.txt
+install: pip install -r requirements.txt
 script:
-- python --version
+- python setup.py test
 deploy:
   provider: pypi
   user: gautamkrishnar
