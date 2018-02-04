@@ -859,7 +859,7 @@ def userpage(userid):
         total_questions = len(userprofile.questions.fetch())
         unaccepted_questions = len(userprofile.unaccepted_questions.fetch())
         accepted = total_questions - unaccepted_questions
-        rate = accepted / float(total_questions) * 100
+        rate = 0 if (total_questions==0) else ((accepted / float(total_questions)) * 100)
         print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
         print('\t\t        Accept rate is: %.2f%%.' % rate)
         #check if the user have answers and questions or no. 
