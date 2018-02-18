@@ -4,9 +4,9 @@ try:
 except ImportError:
     from distutils.core import setup
 from codecs import open
-from sys import exit,version
+from sys import exit, version_info
 import sys
-if version < '1.0.0':
+if version_info[:3] < (2, 0, 0):
     print("Python 1 is not supported...")
     sys.exit(1)
 
