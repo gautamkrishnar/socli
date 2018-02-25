@@ -723,8 +723,8 @@ def socli_interactive(query):
             self.questions_box = ScrollableTextBox(widgets)
             self.header = UnicodeText(('less-important', 'Select a question below:\n'))
             self.footerText = '0-' + str(len(self.questions) - 1) + ': select a question, any other key: exit.'
-            self.errorText = UnicodeText.to_unicode('Question numbers range from 0-' + 
-                                                    str(len(self.questions) - 1) + 
+            self.errorText = UnicodeText.to_unicode('Question numbers range from 0-' +
+                                                    str(len(self.questions) - 1) +
                                                     ". Please select a valid question number.")
             self.footer = UnicodeText(self.footerText)
             self.footerText = UnicodeText.to_unicode(self.footerText)
@@ -862,7 +862,7 @@ def userpage(userid):
         rate = accepted / float(total_questions) * 100
         print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
         print('\t\t        Accept rate is: %.2f%%.' % rate)
-        #check if the user have answers and questions or no. 
+        #check if the user have answers and questions or no.
         if userprofile.top_answer_tags.fetch():
             print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
         else:
@@ -871,6 +871,22 @@ def userpage(userid):
             print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
         else:
             print("You have 0 questions")
+
+
+        x=input('c: check another profile, d: delete this user information and exit, any key: save information and exit \n')
+        if(x=='d'):
+            del_datafile()
+            print('Data files deleted...')
+
+        elif(x=='c'):
+            del_datafile()
+            user = retrieveSavedProfile()
+            userpage(user)
+            sys.exit(0)
+        else:
+            exit(1)
+
+
     except urllib.error.URLError:
         print_fail("Please check your internet connectivity...")
         exit(1)
@@ -1095,7 +1111,7 @@ def captchacheck(url):
             print_warning(googleErrorDisplayMessage)
             exit(0)
     else:
-        if re.search("\.com/nocaptcha", url): # Searching for stackoverflow captcha check
+        if re.search("\.com/nocaptcha", url): # Searching for stackoverflow captcha
             print_warning("StackOverflow captcha check triggered. Please wait a few seconds before trying again.")
             exit(0)
 
