@@ -337,7 +337,7 @@ class QuestionURL(UnicodeText):
     """ url of the question """
 
     def __init__(self, url):
-        text = ["\n", ('heading', 'Questio URL: '), url]
+        text = ["\n", ('heading', 'Question URL: '), url]
         UnicodeText.__init__(self, text)
 
 def format_str(str, color):
@@ -448,7 +448,7 @@ def helpman():
     :return:
     """
 
-    optionsText = make_header("Stack Overflow command line Client:") + '\n' + \
+    optionsText = make_header("Stack Overflow command line client:") + '\n' + \
         make_green("\n\n\tUsage: socli [ Arguments ] < Search Query >\n\n") + '\n' + \
         make_header("[ Arguments ] (optional):\n") + '\n' + \
         " " + bold("--help or -h") + " : Displays this help" + '\n' + \
