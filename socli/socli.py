@@ -192,7 +192,7 @@ class QuestionPage(urwid.WidgetWrap):
             body=self.answer_text,
             footer= urwid.Pile([
                 QuestionURL(question_url),
-                UnicodeText(u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back')
+                UnicodeText(u'p: previous answer, n: next answer, o: open in browser, b: back')
             ])
         )
         return answer_frame
@@ -200,7 +200,7 @@ class QuestionPage(urwid.WidgetWrap):
     def keypress(self, size, key):
         if key in {'down', 'n', 'N'}:
             self.answer_text.next_ans()
-        elif key in {'up', 'b', 'B'}:
+        elif key in {'up', 'p', 'P'}:
             self.answer_text.prev_ans()
         elif key in {'o', 'O'}:
             import webbrowser
@@ -210,7 +210,7 @@ class QuestionPage(urwid.WidgetWrap):
                 browser = webbrowser.get()
             print_warning("Opening in your browser...")
             browser.open(self.url)
-        elif key == 'left':
+        elif key in {'left','b','B'}:
             global question_post
             global question_page
             question_post = None
@@ -337,7 +337,7 @@ class QuestionURL(UnicodeText):
     """ url of the question """
 
     def __init__(self, url):
-        text = ["\n", ('heading', 'Question URL: '), url]
+        text = ["\n", ('heading', 'Questio URL: '), url]
         UnicodeText.__init__(self, text)
 
 def format_str(str, color):
@@ -448,7 +448,7 @@ def helpman():
     :return:
     """
 
-    optionsText = make_header("Stack Overflow command line client:") + '\n' + \
+    optionsText = make_header("Stack Overflow command line Client:") + '\n' + \
         make_green("\n\n\tUsage: socli [ Arguments ] < Search Query >\n\n") + '\n' + \
         make_header("[ Arguments ] (optional):\n") + '\n' + \
         " " + bold("--help or -h") + " : Displays this help" + '\n' + \
@@ -727,8 +727,8 @@ def socli_interactive(query):
             self.questions_box = ScrollableTextBox(widgets)
             self.header = UnicodeText(('less-important', 'Select a question below:\n'))
             self.footerText = '0-' + str(len(self.questions) - 1) + ': select a question, any other key: exit.'
-            self.errorText = UnicodeText.to_unicode('Question numbers range from 0-' + 
-                                                    str(len(self.questions) - 1) + 
+            self.errorText = UnicodeText.to_unicode('Question numbers range from 0-' +
+                                                    str(len(self.questions) - 1) +
                                                     ". Please select a valid question number.")
             self.footer = UnicodeText(self.footerText)
             self.footerText = UnicodeText.to_unicode(self.footerText)
@@ -866,7 +866,7 @@ def userpage(userid):
         rate = 0 if (total_questions==0) else ((accepted / float(total_questions)) * 100)
         print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
         print('\t\t        Accept rate is: %.2f%%.' % rate)
-        #check if the user have answers and questions or no. 
+        #check if the user have answers and questions or no.
         if userprofile.top_answer_tags.fetch():
             print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
         else:
