@@ -1,5 +1,5 @@
 # SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) [![Collaborizm](https://img.shields.io/badge/Collaborizm-Join%20Project-brightgreen.svg)](https://www.collaborizm.com/project/S1cbUui6) 
-Stack Overflow command line written in python. Using SoCLI you can search and browse Stack Overflow without leaving the terminal. Just use the **socli** command:
+Stack Overflow command line is written in python. Using SoCLI you can search and browse Stack Overflow without leaving the terminal. Just use the **socli** command:
 
 ![SoCLI in action](https://cloud.githubusercontent.com/assets/8397274/24831468/86c290aa-1cb7-11e7-8161-2665d0c02e4b.gif)
 
@@ -152,11 +152,18 @@ If you are willing to contribute to SoCLI project, you are awesome! Just follow 
 
 3. Switch to the directory: `cd socli` 
 4. Create your new branch: `git checkout -b feature name`
-5. Make necessary changes to this source code
-6. Add changes to git index by using `git add --all .`
+5. Make necessary changes to the source code
+6. Add changes to git index by using `git add --all`
 7. Commit your changes: `git commit -am 'Added new feature'`
-8. Push to the branch: `git push`
+8. Push to the branch: `git push origin feature name`
 9. Submit a [new pull request](https://github.com/gautamkrishnar/socli/pull/new) :smile:
+
+If you already have the socli project on your computer, you can use 
+  
+```sh
+git pull
+```
+to update the info of your project
 
 ### Contributors
 Special thanks to these superheroes:
