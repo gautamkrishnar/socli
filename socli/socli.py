@@ -1152,6 +1152,7 @@ def auth_callback(response):
         print_fail("\n " + response['message']  + " \n")
 
 def doc_support():
+    from bs4 import BeautifulSoup as soup
     from urllib.request import urlopen
 
     def parseHTML(url):
@@ -1184,7 +1185,7 @@ def doc_support():
                 req_div = page_soup.find_all("div",{"id":div_id})
                 print(req_div[0].text)
                 return True
-        print("Invalid choice!")
+        print_warning("Invalid choice!")
         return False
 
 
@@ -1194,11 +1195,11 @@ def doc_support():
         try:
             version = int(input())
         except:
-            print("Invalid choice: Enter 1 or 2")
+            print_warning("Invalid choice: Enter 1 or 2")
             continue
         
         if version not in [1,2]:
-            print("Invalid choice, try again.")
+            print_warning("Invalid choice, try again.")
             continue
         else:
             if version == 1:
@@ -1233,10 +1234,10 @@ def doc_support():
                     flag = 1
                     break
                 else:
-                    print("Invalid choice.")
+                    print_warning("Invalid choice.")
         if flag == 0:
             flag = 1
-            break
+            sys.exit(0)
 
 def parseArguments(command):
     """
