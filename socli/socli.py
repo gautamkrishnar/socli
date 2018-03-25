@@ -469,6 +469,9 @@ def helpman():
               "\n    eg: " + make_warning(("socli --tag javascript,node.js --query foo bar")) + \
               ": Displays the search result of the query" + \
               " \"foo bar\" in Stack Overflow's javascript and node.js tags."  + '\n' + \
+        " " + bold("--doc") + \
+              " : Opens the documentation of Python2 and Python3 and let you navigate through " + \
+              "it." + '\n' + \
         " " + bold("--new or -n") + \
               " : Opens the Stack Overflow new questions page in your default browser. You can create a " + \
               "new question using it." + '\n' + \
@@ -1214,7 +1217,10 @@ def doc_support():
 
                 printNavList(index_items)
                 print("Enter:")
-                nav = input()
+                try:
+                    nav = input()
+                except KeyboardInterrupt:
+                    sys.exit(0)
                 if nav == "q":
                     flag = 0
                     break
@@ -1224,7 +1230,10 @@ def doc_support():
                 if not printDocData(nav, nav_url, index_items):
                     continue
                 print("q: quit\nl: documentation menu\nc: change python version")
-                choice = input()
+                try:
+                    choice = input()
+                except KeyboardInterrupt:
+                    sys.exit(0)
                 if choice == "q":
                     flag = 0
                     break
