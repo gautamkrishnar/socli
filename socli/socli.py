@@ -1196,16 +1196,14 @@ def doc_support():
         print("1. Python 3.6\n2. Python 2.7")
         print("Enter your choice:")
         try:
-            version = int(input())
-        except:
-            print_warning("Invalid choice: Enter 1 or 2")
-            continue
-        
-        if version not in [1,2]:
+            version = input().rstrip()
+        except KeyboardInterrupt:
+            sys.exit(0)
+        if version not in ['1','2']:
             print_warning("Invalid choice, try again.")
             continue
         else:
-            if version == 1:
+            if version == '1':
                 placeholder = 3
             else:
                 placeholder = 2.7
@@ -1218,7 +1216,7 @@ def doc_support():
                 printNavList(index_items)
                 print("Enter:")
                 try:
-                    nav = input()
+                    nav = input().rstrip()
                 except KeyboardInterrupt:
                     sys.exit(0)
                 if nav == "q":
@@ -1231,7 +1229,7 @@ def doc_support():
                     continue
                 print("q: quit\nl: documentation menu\nc: change python version")
                 try:
-                    choice = input()
+                    choice = input().rstrip()
                 except KeyboardInterrupt:
                     sys.exit(0)
                 if choice == "q":
