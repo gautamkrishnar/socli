@@ -14,10 +14,10 @@ import requests
 from bs4 import BeautifulSoup
 import urwid
 
-import tui as tui
-import user as us
-import search as se
-import printer as pr
+import socli.tui as tui
+import socli.user as us
+import socli.search as se
+import socli.printer as pr
 
 try:
     import simplejson as json

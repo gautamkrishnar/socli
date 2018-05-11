@@ -13,7 +13,7 @@ import sys
 import subprocess
 import urwid
 
-import printer as pr
+import socli.printer as pr
 
 question_post = None
 question_page = None

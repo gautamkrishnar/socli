@@ -8,13 +8,11 @@ Tests 1 through to 17 designed and implemented by Liam Byrne (www.github.com/byr
 Tests for SoCLI
 """
 
-import argparse
 import unittest
 import sys
 sys.path.append("..")
 
 import socli.socli as _socli
-import socli.printer as _print
 import socli.user as _user
 import socli.search as _search
 
@@ -92,49 +90,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
 
-    @unittest.skip
-    def test04_socliParse(self):
-        command = "-q".split()
-        try:
-            _socli.parse_arguments(command)
-        except (argparse.ArgumentError, SystemExit):
-            pass
-
-    # Check there has been no difference in formatting due to modularizing
-
-    def test05_printFormat(self):
-        self.assertEqual(repr(_print.make_header("Header")),
-                         repr(_osocli.make_header("Header")))
-
-    def test06_printFormat(self):
-        self.assertEqual(repr(_print.make_blue("Blue")),
-                         repr(_osocli.make_blue("Blue")))
-
-    def test07_printFormat(self):
-        self.assertEqual(repr(_print.make_green("Green")),
-                         repr(_osocli.make_green("Green")))
-
-    def test08_printFormat(self):
-        self.assertEqual(repr(_print.make_warning("Warning")),
-                         repr(_osocli.make_warning("Warning")))
-
-    def test09_printFormat(self):
-        self.assertEqual(repr(_print.make_fail("Fail")),
-                         repr(_osocli.make_fail("Fail")))
-
-    def test10_printFormat(self):
-        self.assertEqual(repr(_print.make_white("White")),
-                         repr(_osocli.make_white("White")))
-
-    def test11_printFormat(self):
-        self.assertEqual(repr(_print.bold("Bold")),
-                         repr(_osocli.format_str("Bold", _osocli.bcolors.BOLD)))
-
-    def test12_printFormat(self):
-        self.assertEqual(repr(_print.underline("Underline")),
-                         repr(_osocli.format_str("Underline", _osocli.bcolors.UNDERLINE)))
-
-    def test13_userJSON(self):
+    def test04_userJSON(self):
         try:
             _user.app_data = {"user": "John Smith"}
             _user.save_datafile()
@@ -143,7 +99,7 @@ class TestSoCLI(unittest.TestCase):
         except Exception:
             raise SoCLITestingException("User JSON test failed.")
 
-    def test14_userJSON(self):
+    def test05_userJSON(self):
         try:
             name = "John Smith"
             _user.app_data = {"user": name}
@@ -155,45 +111,21 @@ class TestSoCLI(unittest.TestCase):
         except Exception:
             raise SoCLITestingException("User JSON test failed.")
 
-    def test15_searchSO(self):
+    def test06_searchSO(self):
         try:
             _search.get_questions_for_query(self.squery)
         except Exception:
             raise SoCLITestingException("Search Stack Overflow test failed.")
 
-    def test16_searchGoogle(self):
+    def test07_searchGoogle(self):
         try:
             _search.get_questions_for_query_google(self.squery)
         except Exception:
             raise SoCLITestingException("Search Google test failed.")
 
-    def test17_searchStats(self):
+    def test08_searchStats(self):
         try:
             _search.get_question_stats_and_answer(self.surl)
-        except Exception:
-            raise SoCLITestingException("Search SO stats test failed.")
-
-    @unittest.skip
-    def test18_searchSO(self):
-        try:
-            self.assertEqual(_search.get_questions_for_query(self.squery),
-                             _osocli.get_questions_for_query(self.squery))
-        except Exception:
-            raise SoCLITestingException("Search Stack Overflow test failed.")
-
-    @unittest.skip
-    def test19_searchGoogle(self):
-        try:
-            self.assertEqual(_search.get_questions_for_query_google(self.squery),
-                             _osocli.get_questions_for_query_google(self.squery))
-        except Exception:
-            raise SoCLITestingException("Search Google test failed.")
-
-    @unittest.skip
-    def test20_searchStats(self):
-        try:
-            self.assertEqual(_search.get_question_stats_and_answer(self.surl),
-                             _osocli.get_question_stats_and_answer(self.surl))
         except Exception:
             raise SoCLITestingException("Search SO stats test failed.")
 

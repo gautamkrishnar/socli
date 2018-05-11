@@ -18,9 +18,9 @@ from bs4 import BeautifulSoup
 import requests
 import urwid
 
-import printer as pr
-import socli as sc
-import tui as tui
+import socli.printer as pr
+import socli.socli as sc
+import socli.tui as tui
 
 uas = []  # User agent list
 header = {}  # Request header
