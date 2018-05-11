@@ -13,7 +13,7 @@ import sys
 import subprocess
 import urwid
 
-import print as pr
+import printer as pr
 
 question_post = None
 question_page = None

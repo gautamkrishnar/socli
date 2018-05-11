@@ -3,7 +3,7 @@ Stack Overflow CLI (SoCLI)
 Created by
 Gautam Krishna R : www.github.com/gautamkrishnar
 
-print.py module designed and implemented by Liam Byrne (www.github.com/byrneliam2)
+printer.py module designed and implemented by Liam Byrne (www.github.com/byrneliam2)
 
 Print module
 Contains all functions used for printing. Uses colorama for formatting

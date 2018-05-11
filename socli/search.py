@@ -18,7 +18,7 @@ from bs4 import BeautifulSoup
 import requests
 import urwid
 
-import print as pr
+import printer as pr
 import socli as sc
 import tui as tui
 

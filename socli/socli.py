@@ -17,7 +17,7 @@ import urwid
 import tui as tui
 import user as us
 import search as se
-import print as pr
+import printer as pr
 
 try:
     import simplejson as json
