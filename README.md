@@ -186,6 +186,13 @@ Special thanks to these superheroes:
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
 
+### Error Solving
+If you encounter "AttributeError: 'module' object has no attribute 'SSL ST INIT'
+```
+sudo pip uninstall pyopenssl
+sudo pip install pyopenssl or sudo easy_install pyopenssl
+```
+
 ### Thanks
 * Thanks to all the existing users of SoCLI.
 * Thanks to all upvoters and followers on reddit.
