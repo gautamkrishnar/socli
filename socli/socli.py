@@ -875,6 +875,22 @@ def userpage(userid):
             print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
         else:
             print("You have 0 questions")
+
+
+        x=input('c: check another profile, d: delete this user information and exit, any key: save information and exit \n')
+        if(x=='d'):
+            del_datafile()
+            print('Data files deleted...')
+
+        elif(x=='c'):
+            del_datafile()
+            user = retrieveSavedProfile()
+            userpage(user)
+            sys.exit(0)
+        else:
+            exit(1)
+
+
     except urllib.error.URLError:
         print_fail("Please check your internet connectivity...")
         exit(1)
@@ -1099,7 +1115,7 @@ def captchacheck(url):
             print_warning(googleErrorDisplayMessage)
             exit(0)
     else:
-        if re.search("\.com/nocaptcha", url): # Searching for stackoverflow captcha check
+        if re.search("\.com/nocaptcha", url): # Searching for stackoverflow captcha
             print_warning("StackOverflow captcha check triggered. Please wait a few seconds before trying again.")
             exit(0)
 
