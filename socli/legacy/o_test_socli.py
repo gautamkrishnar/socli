@@ -2,7 +2,7 @@
 # ~~~~~~~~~~~~~~~~~~~~
 
 
-from socli import socli as _socli
+import o_socli as _socli
 
 
 def test_wrongsyn():
@@ -12,5 +12,5 @@ def test_wrongsyn():
 
 def test_fixGoogleURL():
     """ socli.fixGoogleURL() adds `https` protocol if not existent yet """
-    url = _socli.fixGoogleURL("www.example.com/questions/1234") 
+    url = _socli.fix_google_url("www.example.com/questions/1234")
     assert url == "https://www.example.com/questions/1234"
