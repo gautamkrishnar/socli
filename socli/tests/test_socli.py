@@ -13,10 +13,10 @@ import unittest
 import sys
 sys.path.append("..")
 
-import socli as _socli
-import printer as _print
-import user as _user
-import search as _search
+import socli.socli as _socli
+import socli.printer as _print
+import socli.user as _user
+import socli.search as _search
 
 import legacy.o_socli as _osocli
 
