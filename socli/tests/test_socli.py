@@ -10,9 +10,11 @@ Tests for SoCLI
 
 import argparse
 import unittest
+import sys
+sys.path.append("..")
 
 import socli as _socli
-import print as _print
+import printer as _print
 import user as _user
 import search as _search
 
