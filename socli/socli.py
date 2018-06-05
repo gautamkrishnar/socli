@@ -104,6 +104,12 @@ def fixCodePage():
             return
 
 
+### Translation
+import gettext
+gettext.bindtextdomain('socli', 'locale') #('App domain', 'Directory of translation files')
+gettext.textdomain('socli')
+_ = gettext.gettext
+
 # Bold and underline are not supported by colorama.
 class bcolors:
     BOLD = '\033[1m'
@@ -192,7 +198,7 @@ class QuestionPage(urwid.WidgetWrap):
             body=self.answer_text,
             footer= urwid.Pile([
                 QuestionURL(question_url),
-                UnicodeText(u'p: previous answer, n: next answer, o: open in browser, b: back')
+                UnicodeText(_(u'p: previous answer, n: next answer, o: open in browser, b: back'))
             ])
         )
         return answer_frame
@@ -208,7 +214,7 @@ class QuestionPage(urwid.WidgetWrap):
                 browser = webbrowser.get('safari')
             else:
                 browser = webbrowser.get()
-            print_warning("Opening in your browser...")
+            print_warning(_("Opening in your browser..."))
             browser.open(self.url)
         elif key in {'left','b','B'}:
             global question_post
