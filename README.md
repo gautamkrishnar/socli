@@ -123,6 +123,9 @@ Usage: socli [ Arguments] < Search Query >
 ###### Query
 This term refers to what you're searching for in Stack Overflow.
 
+### Translation
+For translation matters read the file Translation_guide.txt
+
 ### Features
 These are the amazing features of SoCLI:
 * Manual Search
