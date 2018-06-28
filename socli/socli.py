@@ -475,6 +475,9 @@ def helpman():
               _("\n    eg: ") + make_warning(_("socli --tag javascript,node.js --query foo bar")) + \
               _(": Displays the search result of the query") + \
               _(" \"foo bar\" in Stack Overflow's javascript and node.js tags.")  + '\n' + \
+        " " + bold("--doc") + \
+              _(" : Opens the documentation of Python2 and Python3 and let you navigate through ") + \
+              _("it.") + '\n' + \
         " " + bold(_("--new or -n")) + \
               _(" : Opens the Stack Overflow new questions page in your default browser. You can create a ") + \
               _("new question using it.") + '\n' + \
@@ -1173,6 +1176,98 @@ def auth_callback(response):
     else:
         print_fail("\n " + response['message']  + " \n")
 
+def doc_support():
+    from bs4 import BeautifulSoup as soup
+    from urllib.request import urlopen
+
+    def parseHTML(url):
+        client = urlopen(url)
+        page_html = client.read()
+        client.close()
+        page_soup = soup(page_html,"html.parser")
+        return page_soup
+
+    def getNavList(page_soup):
+        index = page_soup.find_all("div", {"class":"toctree-wrapper"})
+        index_items = index[0].find_all("a", {"reference internal"})
+        return index_items
+
+    def printNavList(index_items):
+        for item in index_items:
+            print(item.text)
+
+    def printDocData(nav, nav_url, index_items):
+        nav = nav.rstrip('.')
+        k = len(nav)
+        for item in index_items:
+            if nav in item.text[:k]:
+                div_id = item['href'].split("#",1)
+                if len(div_id) == 2:
+                    div_id = div_id[1]
+                else:
+                    div_id = None
+                page_soup = parseHTML(nav_url + item['href'])
+                req_div = page_soup.find_all("div",{"id":div_id})
+                print(req_div[0].text)
+                return True
+        print_warning(_("Invalid choice!"))
+        return False
+
+
+    while(1):
+        print(_("1. Python 3.6\n2. Python 2.7"))
+        print(_("Enter your choice:"))
+        try:
+            version = input().rstrip()
+        except KeyboardInterrupt:
+            sys.exit(0)
+        if version not in ['1','2']:
+            print_warning(_("Invalid choice, try again."))
+            continue
+        else:
+            if version == '1':
+                placeholder = 3
+            else:
+                placeholder = 2.7
+            while 1:
+                nav_url = "https://docs.python.org/{}/reference/".format(placeholder)
+                my_url = "https://docs.python.org/{}/reference/index.html".format(placeholder)
+                page_soup = parseHTML(my_url)
+                index_items = getNavList(page_soup)
+
+                printNavList(index_items)
+                print(_("Enter:"))
+                try:
+                    nav = input().rstrip()
+                except KeyboardInterrupt:
+                    sys.exit(0)
+                if nav == "q":
+                    flag = 0
+                    break
+                elif nav == "c":
+                    flag = 1
+                    break
+                if not printDocData(nav, nav_url, index_items):
+                    continue
+                print(_("q: quit\nl: documentation menu\nc: change python version"))
+                try:
+                    choice = input().rstrip()
+                except KeyboardInterrupt:
+                    sys.exit(0)
+                if choice == "q":
+                    flag = 0
+                    break
+                elif choice == "l":
+                    continue
+                elif choice == "c":
+                    flag = 1
+                    break
+                else:
+                    print_warning(_("Invalid choice."))
+        if flag == 0:
+            flag = 1
+            sys.exit(0)
+
 def parseArguments(command):
     """
     Parses the command into arguments and flags
@@ -1222,6 +1317,7 @@ def parseArguments(command):
                                                   " \"foo bar\"'s most voted answer"))
     parser.add_argument('--login', '-l', action='store_true', help=_("Prompt a user for email and password to login to StackOverflow."))
     parser.add_argument('--logout', action='store_true', help=_("Log a user out of StackOverflow"))
+    parser.add_argument('--doc', action='store_true', help=_("View Python documentation"))
 
     namespace = parser.parse_args(command)
     return namespace
@@ -1272,6 +1368,8 @@ def main():
         google_search = False
         tag = namespace.tag
         hastags()
+    if namespace.doc: # If --doc flag is present
+        doc_support()
     if namespace.res != None: #If --res flag is present
         questionNumber = namespace.res
         if namespace.query != [] or namespace.tag != None: #There must either be a tag or a query
