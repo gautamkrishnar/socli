@@ -29,7 +29,7 @@ Open a command prompt with administrative privileges and use **pip** command to 
 ```bash
 pip install socli
 ```
-Use **easy_install** if your python path have a space in it. [Read more: "Failed to create process"](https://github.com/gautamkrishnar/socli/issues/6):
+Use **easy_install** if your python path has a space in it. [Read more: "Failed to create process"](https://github.com/gautamkrishnar/socli/issues/6):
 ```
 easy_install socli
 ```
@@ -77,7 +77,7 @@ Stack Overflow supports topic by using tags. **socli** allows you to query Stack
 ```sh
 socli -t javascript -q window.open
 ```
-You can also specify multiple tags, Just seporate them with a comma:
+You can also specify multiple tags, Just separate them with a comma:
 ```sh
 socli -t javascript,node.js -q window.open
 ```
