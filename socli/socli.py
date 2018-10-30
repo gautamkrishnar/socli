@@ -253,7 +253,7 @@ class AnswerText(urwid.WidgetWrap):
         self.index -= 1
         if self.index < 0:
             self.index = 0
-            header_for_display.event('answer-bounds', "No previous answers.")
+            header_for_display.event('answer-bounds', ('warning', 'No previous answers.'))
         else:
             header_for_display.clear('answer-bounds')
         self.set_answer()
@@ -263,7 +263,7 @@ class AnswerText(urwid.WidgetWrap):
         self.index += 1
         if self.index > len(self.answers) - 1:
             self.index = len(self.answers) - 1
-            header_for_display.event('answer-bounds', "No more answers.")
+            header_for_display.event('answer-bounds', ('warning', 'No more answers.'))
         else:
             header_for_display.clear('answer-bounds')
         self.set_answer()
