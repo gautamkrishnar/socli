@@ -124,7 +124,7 @@ Usage: socli [ Arguments] < Search Query >
 This term refers to what you're searching for in Stack Overflow.
 
 ### Translation
-For translation matters read the file Translation_guide.txt
+For translation matters read the file [Translation_guide](../master/Translation_guide.md)
 
 ### Features
 These are the amazing features of SoCLI:
