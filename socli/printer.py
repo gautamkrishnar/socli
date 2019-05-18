@@ -1,12 +1,6 @@
 """
-Stack Overflow CLI (SoCLI)
-Created by
-Gautam Krishna R : www.github.com/gautamkrishnar
-
-printer.py module designed and implemented by Liam Byrne (www.github.com/byrneliam2)
-
-Print module
-Contains all functions used for printing. Uses colorama for formatting
+Contains all functions used for printing.
+Uses colorama for formatting.
 """
 
 import subprocess

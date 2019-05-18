@@ -12,3 +12,4 @@ build/
 *.pyc
 *.egg
 venv
+.eggs

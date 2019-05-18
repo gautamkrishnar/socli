@@ -1,12 +1,5 @@
 """
-Stack Overflow CLI (SoCLI)
-Created by
-Gautam Krishna R : www.github.com/gautamkrishnar
-
-user.py module designed and implemented by Liam Byrne (www.github.com/byrneliam2)
-
-User module
-Contains all functions used for user authentication.
+Contains all functions used for user authentication and user metadata fetching.
 """
 
 import json

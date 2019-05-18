@@ -1,12 +1,5 @@
 """
-Stack Overflow CLI (SoCLI)
-Created by
-Gautam Krishna R : www.github.com/gautamkrishnar
-
-tui.py module designed and implemented by Liam Byrne (www.github.com/byrneliam2)
-
-Text User Interface (TUI)
-Modularizing the urwid-based class hierarchy that forms the front end of the SoCLI application.
+Urwid-based class hierarchy that forms the front end of the SoCLI application.
 """
 
 import sys

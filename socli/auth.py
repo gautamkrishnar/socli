@@ -1,3 +1,6 @@
+"""
+Contains all functions used for socli authentication
+"""
 import os
 
 from functools import wraps

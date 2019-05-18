@@ -1,12 +1,5 @@
 """
-Stack Overflow CLI (SoCLI)
-Created by
-Gautam Krishna R : www.github.com/gautamkrishnar
-
-search.py module designed and implemented by Liam Byrne (www.github.com/byrneliam2)
-
-Search module
-Contains all functions used for searching Stack Overflow, including interactive mode.
+Contains all functions used for searching Stack Overflow and Google
 """
 
 import os

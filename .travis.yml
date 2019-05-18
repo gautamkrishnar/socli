@@ -1,16 +1,12 @@
 language: python
-sudo: required
 python:
-- '2.6'
-- '2.7'
-- '3.2'
-- '3.3'
-- '3.4'
-- '3.5'
-- nightly
-install: pip install -r requirements.txt
+- "3.6"
+install:
+  - pip install -U setuptools
+  - pip install -r requirements.txt
 script:
 - python setup.py test
+- python setup.py install
 deploy:
   provider: pypi
   user: gautamkrishnar

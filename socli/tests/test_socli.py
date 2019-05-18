@@ -1,18 +1,14 @@
 """
-Stack Overflow CLI (SoCLI)
-Created by
-Gautam Krishna R : www.github.com/gautamkrishnar
+Tests for socli
 """
 
 import unittest
 import sys
-sys.path.append("..")
-
 import socli.socli as _socli
 import socli.user as _user
 import socli.search as _search
 
-import legacy.o_socli as _osocli
+sys.path.append("..")
 
 
 class TestSoCLI(unittest.TestCase):
@@ -29,11 +25,8 @@ class TestSoCLI(unittest.TestCase):
         url = _search.fix_google_url("www.example.com/questions/1234")
         self.assertEqual(url, "https://www.example.com/questions/1234")
 
-    # -------------------------------------------------------------------------
-
     def setUp(self):
         _search.load_user_agents()
-        _osocli.loaduseragents()
 
     def test01_socliParse(self):
         command = "python for loop".split()
@@ -113,13 +106,13 @@ class TestSoCLI(unittest.TestCase):
         except Exception:
             raise SoCLITestingException("Search Stack Overflow test failed.")
 
-    def test07_searchGoogle(self):
-        try:
-            _search.get_questions_for_query_google(self.squery)
-        except Exception:
-            raise SoCLITestingException("Search Google test failed.")
+    # def test07_searchGoogle(self):
+    #     try:
+    #         _search.get_questions_for_query_google(self.squery)
+    #     except Exception:
+    #         raise SoCLITestingException("Search Google test failed.")
 
-    def test08_searchStats(self):
+    def test07_searchStats(self):
         try:
             _search.get_question_stats_and_answer(self.surl)
         except Exception:
