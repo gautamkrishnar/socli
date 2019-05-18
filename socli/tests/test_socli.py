@@ -2,10 +2,6 @@
 Stack Overflow CLI (SoCLI)
 Created by
 Gautam Krishna R : www.github.com/gautamkrishnar
-
-Tests 1 through to 17 designed and implemented by Liam Byrne (www.github.com/byrneliam2)
-
-Tests for SoCLI
 """
 
 import unittest

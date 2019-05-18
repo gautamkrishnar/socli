@@ -75,8 +75,6 @@ def has_tags():
     for tags in tag:
         se.so_qurl = se.so_qurl + "[" + tags + "]" + "+"
 
-# =====================================================================================================================
-
 
 def socli(query):
     """
@@ -181,11 +179,6 @@ def parse_arguments(command):
 
     namespace = parser.parse_args(command)
     return namespace
-
-
-# ========================= BROWSE FEATURE                                            =================================
-# ========================= WIP, has been left untouched for the sake of this project =================================
-# ========================= Should probably be moved into the search module           =================================
 
 
 def socli_browse_interactive_windows(query_tag):
@@ -363,8 +356,6 @@ def socli_browse_interactive(query_tag):
         # print("Hurra")
         print("exiting...")
         sys.exit(0)
-
-# =====================================================================================================================
 
 
 def main():
