@@ -15,6 +15,7 @@ import urwid
 from bs4 import BeautifulSoup
 import random
 import re
+import urllib3
 
 # Global vars:
 DEBUG = False  # Set True for enabling debugging
@@ -31,7 +32,7 @@ header = {}  # Request header
 google_search = True # Uses google search. Enabled by default.
 google_search_url = "https://www.google.com/search?q=site:stackoverflow.com+" #Google search query URL
 # Suppressing InsecureRequestWarning and many others
-requests.packages.urllib3.disable_warnings()
+urllib3.disable_warnings()
 
 ### To support python 2:
 if sys.version < '3.0.0':

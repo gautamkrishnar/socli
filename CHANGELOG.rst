@@ -1,6 +1,12 @@
 SoCLI Changelog
 ================
 
+Release 3.7
+---------------------------
+
+* Fixed functional bug
+
+
 Release 3.6 
 ---------------------------
 

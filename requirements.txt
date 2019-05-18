@@ -1,5 +1,11 @@
-BeautifulSoup4
-requests
-colorama
-Py-StackExchange
-urwid
+beautifulsoup4==4.7.1
+certifi==2019.3.9
+chardet==3.0.4
+colorama==0.4.1
+idna==2.8
+py-stackexchange==2.2.7
+requests==2.22.0
+six==1.12.0
+soupsieve==1.9.1
+urllib3==1.25.2
+urwid==2.0.1
