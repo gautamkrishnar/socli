@@ -17,7 +17,6 @@ import socli.tui as tui
 
 uas = []  # User agent list
 header = {}  # Request header
-br = True
 google_search = True
 
 so_url = "http://stackoverflow.com"  # Site URL
@@ -38,48 +37,25 @@ def get_questions_for_query(query, count=10):
     questions = []
     random_headers()
 
-    if br:
-        search_res = requests.get(so_burl + query, headers=header)
-        captcha_check(search_res.url)
-        soup = BeautifulSoup(search_res.text, 'html.parser')
-        try:
-            soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
-        except IndexError:
-            pr.print_warning("No results found...")
-            sys.exit(0)
-        tmp = (soup.find_all("div", class_="question-summary"))
-        i = 0
-        while i < len(tmp):
-            if i == count: break  # limiting results
-            question_text = ' '.join((tmp[i].a.get_text()).split())
-            question_text = question_text.replace("Q: ", "")
-            q_tag = (soup.find_all("div", class_="question-summary"))[i]
-            answers = [s.get_text() for s in q_tag.find_all("a", class_="post-tag")][0:]
-            ques_tags = " ".join(str(x) for x in answers)
-            question_local_url = tmp[i].a.get("href")
-            questions.append((question_text, ques_tags, question_local_url))
-            i = i + 1
-    elif not br:
-        search_res = requests.get(so_qurl + query, headers=header)
-        captcha_check(search_res.url)
-        soup = BeautifulSoup(search_res.text, 'html.parser')
-        try:
-            soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
-        except IndexError:
-            pr.print_warning("No results found...")
-            sys.exit(0)
-        tmp = (soup.find_all("div", class_="question-summary"))
-        tmp1 = (soup.find_all("div", class_="excerpt"))
-        i = 0
-        while i < len(tmp):
-            if i == count: break  # limiting results
-            question_text = ' '.join((tmp[i].a.get_text()).split())
-            question_text = question_text.replace("Q: ", "")
-            question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
-            question_desc = ' '.join(question_desc.split())
-            question_local_url = tmp[i].a.get("href")
-            questions.append((question_text, question_desc, question_local_url))
-            i = i + 1
+    search_res = requests.get(so_qurl + query, headers=header)
+    captcha_check(search_res.url)
+    soup = BeautifulSoup(search_res.text, 'html.parser')
+    try:
+        soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
+    except IndexError:
+        pr.print_warning("No results found...")
+        sys.exit(0)
+    tmp = (soup.find_all("div", class_="question-summary"))
+    tmp1 = (soup.find_all("div", class_="excerpt"))
+    i = 0
+    while i < len(tmp) and i < count: # iterate over and limit results
+        question_text = ' '.join((tmp[i].a.get_text()).split())
+        question_text = question_text.replace("Q: ", "")
+        question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
+        question_desc = ' '.join(question_desc.split())
+        question_local_url = tmp[i].a.get("href")
+        questions.append((question_text, question_desc, question_local_url))
+        i += 1
 
     return questions
 
