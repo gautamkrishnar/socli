@@ -9,6 +9,9 @@ import textwrap
 import urllib
 
 import colorama
+import requests
+
+from socli import search as search, tui as tui
 
 DEBUG = False
 
@@ -196,3 +199,19 @@ def helpman():
                           for line in help_text.splitlines() if help_text.strip() != ''])
     print(options_text)
     print(help_text)
+
+
+def display_results(url):
+    """
+    Display result page
+    :param url: URL of the search result
+    :return:
+    """
+    search.random_headers()
+    res_page = requests.get(url, headers=search.header)
+    search.captcha_check(res_page.url)
+    tui.display_header = tui.Header()
+    question_title, question_desc, question_stats, answers = search.get_question_stats_and_answer(url)
+    tui.question_post = tui.QuestionPage((answers, question_title, question_desc, question_stats, url))
+    tui.MAIN_LOOP = tui.EditedMainLoop(tui.question_post, printer.palette)
+    tui.MAIN_LOOP.run()

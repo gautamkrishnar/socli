@@ -11,9 +11,8 @@ from bs4 import BeautifulSoup
 import requests
 import urwid
 
-import socli.printer as pr
-import socli.socli as sc
-import socli.tui as tui
+import socli.printer
+import socli.tui
 
 uas = []  # User agent list
 header = {}  # Request header
@@ -43,7 +42,7 @@ def get_questions_for_query(query, count=10):
     try:
         soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
     except IndexError:
-        pr.print_warning("No results found...")
+        socli.printer.print_warning("No results found...")
         sys.exit(0)
     tmp = (soup.find_all("div", class_="question-summary"))
     tmp1 = (soup.find_all("div", class_="excerpt"))
@@ -77,7 +76,7 @@ def get_questions_for_query_google(query, count=10):
     try:
         soup.find_all("div", class_="g")[0]  # For explicitly raising exception
     except IndexError:
-        pr.print_warning("No results found...")
+        socli.printer.print_warning("No results found...")
         sys.exit(0)
     for result in soup.find_all("div", class_="g"):
         if i == count:
@@ -103,7 +102,7 @@ def get_questions_for_query_google(query, count=10):
 
     # Check if there are any valid question posts
     if not questions:
-        pr.print_warning("No results found...")
+        socli.printer.print_warning("No results found...")
         sys.exit(0)
     return questions
 
@@ -176,44 +175,44 @@ def socli_interactive_windows(query):
             tmp1 = (soup.find_all("div", class_="excerpt"))
             i = 0
             question_local_url = []
-            print(pr.bold("\nSelect a question below:\n"))
+            print(socli.printer.bold("\nSelect a question below:\n"))
             while i < len(tmp):
                 if i == 10: break  # limiting results
                 question_text = ' '.join((tmp[i].a.get_text()).split())
                 question_text = question_text.replace("Q: ", "")
                 question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
                 question_desc = ' '.join(question_desc.split())
-                pr.print_warning(str(i + 1) + ". " + pr.display_str(question_text))
+                socli.printer.print_warning(str(i + 1) + ". " + socli.printer.display_str(question_text))
                 question_local_url.append(tmp[i].a.get("href"))
-                print("  " + pr.display_str(question_desc) + "\n")
+                print("  " + socli.printer.display_str(question_desc) + "\n")
                 i = i + 1
             try:
-                op = int(pr.inputs("\nType the option no to continue or any other key to exit:"))
+                op = int(socli.printer.inputs("\nType the option no to continue or any other key to exit:"))
                 while 1:
                     if (op > 0) and (op <= i):
-                        sc.display_results(so_url + question_local_url[op - 1])
+                        socli.printer.display_results(so_url + question_local_url[op - 1])
                         cnt = 1  # this is because the 1st post is the question itself
                         while 1:
                             global tmpsoup
-                            qna = pr.inputs(
-                                "Type " + pr.bold("o") + " to open in browser, " + pr.bold("n") + " to next answer, " + pr.bold(
+                            qna = socli.printer.inputs(
+                                "Type " + socli.printer.bold("o") + " to open in browser, " + socli.printer.bold("n") + " to next answer, " + socli.printer.bold(
                                     "b") + " for previous answer or any other key to exit:")
                             if qna in ["n", "N"]:
                                 try:
                                     answer = (tmpsoup.find_all("div", class_="post-text")[cnt + 1].get_text())
-                                    pr.print_green("\n\nAnswer:\n")
+                                    socli.printer.print_green("\n\nAnswer:\n")
                                     print("-------\n" + answer + "\n-------\n")
                                     cnt = cnt + 1
                                 except IndexError as e:
-                                    pr.print_warning(" No more answers found for this question. Exiting...")
+                                    socli.printer.print_warning(" No more answers found for this question. Exiting...")
                                     sys.exit(0)
                                 continue
                             elif qna in ["b", "B"]:
                                 if cnt == 1:
-                                    pr.print_warning(" You cant go further back. You are on the first answer!")
+                                    socli.printer.print_warning(" You cant go further back. You are on the first answer!")
                                     continue
                                 answer = (tmpsoup.find_all("div", class_="post-text")[cnt - 1].get_text())
-                                pr.print_green("\n\nAnswer:\n")
+                                socli.printer.print_green("\n\nAnswer:\n")
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
                                 continue
@@ -223,7 +222,7 @@ def socli_interactive_windows(query):
                                     browser = webbrowser.get('safari')
                                 else:
                                     browser = webbrowser.get()
-                                pr.print_warning("Opening in your browser...")
+                                socli.printer.print_warning("Opening in your browser...")
                                 browser.open(so_url + question_local_url[op - 1])
                             else:
                                 break
@@ -231,20 +230,20 @@ def socli_interactive_windows(query):
                     else:
                         op = int(input("\n\nWrong option. select the option no to continue:"))
             except Exception as e:
-                pr.showerror(e)
-                pr.print_warning("\n Exiting...")
+                socli.printer.showerror(e)
+                socli.printer.print_warning("\n Exiting...")
                 sys.exit(0)
         except IndexError:
-            pr.print_warning("No results found...")
+            socli.printer.print_warning("No results found...")
             sys.exit(0)
 
     except UnicodeEncodeError:
-        pr.print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        socli.printer.print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError:
-        pr.print_fail("Please check your internet connectivity...")
+        socli.printer.print_fail("Please check your internet connectivity...")
     except Exception as e:
-        pr.showerror(e)
+        socli.printer.showerror(e)
         sys.exit(0)
 
 
@@ -270,14 +269,14 @@ def socli_interactive(query):
             self.questions = questions
             self.cachedQuestions = [None for _ in range(10)]
             widgets = [self.display_text(i, q) for i, q in enumerate(questions)]
-            self.questions_box = tui.ScrollableTextBox(widgets)
-            self.header = tui.UnicodeText(('less-important', 'Select a question below:\n'))
+            self.questions_box = socli.tui.ScrollableTextBox(widgets)
+            self.header = socli.tui.UnicodeText(('less-important', 'Select a question below:\n'))
             self.footerText = '0-' + str(len(self.questions) - 1) + ': select a question, any other key: exit.'
-            self.errorText = tui.UnicodeText.to_unicode('Question numbers range from 0-' +
+            self.errorText = socli.tui.UnicodeText.to_unicode('Question numbers range from 0-' +
                                                         str(len(self.questions) - 1) +
                                                         ". Please select a valid question number.")
-            self.footer = tui.UnicodeText(self.footerText)
-            self.footerText = tui.UnicodeText.to_unicode(self.footerText)
+            self.footer = socli.tui.UnicodeText(self.footerText)
+            self.footerText = socli.tui.UnicodeText.to_unicode(self.footerText)
             frame = urwid.Frame(header=self.header,
                                 body=urwid.Filler(self.questions_box, height=('relative', 100), valign='top'),
                                 footer=self.footer)
@@ -302,17 +301,17 @@ def socli_interactive(query):
 
         def select_question(self, url, index):
             if self.cachedQuestions[index] is not None:
-                tui.question_post = self.cachedQuestions[index]
-                tui.MAIN_LOOP.widget = tui.question_post
+                socli.tui.question_post = self.cachedQuestions[index]
+                socli.tui.MAIN_LOOP.widget = socli.tui.question_post
             else:
                 if not google_search:
                     url = so_url + url
                 question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
-                tui.question_post = tui.QuestionPage((answers, question_title, question_desc, question_stats, url))
-                self.cachedQuestions[index] = tui.question_post
-                tui.MAIN_LOOP.widget = tui.question_post
+                socli.tui.question_post = socli.tui.QuestionPage((answers, question_title, question_desc, question_stats, url))
+                self.cachedQuestions[index] = socli.tui.question_post
+                socli.tui.MAIN_LOOP.widget = socli.tui.question_post
 
-    tui.display_header = tui.Header()
+    socli.tui.display_header = socli.tui.Header()
 
     try:
         if google_search:
@@ -320,16 +319,16 @@ def socli_interactive(query):
         else:
             questions = get_questions_for_query(query)
         question_page = SelectQuestionPage(questions)
-        tui.MAIN_LOOP = tui.EditedMainLoop(question_page, pr.palette)
-        tui.MAIN_LOOP.run()
+        socli.tui.MAIN_LOOP = socli.tui.EditedMainLoop(question_page, socli.printer.palette)
+        socli.tui.MAIN_LOOP.run()
 
     except UnicodeEncodeError:
-        pr.print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        socli.printer.print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError:
-        pr.print_fail("Please check your internet connectivity...")
+        socli.printer.print_fail("Please check your internet connectivity...")
     except Exception as e:
-        pr.showerror(e)
+        socli.printer.showerror(e)
         print("exiting...")
         sys.exit(0)
 
@@ -342,10 +341,10 @@ def socli_manual_search(query, rn):
     :return:
     """
     if rn < 1:
-        pr.print_warning(
+        socli.printer.print_warning(
             "Count starts from 1. Use: \"socli -i 2 -q python for loop\" for the 2nd result for the query")
         sys.exit(0)
-    query = pr.urlencode(query)
+    query = socli.printer.urlencode(query)
     try:
         random_headers()
         # Set count = 99 so you can choose question numbers higher than 10
@@ -358,18 +357,18 @@ def socli_manual_search(query, rn):
             else:
                 questions = get_questions_for_query(query, count)
                 res_url = so_url + questions[rn - 1][2]
-            sc.display_results(res_url)
+            socli.printer.display_results(res_url)
         except IndexError:
-            pr.print_warning("No results found...")
+            socli.printer.print_warning("No results found...")
             sys.exit(1)
     except UnicodeEncodeError:
-        pr.print_warning("Encoding error: Use \"chcp 65001\" command before "
+        socli.printer.print_warning("Encoding error: Use \"chcp 65001\" command before "
                          "using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError:
-        pr.print_fail("Please check your internet connectivity...")
+        socli.printer.print_fail("Please check your internet connectivity...")
     except Exception as e:
-        pr.showerror(e)
+        socli.printer.showerror(e)
         sys.exit(0)
 
 
@@ -393,7 +392,7 @@ def fix_google_url(url):
         url = "https://" + url  # Add the protocol if it doesn't already exist
 
     # Makes sure that we stay in the questions section of Stack Overflow
-    if not bool(re.search("/questions/[0-9]+", url)) and not bool(re.search("\.com/a/[0-9]", url)):
+    if not bool(re.search(r"/questions/[0-9]+", url)) and not bool(re.search(r"\.com/a/[0-9]", url)):
         return None
 
     if url[:17] == "https:///url?url=":  # Resolves rare bug in which this is a prefix
@@ -414,12 +413,12 @@ def captcha_check(url):
                                    " Now you'll have to wait about an hour before you're unblocked... :(. " \
                                    "Use the -s tag to search via Stack Overflow instead."
         # Check if google detects user as a bot
-        if re.search("ipv4\.google\.com/sorry", url):
-            pr.print_warning(google_error_display_msg)
+        if re.search(r"ipv4\.google\.com/sorry", url):
+            socli.printer.print_warning(google_error_display_msg)
             exit(0)
     else:
-        if re.search("\.com/nocaptcha", url):  # Searching for stackoverflow captcha check
-            pr.print_warning("StackOverflow captcha check triggered. Please wait a few seconds before trying again.")
+        if re.search(r"\.com/nocaptcha", url):  # Searching for stackoverflow captcha check
+            socli.printer.print_warning("StackOverflow captcha check triggered. Please wait a few seconds before trying again.")
             exit(0)
 
 

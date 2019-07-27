@@ -4,8 +4,6 @@ python:
 install:
   - pip install -U setuptools
   - pip install -r requirements.txt
-  - pip install --upgrade pip
-  - pip install .
 script:
 - python setup.py test
 - python setup.py install

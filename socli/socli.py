@@ -11,6 +11,7 @@ import requests
 from bs4 import BeautifulSoup
 import urwid
 import urllib3
+
 try:
     import simplejson as json
 except ImportError:
@@ -26,6 +27,8 @@ import socli.user as user_module
 import socli.search as search
 import socli.printer as printer
 from socli.parser import parse_arguments
+from socli.printer import display_results
+
 
 tag = ""  # tag based search
 query = ""  # Query
@@ -98,22 +101,6 @@ def socli(query):
     except Exception as e:
         printer.showerror(e)
         sys.exit(0)
-
-
-def display_results(url):
-    """
-    Display result page
-    :param url: URL of the search result
-    :return:
-    """
-    search.random_headers()
-    res_page = requests.get(url, headers=search.header)
-    search.captcha_check(res_page.url)
-    tui.display_header = tui.Header()
-    question_title, question_desc, question_stats, answers = search.get_question_stats_and_answer(url)
-    tui.question_post = tui.QuestionPage((answers, question_title, question_desc, question_stats, url))
-    tui.MAIN_LOOP = tui.EditedMainLoop(tui.question_post, printer.palette)
-    tui.MAIN_LOOP.run()
 
 
 def socli_browse_interactive_windows(query_tag):
