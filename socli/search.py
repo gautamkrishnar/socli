@@ -21,7 +21,7 @@ google_search = True
 so_url = "http://stackoverflow.com"  # Site URL
 so_qurl = "http://stackoverflow.com/search?q="  # Query URL
 so_burl = "https://stackoverflow.com/?tab="  # Assuming browse URL
-google_search_url = "https://www.google.com/search?q=site:stackoverflow.com+"  # Google search query URL
+google_search_url = "https://www.google.com/search?q=site:www.stackoverflow.com+"  # Google search query URL
 
 
 def get_questions_for_query(query, count=10):
