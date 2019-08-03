@@ -30,7 +30,7 @@ query = ""  # Query
 uas = []  # User agent list
 header = {}  # Request header
 google_search = True # Uses google search. Enabled by default.
-google_search_url = "https://www.google.com/search?q=site:stackoverflow.com+" #Google search query URL
+google_search_url = "https://www.google.com/search?q=site:www.stackoverflow.com+" #Google search query URL
 # Suppressing InsecureRequestWarning and many others
 urllib3.disable_warnings()
 
