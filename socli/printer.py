@@ -11,7 +11,9 @@ import urllib
 import colorama
 import requests
 
-from socli import search as search, tui as tui
+sys.path.append('.')
+import search as search
+import tui as tui
 
 DEBUG = False
 

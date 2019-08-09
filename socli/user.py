@@ -4,8 +4,10 @@ Contains all functions used for user authentication and user metadata fetching.
 
 import json
 import os
+import sys
 
-import socli.printer as pr
+sys.path.append('.')
+import printer as pr
 
 app_data = dict()  # Data file dictionary
 data_file = os.path.join(os.path.dirname(__file__), "data.json")  # Data file location

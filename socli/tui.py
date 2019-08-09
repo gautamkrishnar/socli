@@ -6,12 +6,15 @@ import sys
 import subprocess
 import urwid
 
-import socli.printer as pr
+sys.path.append(".")
+import printer as pr
 
 question_post = None
 question_page = None
 display_header = None
 MAIN_LOOP = None
+
+
 
 
 class UnicodeText(urwid.Text):
