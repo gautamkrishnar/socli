@@ -6,7 +6,7 @@ import json
 import os
 import sys
 
-sys.path.append('.')
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import printer as pr
 
 app_data = dict()  # Data file dictionary

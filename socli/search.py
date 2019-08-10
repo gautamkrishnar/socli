@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 import requests
 import urwid
 
-sys.path.append('.')
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import printer as printer
 import tui as tui
 

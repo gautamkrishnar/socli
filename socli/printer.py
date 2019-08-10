@@ -7,11 +7,12 @@ import subprocess
 import sys
 import textwrap
 import urllib
+import os
 
 import colorama
 import requests
 
-sys.path.append('.')
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import search as search
 import tui as tui
 

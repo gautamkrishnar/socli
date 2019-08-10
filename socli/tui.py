@@ -5,8 +5,9 @@ Urwid-based class hierarchy that forms the front end of the SoCLI application.
 import sys
 import subprocess
 import urwid
+import os
 
-sys.path.append(".")
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import printer as pr
 
 question_post = None

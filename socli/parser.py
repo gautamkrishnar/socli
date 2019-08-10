@@ -3,8 +3,10 @@ Contains all functions used for parsing the command line args
 """
 import argparse
 import textwrap
+import sys
+import os
 
-
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 def parse_arguments(command):
     """
     Parses the command into arguments and flags
