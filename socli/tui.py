@@ -7,7 +7,9 @@ import subprocess
 import urwid
 import os
 
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+sys.path = [BASE_DIR] + sys.path
+
 import printer as pr
 
 question_post = None

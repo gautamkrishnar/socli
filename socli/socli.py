@@ -24,7 +24,7 @@ except AttributeError:
 
 # Importing SoCli modules
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(BASE_DIR)
+sys.path = [BASE_DIR] + sys.path
 
 import tui as tui
 import user as user_module

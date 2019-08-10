@@ -6,7 +6,10 @@ import json
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+sys.path = [BASE_DIR] + sys.path
+
+
 import printer as pr
 
 app_data = dict()  # Data file dictionary
