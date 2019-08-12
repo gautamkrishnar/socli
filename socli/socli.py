@@ -21,14 +21,17 @@ try:
 except AttributeError:
     JSONDecodeError = ValueError
 
-# Importing SoCli modules
-import socli.tui as tui
-import socli.user as user_module
-import socli.search as search
-import socli.printer as printer
-from socli.parser import parse_arguments
-from socli.printer import display_results
 
+# Importing SoCli modules
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+sys.path = [BASE_DIR] + sys.path
+
+import tui as tui
+import user as user_module
+import search as search
+import printer as printer
+from parser import parse_arguments
+from printer import display_results
 
 tag = ""  # tag based search
 query = ""  # Query

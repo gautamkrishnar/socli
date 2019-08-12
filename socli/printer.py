@@ -7,11 +7,18 @@ import subprocess
 import sys
 import textwrap
 import urllib
+import os
 
 import colorama
 import requests
 
-from socli import search as search, tui as tui
+
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+sys.path = [BASE_DIR] + sys.path
+
+
+import search as search
+import tui as tui
 
 DEBUG = False
 

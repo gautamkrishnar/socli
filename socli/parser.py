@@ -3,7 +3,8 @@ Contains all functions used for parsing the command line args
 """
 import argparse
 import textwrap
-
+import sys
+import os
 
 def parse_arguments(command):
     """

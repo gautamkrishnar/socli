@@ -5,13 +5,19 @@ Urwid-based class hierarchy that forms the front end of the SoCLI application.
 import sys
 import subprocess
 import urwid
+import os
 
-import socli.printer as pr
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+sys.path = [BASE_DIR] + sys.path
+
+import printer as pr
 
 question_post = None
 question_page = None
 display_header = None
 MAIN_LOOP = None
+
+
 
 
 class UnicodeText(urwid.Text):
