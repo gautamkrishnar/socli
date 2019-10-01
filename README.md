@@ -1,7 +1,7 @@
 # SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) [![Collaborizm](https://img.shields.io/badge/Collaborizm-Join%20Project-brightgreen.svg)](https://www.collaborizm.com/project/S1cbUui6) [![Join the chat at https://gitter.im/socli-community/Lobby](https://badges.gitter.im/socli-community/Lobby.svg)](https://gitter.im/socli-community/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
-Stack Overflow command line written in python. Using SoCLI you can search and browse Stack Overflow without leaving the terminal. Just use the **socli** command:
+Stack Overflow command line written in python. Using SoCLI you can search and browse Stack Overflow without leaving the terminal. Just use the `socli` command:
 
 
 ![SoCLI in action](https://cloud.githubusercontent.com/assets/8397274/24831468/86c290aa-1cb7-11e7-8161-2665d0c02e4b.gif)
@@ -84,7 +84,7 @@ socli -t javascript,node.js -q window.open
 See the complete list of tags [here](http://stackoverflow.com/tags).
 
 ##### User Profile Browsing
-Just use the command below to set your [user ID]( http://meta.stackexchange.com/a/111130) in socli. When you execute the command next time, it will automaticially fetch the data.
+Just use the command below to set your [user ID]( http://meta.stackexchange.com/a/111130) in socli. When you execute the command next time, it will automatically fetch the data.
 ```sh
 socli -u
 ```
