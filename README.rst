@@ -134,7 +134,7 @@ the following command:
 
     socli -t javascript -q window.open
 
-You can also specify multiple tags, Just seporate them with a comma:
+You can also specify multiple tags, Just separate them with a comma:
 
 .. code:: sh
 
@@ -147,13 +147,13 @@ User Profile Browsing
 
 Just use the command below to set your `user
 ID <http://meta.stackexchange.com/a/111130>`__ in socli. When you
-execute the command next time, it will automaticially fetch the data.
+execute the command next time, it will automatically fetch the data.
 
 .. code:: sh
 
     socli -u
 
-if your are an extensive user of StackOverflow, **socli** allows you to
+If your are an extensive user of StackOverflow, **socli** allows you to
 set your own API key to overcome the `StackOverflow API
 Limitations <http://stackapps.com/a/3057/41332>`__. Just use the command
 below:
