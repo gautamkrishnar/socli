@@ -10,10 +10,6 @@ if version_info[:3] < (2, 0, 0):
     print("Python 1 is not supported...")
     sys.exit(1)
 
-if version_info[:3] >= (3, 7, 0):
-    print("Python 3.7 is not supported please check https://github.com/gautamkrishnar/socli/issues/152")
-    sys.exit(1)
-
 with open('README.rst') as f:
     longd = f.read()
 
