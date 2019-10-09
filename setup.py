@@ -29,3 +29,4 @@ setup(
     description='Stack overflow commnand line interface. SoCLI allows you to search and browse stack overflow from the terminal.',
     long_description="\n\n"+longd
     )
+#changes have been made
