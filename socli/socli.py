@@ -7,6 +7,7 @@
 
 import os
 import sys
+import logging
 import requests
 from bs4 import BeautifulSoup
 import urwid
@@ -35,7 +36,23 @@ query = ""  # Query
 
 # Suppressing InsecureRequestWarning and many others
 urllib3.disable_warnings()
+# logger for debugging
+logger = logging.getLogger(__name__)
 
+# Switch on logging of the requests module.
+def debug_requests_on():
+    try:
+        from http.client import HTTPConnection
+        HTTPConnection.set_debuglevel(HTTPConnection, 1)
+    except ImportError:
+        import httplib
+        httplib.HTTPConnection.debuglevel = 2
+
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.DEBUG)
+    requests_log = logging.getLogger('requests.packages.urllib3')
+    requests_log.setLevel(logging.DEBUG)
+    requests_log.propagate = True
 
 # Fixes windows active page code errors
 def fix_code_page():
@@ -305,6 +322,7 @@ def main():
     if namespace.debug:  # If --debug flag is present
         # Prints out error used for debugging
         printer.DEBUG = True
+        debug_requests_on()
 
     if namespace.new:  # If --new flag is present
         # Opens StackOverflow website in the browser to create a  new question
