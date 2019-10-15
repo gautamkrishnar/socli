@@ -7,6 +7,7 @@
 
 import argparse
 import os
+import logging
 import sys
 import urllib
 import colorama
@@ -45,6 +46,7 @@ question_post = None #Used to see whether we are currently displaying a question
 question_page = None #Not None only if in interactive mode. Displays all the questions found.
 header_for_display = None #Used as header to display question post
 LOOP = None #Main Loop used to render widgets
+logger = logging.getLogger(__name__) #logger for debug
 
 #Palette for question post colors
 palette = [('answer', 'default', 'default'),
@@ -400,9 +402,25 @@ def underline(str):
     return (format_str(str, bcolors.UNDERLINE))
 
 
+def debug_requests_on():
+    """Switch on logging of the requests module."""
+    try:
+        from http.client import HTTPConnection
+        HTTPConnection.set_debuglevel(HTTPConnection, 1)
+    except ImportError:
+        import httplib
+        httplib.HTTPConnection.debuglevel = 2
+
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.DEBUG)
+    requests_log = logging.getLogger('requests.packages.urllib3')
+    requests_log.setLevel(logging.DEBUG)
+    requests_log.propagate = True
+
 ## For testing exceptions
 def showerror(e):
     if DEBUG == True:
+        debug_requests_on()
         import traceback
         print("Error name: " + e.__doc__)
         print()
@@ -970,7 +988,6 @@ def del_datafile():
         print_warning("File not created.... Use socli -u to create a new configuration file.")
         exit(0)
 
-
 def loaduseragents():
     """
     Loads the list of user agents from user_agents.txt
@@ -1332,6 +1349,8 @@ def main():
     if namespace.debug: #If --debug flag is present
         global DEBUG
         DEBUG = True
+        if DEBUG:
+            debug_requests_on()
     if namespace.new: #If --new flag is present
         import webbrowser
         print_warning("Opening stack overflow in your browser...")
