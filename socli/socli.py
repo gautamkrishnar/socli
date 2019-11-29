@@ -17,7 +17,7 @@ import random
 import re
 import subprocess
 import textwrap
-from .auth import login_prompt, login, logout
+from auth import login_prompt, login, logout
 
 try:
     import simplejson as json
@@ -540,7 +540,8 @@ def get_questions_for_query(query, count=10):
     tmp1 = (soup.find_all("div", class_="excerpt"))
     i = 0
     while (i < len(tmp)):
-        if i == count: break  # limiting results
+        if i == count: 
+            break  # limiting results
         question_text = ' '.join((tmp[i].a.get_text()).split())
         question_text = question_text.replace("Q: ", "")
         question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
@@ -566,16 +567,17 @@ def get_questions_for_query_google(query, count=10):
     captchacheck(search_results.url)
     soup = BeautifulSoup(search_results.text, 'html.parser')
     try:
-        soup.find_all("div", class_="g")[0]  # For explicitly raising exception
+        s = soup.find_all("div", class_="ezO2md")
     except IndexError:
         print_warning("No results found...")
         sys.exit(0)
-    for result in soup.find_all("div", class_="g"):
+    for result in soup.findAll("div", class_="ezO2md"):
         if i == count:
             break
         try:
-            question_title = result.find("h3", class_="r").get_text()[:-17]
-            question_desc = result.find("span", class_="st").get_text()
+            question_title = result.find("div", class_="CVA68e").get_text().split(' -')
+            question_desc = result.find("div", class_="FrIlee").find("span", class_="fYyStc").text
+            question_desc = question_desc.replace('\xa0', '')
             if question_desc=="": # For avoiding instant answers
                 raise NameError #Explicit raising
             question_url = result.find("a").get("href") #Retrieves the Stack Overflow link
@@ -585,7 +587,7 @@ def get_questions_for_query_google(query, count=10):
                 i = i-1
                 continue
 
-            questions.append([question_title, question_desc, question_url])
+            questions.append([question_title[0], question_desc, question_url])
             i += 1
         except NameError:
             continue
@@ -978,10 +980,11 @@ def loaduseragents():
     """
     global uas
     uas = []
-    with open(os.path.join(os.path.dirname(__file__), "user_agents.txt"), 'rb') as uaf:
+    with open(os.path.join(os.path.dirname(__file__), "user_agents_working.txt"), 'rb') as uaf:
         for ua in uaf.readlines():
             if ua:
-                uas.append(ua.strip()[1:-1 - 1])
+                #print(ua.strip()[1:-1])
+                uas.append(ua.strip()[1:-1])
     random.shuffle(uas)
 
 
@@ -1016,17 +1019,24 @@ def get_stats(soup):
     :param soup:
     :return:
     """
+    new_string = []
     question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
     question_stats = (soup.find_all("div", class_="js-vote-count")[0].get_text())
     try:
-        question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0]
-                                                                .get_text()).replace("\n", " ")).replace("     "," | "))
+        question_stats = "Votes " + question_stats + (((soup.find_all("div", class_="grid fw-wrap pb8 mb16 bb bc-black-2")[0]
+                                                                .get_text()).replace("\n", " ")))
     except IndexError as e:
         question_stats = "Could not load statistics."
     question_desc = (soup.find_all("div", class_="post-text")[0])
     add_urls(question_desc)
     question_desc = question_desc.get_text()
     question_stats = ' '.join(question_stats.split())
+    for word in question_stats:
+        if word.istitle():
+            new_string.extend('| ' + word)
+        else:
+            new_string.extend(word)
+    question_stats = ''.join(new_string)
     return question_title, question_desc, question_stats
 
 
