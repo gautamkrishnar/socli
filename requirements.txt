@@ -3,3 +3,4 @@ requests
 colorama
 Py-StackExchange
 urwid
+requests_html

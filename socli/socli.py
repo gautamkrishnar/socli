@@ -18,6 +18,7 @@ import re
 import subprocess
 import textwrap
 from .auth import login_prompt, login, logout
+from requests_html import HTMLSession
 
 try:
     import simplejson as json
@@ -561,20 +562,31 @@ def get_questions_for_query_google(query, count=10):
     """
     i = 0
     questions = []
-    randomheaders()
-    search_results = requests.get(google_search_url + query, headers=header)
-    captchacheck(search_results.url)
-    soup = BeautifulSoup(search_results.text, 'html.parser')
-    try:
-        soup.find_all("div", class_="g")[0]  # For explicitly raising exception
-    except IndexError:
+
+    session = HTMLSession()
+    res = session.get(google_search_url + query)
+    session.close()
+
+    captchacheck(res.url)
+
+    # Render JavaScript
+    res.html.render()
+
+    data = res.html.find('.g')
+    if not data:
         print_warning("No results found...")
         sys.exit(0)
-    for result in soup.find_all("div", class_="g"):
+
+    # For all 'div's with class = "g"
+    for element in data:
+
+        # Parse the raw HTML
+        result = BeautifulSoup(element.raw_html, 'html.parser')
+
         if i == count:
             break
         try:
-            question_title = result.find("h3", class_="r").get_text()[:-17]
+            question_title = result.find("h3").get_text()[:-17]
             question_desc = result.find("span", class_="st").get_text()
             if question_desc=="": # For avoiding instant answers
                 raise NameError #Explicit raising
