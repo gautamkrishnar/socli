@@ -532,11 +532,11 @@ def get_questions_for_query(query, count=10):
     captchacheck(search_res.url)
     soup = BeautifulSoup(search_res.text, 'html.parser')
     try:
-        soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
+        soup.find_all("div", class_="summary")[0]  # For explicitly raising exception
     except IndexError:
         print_warning("No results found...")
         sys.exit(0)
-    tmp = (soup.find_all("div", class_="question-summary"))
+    tmp = (soup.find_all("div", class_="summary"))
     tmp1 = (soup.find_all("div", class_="excerpt"))
     i = 0
     while (i < len(tmp)):
@@ -628,8 +628,8 @@ def socli_interactive_windows(query):
         captchacheck(search_res.url)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
-            soup.find_all("div", class_="question-summary")[0]  # For explictly raising exception
-            tmp = (soup.find_all("div", class_="question-summary"))
+            soup.find_all("div", class_="summary")[0]  # For explictly raising exception
+            tmp = (soup.find_all("div", class_="summary"))
             tmp1 = (soup.find_all("div", class_="excerpt"))
             i = 0
             question_local_url = []
