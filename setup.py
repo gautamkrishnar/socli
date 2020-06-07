@@ -4,11 +4,6 @@ try:
 except ImportError:
     from distutils.core import setup
 from codecs import open
-from sys import exit, version_info
-import sys
-if version_info[:3] < (3, 0, 0):
-    print("Python version 1 and 2 is not supported...")
-    sys.exit(1)
 
 with open('README.rst') as f:
     longd = f.read()
@@ -18,7 +13,7 @@ setup(
     include_package_data=True,
     packages=["socli"],
     entry_points = {"console_scripts": ['socli = socli.socli:main']},
-    python_requires='>3.0.0',
+    python_requires='>=3.5.0',
     install_requires=['BeautifulSoup4','requests','colorama','Py-stackExchange', 'urwid'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
