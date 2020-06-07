@@ -13,3 +13,4 @@ build/
 *.egg
 venv
 .eggs
+socli/data.json
