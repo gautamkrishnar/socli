@@ -82,7 +82,7 @@ def get_questions_for_query_google(query, count=10):
         if i == count:
             break
         try:
-            question_title = result.find("h3", class_="r").get_text()[:-17]
+            question_title = result.find("div", class_="r").find("h3").get_text().replace(' - Stack Overflow', '')
             question_desc = result.find("span", class_="st").get_text()
             if question_desc == "":  # For avoiding instant answers
                 raise NameError  # Explicit raising
@@ -432,7 +432,7 @@ def load_user_agents():
     with open(os.path.join(os.path.dirname(__file__), "user_agents.txt"), 'rb') as uaf:
         for ua in uaf.readlines():
             if ua:
-                uas.append(ua.strip()[1:-1 - 1])
+                uas.append(ua.rstrip())
     random.shuffle(uas)
 
 
