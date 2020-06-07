@@ -1,15 +1,35 @@
 SoCLI Changelog
 ================
 
-Release 3.6 
+Release 4.0
+---------------------------
+
+* Drop support for python <= 3.5
+* Fixing some issues related to searching
+
+Release 3.9
+---------------------------
+
+* Bug fixes
+
+Release 3.8
+---------------------------
+
+* Bug fixes
+
+Release 3.7
+---------------------------
+
+* Fixed functional issues
+
+Release 3.6
 ---------------------------
 
 * Implemented usage of Google search instead of stackoverflow's default search
 * Added code to test captcha checks
 * Many bugs fixed
 
-
-Release 3.5 
+Release 3.5
 ---------------------------
 
 * Added code to prevent unwanted captcha checks
