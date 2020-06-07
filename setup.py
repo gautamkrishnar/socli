@@ -6,12 +6,8 @@ except ImportError:
 from codecs import open
 from sys import exit, version_info
 import sys
-if version_info[:3] < (2, 0, 0):
-    print("Python 1 is not supported...")
-    sys.exit(1)
-
-if version_info[:3] >= (3, 7, 0):
-    print("Python 3.7 is not supported please check https://github.com/gautamkrishnar/socli/issues/152")
+if version_info[:3] < (3, 0, 0):
+    print("Python version 1 and 2 is not supported...")
     sys.exit(1)
 
 with open('README.rst') as f:
@@ -22,6 +18,7 @@ setup(
     include_package_data=True,
     packages=["socli"],
     entry_points = {"console_scripts": ['socli = socli.socli:main']},
+    python_requires='>3.0.0',
     install_requires=['BeautifulSoup4','requests','colorama','Py-stackExchange', 'urwid'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
