@@ -14,7 +14,7 @@ Stack Overflow command line written in python. Using SoCLI you can search and br
 * Mac
 
 ##### Requirements
-* Python 2.0 or higher
+* Python 3.5 or higher
 
 ##### For Linux
 Install **python** and just use **pip** command to install **socli**:
