@@ -1,4 +1,7 @@
 # SoCLI [![PyPI version](https://badge.fury.io/py/socli.svg)](https://badge.fury.io/py/socli) [![Build Status](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) [![Collaborizm](https://img.shields.io/badge/Collaborizm-Join%20Project-brightgreen.svg)](https://www.collaborizm.com/project/S1cbUui6) [![Join the chat at https://gitter.im/socli-community/Lobby](https://badges.gitter.im/socli-community/Lobby.svg)](https://gitter.im/socli-community/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-38-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
 Stack Overflow command line written in python. Using SoCLI you can search and browse Stack Overflow without leaving the terminal. Just use the **socli** command:
@@ -170,27 +173,81 @@ If you are willing to contribute to SoCLI project, you are awesome! Just follow 
 8. Push to the branch: `git push`
 9. Submit a [new pull request](https://github.com/gautamkrishnar/socli/pull/new) :smile:
 
-### Contributors
-Special thanks to these superheroes:
-* [Elliott Beach](https://github.com/e-beach) for improving color support by adding colorama [#29](https://github.com/gautamkrishnar/socli/pull/29), For making SoCLI more interactive [#35](https://github.com/gautamkrishnar/socli/pull/35). [36](https://github.com/gautamkrishnar/socli/pull/36) [#40](https://github.com/gautamkrishnar/socli/pull/40) You rocks...
-* [Aaxu](https://github.com/aaxu) for the PR: [#59](https://github.com/gautamkrishnar/socli/pull/59), [#58](https://github.com/gautamkrishnar/socli/pull/58), [#56](https://github.com/gautamkrishnar/socli/pull/56), [#54](https://github.com/gautamkrishnar/socli/pull/54), and [#53](https://github.com/gautamkrishnar/socli/pull/53). High Five!
-* [Killbee](https://github.com/kilbee) for making SoCLI colorful [#3](https://github.com/gautamkrishnar/socli/pull/3)
-* [Sam Dean](https://github.com/deanWombourne) for adding Macintosh SoCLI installation instructions [#1](https://github.com/gautamkrishnar/socli/pull/1)
-* [Plinio89s](https://github.com/Plinio89s) for adding the check for color support [#8](https://github.com/gautamkrishnar/socli/pull/8)
-* [nagracks](https://github.com/nagracks) for improving readability of the SoCLI code [#11](https://github.com/gautamkrishnar/socli/pull/11)
-* [mwwynne](https://github.com/mwwynne) for adding links to the SoCLI [#13](https://github.com/gautamkrishnar/socli/pull/13)
-* [Carlos J. Puga Medina](https://github.com/cpu82) for finding the bug [#11](https://github.com/gautamkrishnar/socli/issues/14) on SoCLI python2 version and for making [SoCLI freshports port](https://www.freshports.org/misc/py-socli/)
-* [Jon Ericson](https://github.com/jericson) (*Community Manager, Stack Overflow*) for the PR [#18](https://github.com/gautamkrishnar/socli/pull/18) and letting me know about the Stack Overflow attribution policy. Thanks for the [blog post](http://jericson.github.io/2016/08/25/long_tail_docs.html)
-* [Ankit Kr. Singh](https://github.com/kumarankit0411) for fixing some typos PR [#21](https://github.com/gautamkrishnar/socli/pull/21) [#23](https://github.com/gautamkrishnar/socli/pull/23)
-* [Harsha Alva](https://github.com/aharshac) for fixing windows encoding problem PR [#24](https://github.com/gautamkrishnar/socli/pull/21)
-* [Pia Mancini](https://github.com/piamancini) for adding SoCLI to OpenCollective [#27](https://github.com/gautamkrishnar/socli/pull/27)
-* [Aditya Tandon](https://github.com/adityatandon007) for the issue [#30](https://github.com/gautamkrishnar/socli/issues/30)
-* [Akshatha Nayak](https://github.com/Aksh77) for your first contribution to an open source project. PR [#31](https://github.com/gautamkrishnar/socli/issues/31)
-* [Levi Sabah](https://github.com/levisabah) for PR [#43](https://github.com/gautamkrishnar/socli/pull/43)
-* [liamhawkins](https://github.com/liamhawkins) for PR [#44](https://github.com/gautamkrishnar/socli/pull/44) and [#45](https://github.com/gautamkrishnar/socli/pull/45)
-* [Arount](https://github.com/arount) for fixing issue [#48](https://github.com/gautamkrishnar/socli/issues/48) via PR [#47](https://github.com/gautamkrishnar/socli/pull/47)
-* [Cédric Picard](https://github.com/cym13) for the issue [#42](https://github.com/gautamkrishnar/socli/issues/42)
-* [Amartya Chaudhuri](https://github.com/amartyaamp) for his first contribution to SOCLI [#51](https://github.com/gautamkrishnar/socli/pull/51)
+## Maintainers
+
+Please reach out to any of the following people if you have any queries:
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/gautamkrishnar"><img src="https://avatars2.githubusercontent.com/u/8397274?v=4" width="100px;" alt=""/><br /><sub><b>Gautam krishna R</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=gautamkrishnar" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/hedythedev"><img src="https://avatars0.githubusercontent.com/u/50042066?v=4" width="100px;" alt=""/><br /><sub><b>Hedy Li</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=hedythedev" title="Code">💻</a></td>
+  </tr>
+</table>
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/aaxu"><img src="https://avatars2.githubusercontent.com/u/19481525?v=4" width="100px;" alt=""/><br /><sub><b>aaxu</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=aaxu" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/kilbee"><img src="https://avatars1.githubusercontent.com/u/2181891?v=4" width="100px;" alt=""/><br /><sub><b>kilbee</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=kilbee" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/deanWombourne"><img src="https://avatars1.githubusercontent.com/u/7887119?v=4" width="100px;" alt=""/><br /><sub><b>Sam Dean</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=deanWombourne" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/mwwynne"><img src="https://avatars1.githubusercontent.com/u/3174043?v=4" width="100px;" alt=""/><br /><sub><b>mwwynne</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=mwwynne" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/cpu82"><img src="https://avatars2.githubusercontent.com/u/4080230?v=4" width="100px;" alt=""/><br /><sub><b>Carlos J. Puga Medina</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/issues?q=author%3Acpu82" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://jlericson.com/"><img src="https://avatars1.githubusercontent.com/u/1520759?v=4" width="100px;" alt=""/><br /><sub><b>Jon Ericson</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=jericson" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/kumarankit0411"><img src="https://avatars2.githubusercontent.com/u/19763730?v=4" width="100px;" alt=""/><br /><sub><b>Ankit Kr. Singh</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=kumarankit0411" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://alvaharsha.com/"><img src="https://avatars2.githubusercontent.com/u/11926689?v=4" width="100px;" alt=""/><br /><sub><b>Harsha Alva</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=aharshac" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/piamancini"><img src="https://avatars2.githubusercontent.com/u/3671070?v=4" width="100px;" alt=""/><br /><sub><b>Pia Mancini</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=piamancini" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/adityatandon007"><img src="https://avatars2.githubusercontent.com/u/25108385?v=4" width="100px;" alt=""/><br /><sub><b>Aditya Tandon</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/issues?q=author%3Aadityatandon007" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/Aksh77"><img src="https://avatars0.githubusercontent.com/u/12583292?v=4" width="100px;" alt=""/><br /><sub><b>Akshatha Nayak</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=Aksh77" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/liamhawkins"><img src="https://avatars3.githubusercontent.com/u/22647996?v=4" width="100px;" alt=""/><br /><sub><b>Liam Hawkins</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=liamhawkins" title="Code">💻</a></td>
+    <td align="center"><a href="http://arount.info/"><img src="https://avatars3.githubusercontent.com/u/4593141?v=4" width="100px;" alt=""/><br /><sub><b>Arount</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=arount" title="Code">💻</a></td>
+    <td align="center"><a href="https://breakpoint.purrfect.fr/"><img src="https://avatars3.githubusercontent.com/u/4958985?v=4" width="100px;" alt=""/><br /><sub><b>Cédric Picard</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/issues?q=author%3Acym13" title="Bug reports">🐛</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/amartyaamp"><img src="https://avatars1.githubusercontent.com/u/7647235?v=4" width="100px;" alt=""/><br /><sub><b>Amartya Chaudhuri</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=amartyaamp" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/elliott-beach"><img src="https://avatars1.githubusercontent.com/u/13651458?v=4" width="100px;" alt=""/><br /><sub><b>Elliott Beach</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=elliott-beach" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/prashantchahal26"><img src="https://avatars3.githubusercontent.com/u/14841072?v=4" width="100px;" alt=""/><br /><sub><b>Prashant Chahal</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=prashantchahal26" title="Code">💻</a></td>
+    <td align="center"><a href="https://insiyaa.github.io/"><img src="https://avatars2.githubusercontent.com/u/29259374?v=4" width="100px;" alt=""/><br /><sub><b>Insiyah Hajoori</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=Insiyaa" title="Code">💻</a></td>
+    <td align="center"><a href="https://thevirtuoso1973.github.io/"><img src="https://avatars2.githubusercontent.com/u/46009390?v=4" width="100px;" alt=""/><br /><sub><b>C</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=thevirtuoso1973" title="Code">💻</a></td>
+    <td align="center"><a href="https://liambyrne.nz/"><img src="https://avatars2.githubusercontent.com/u/18452094?v=4" width="100px;" alt=""/><br /><sub><b>Liam Byrne</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=liambyrnenz" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/tranchikhang"><img src="https://avatars3.githubusercontent.com/u/16659747?v=4" width="100px;" alt=""/><br /><sub><b>Tran Chi Khang</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=tranchikhang" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/AlexPoulsen"><img src="https://avatars1.githubusercontent.com/u/9259671?v=4" width="100px;" alt=""/><br /><sub><b>Alix Poulsen</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=AlexPoulsen" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://gitlab.com/albalitz"><img src="https://avatars1.githubusercontent.com/u/9308749?v=4" width="100px;" alt=""/><br /><sub><b>albalitz</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=albalitz" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/anirudnits"><img src="https://avatars3.githubusercontent.com/u/25305301?v=4" width="100px;" alt=""/><br /><sub><b>Aniruddha Bhattacharjee</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=anirudnits" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/dstjacques"><img src="https://avatars0.githubusercontent.com/u/735244?v=4" width="100px;" alt=""/><br /><sub><b>Daniel St.Jacques</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=dstjacques" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/donnell794"><img src="https://avatars2.githubusercontent.com/u/11854190?v=4" width="100px;" alt=""/><br /><sub><b>Donnell Muse</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=donnell794" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/jm66"><img src="https://avatars2.githubusercontent.com/u/2047620?v=4" width="100px;" alt=""/><br /><sub><b>JM Lopez</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=jm66" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/jophab"><img src="https://avatars3.githubusercontent.com/u/13940974?v=4" width="100px;" alt=""/><br /><sub><b>JOBIN PHILIP ABRAHAM</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=jophab" title="Documentation">📖</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/jkukul"><img src="https://avatars2.githubusercontent.com/u/7057316?v=4" width="100px;" alt=""/><br /><sub><b>Jakub Kukul</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=jkukul" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/LuckyPigeon"><img src="https://avatars0.githubusercontent.com/u/32315294?v=4" width="100px;" alt=""/><br /><sub><b>Pigeon</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=LuckyPigeon" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/therajdeepbiswas"><img src="https://avatars2.githubusercontent.com/u/32306614?v=4" width="100px;" alt=""/><br /><sub><b>Rajdeep Biswas</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=therajdeepbiswas" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/sk364"><img src="https://avatars1.githubusercontent.com/u/15685616?v=4" width="100px;" alt=""/><br /><sub><b>Sachin Kukreja</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=sk364" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/simon3270"><img src="https://avatars3.githubusercontent.com/u/1138498?v=4" width="100px;" alt=""/><br /><sub><b>Simon Reap</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=simon3270" title="Code">💻</a></td>
+    <td align="center"><a href="https://stackoverflow.com/users/8709791/srig?tab=profile"><img src="https://avatars1.githubusercontent.com/u/32685230?v=4" width="100px;" alt=""/><br /><sub><b>Srisaila</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=srigalibe" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/agarwalnishtha"><img src="https://avatars0.githubusercontent.com/u/35678934?v=4" width="100px;" alt=""/><br /><sub><b>agarwalnishtha</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=agarwalnishtha" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/fredkozlowski"><img src="https://avatars0.githubusercontent.com/u/15177661?v=4" width="100px;" alt=""/><br /><sub><b>Frederick Kozlowski</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=fredkozlowski" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/elath03"><img src="https://avatars2.githubusercontent.com/u/20517890?v=4" width="100px;" alt=""/><br /><sub><b>Esha Lath</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=elath03" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/thumpri"><img src="https://avatars2.githubusercontent.com/u/30461824?v=4" width="100px;" alt=""/><br /><sub><b>thumpri</b></sub></a><br /><a href="https://github.com/gautamkrishnar/SoCLI/commits?author=thumpri" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 ### Bugs
 If you are experiencing any bugs, don’t forget to open a [new issue](https://github.com/gautamkrishnar/socli/issues/new).
