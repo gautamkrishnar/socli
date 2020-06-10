@@ -134,9 +134,7 @@ def get_stats(soup):
     question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
     question_stats = (soup.find_all("div", class_="js-vote-count")[0].get_text())
     try:
-        question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0]
-                                                                .get_text()).replace("\n", " ")).replace("     ",
-                                                                                                         " | "))
+        question_stats = "Votes " + question_stats + " | asked " + (soup.find("time").get_text()) + " | active " + (soup.find("a", href="?lastactivity").get_text()) + " | viewed " + (soup.find("div", class_="grid--cell ws-nowrap mb8").get_text().split("\r"))[1].strip()
     except IndexError:
         question_stats = "Could not load statistics."
     question_desc = (soup.find_all("div", class_="post-text")[0])
