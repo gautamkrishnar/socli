@@ -14,6 +14,11 @@ import urwid
 import socli.printer
 import socli.tui
 
+import stackexchange
+
+site = stackexchange.Site(stackexchange.StackOverflow)
+site.be_inclusive()
+
 uas = []  # User agent list
 header = {}  # Request header
 google_search = True
@@ -22,6 +27,15 @@ so_url = "http://stackoverflow.com"  # Site URL
 so_qurl = "http://stackoverflow.com/search?q="  # Query URL
 so_burl = "https://stackoverflow.com/?tab="  # Assuming browse URL
 google_search_url = "https://www.google.com/search?q=site:www.stackoverflow.com+"  # Google search query URL
+
+
+def get_question_by_url(question_url):
+    upper = 9 # Currently anticipated maximum question_ID length. Example: 9 digits being numbers upto hundred millionth places
+    question_page_url = requests.get(question_url).url
+    idindexstart = question_page_url.find("questions/") + 10 # The length of "questions/" being 10
+    question_id = question_page_url[idindexstart: idindexstart + upper].split("/")[0]
+    question = site.question(question_id)
+    return question
 
 
 def get_questions_for_query(query, count=10):
@@ -82,10 +96,6 @@ def get_questions_for_query_google(query, count=10):
         if i == count:
             break
         try:
-            question_title = result.find("div", class_="r").find("h3").get_text().replace(' - Stack Overflow', '')
-            question_desc = result.find("span", class_="st").get_text()
-            if question_desc == "":  # For avoiding instant answers
-                raise NameError  # Explicit raising
             question_url = result.find("a").get("href")  # Retrieves the Stack Overflow link
             question_url = fix_google_url(question_url)
 
@@ -93,7 +103,8 @@ def get_questions_for_query_google(query, count=10):
                 i = i - 1
                 continue
 
-            questions.append([question_title, question_desc, question_url])
+            question = get_question_by_url(question_url)
+            questions.append([question.title, question.body, question_url])
             i += 1
         except NameError:
             continue
@@ -113,36 +124,15 @@ def get_question_stats_and_answer(url):
     :param url: full url of a StackOverflow question
     :return: tuple of ( question_title, question_desc, question_stats, answers )
     """
-    random_headers()
-    res_page = requests.get(url, headers=header)
-    captcha_check(res_page.url)
-    soup = BeautifulSoup(res_page.text, 'html.parser')
-    question_title, question_desc, question_stats = get_stats(soup)
-    answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][
-              1:]  # first post is question, discard it.
+    question = get_question_by_url(url)
+    answers = []
+    for answer in question.answers:
+        answers.append(BeautifulSoup(answer.body, 'html.parser').get_text())
     if len(answers) == 0:
         answers.append('No answers for this question ...')
-    return question_title, question_desc, question_stats, answers
+    question_stats = "votes: " + str(question.score) + " | asked: " + question.creation_date.strftime("%d %b, %Y") + " | active: " + question.timeline.fetch()[0].creation_date.strftime("%d %b, %Y") + " | viewed " + str(question.view_count) + " times"
 
-
-def get_stats(soup):
-    """
-    Get Question stats
-    :param soup:
-    :return:
-    """
-    question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
-    question_stats = (soup.find_all("div", class_="js-vote-count")[0].get_text())
-    try:
-        question_stats = "Votes " + question_stats + " | asked " + (soup.find("time").get_text()) + " | active " + (soup.find("a", href="?lastactivity").get_text()) + " | viewed " + (soup.find("div", class_="grid--cell ws-nowrap mb8").get_text().split("\r"))[1].strip()
-    except IndexError:
-        question_stats = "Could not load statistics."
-    question_desc = (soup.find_all("div", class_="post-text")[0])
-    add_urls(question_desc)
-    question_desc = question_desc.get_text()
-    question_stats = ' '.join(question_stats.split())
-    return question_title, question_desc, question_stats
-
+    return question.title, BeautifulSoup(question.body, 'html.parser').get_text(), question_stats, answers
 
 def add_urls(tags):
     """
