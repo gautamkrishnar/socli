@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 4.2
+---------------------------
+* Fixed when question url has uppercase letter returning None (pr #186) 
+
 Release 4.1
 ---------------------------
 
