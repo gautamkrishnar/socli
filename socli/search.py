@@ -87,7 +87,7 @@ def get_questions_for_query_google(query, count=10):
             if question_desc == "":  # For avoiding instant answers
                 raise NameError  # Explicit raising
             question_url = result.find("a").get("href")  # Retrieves the Stack Overflow link
-            question_url = fix_google_url(question_url)
+            question_url = fix_google_url(question_url.lower())
 
             if question_url is None:
                 i = i - 1
@@ -390,7 +390,7 @@ def fix_google_url(url):
         url = "https://" + url  # Add the protocol if it doesn't already exist
 
     # Makes sure that we stay in the questions section of Stack Overflow
-    if not bool(re.search(r"/questions/[0-9]+", url, re.IGNORECASE)) and not bool(re.search(r"\.com/a/[0-9]", url)):
+    if not bool(re.search(r"/questions/[0-9]+", url)) and not bool(re.search(r"\.com/a/[0-9]", url)):
         return None
 
     if url[:17] == "https:///url?url=":  # Resolves rare bug in which this is a prefix
