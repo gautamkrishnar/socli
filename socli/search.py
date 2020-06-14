@@ -10,11 +10,10 @@ import sys
 from bs4 import BeautifulSoup
 import requests
 import urwid
+import stackexchange
 
 import socli.printer
 import socli.tui
-
-import stackexchange
 
 site = stackexchange.Site(stackexchange.StackOverflow)
 site.be_inclusive()
@@ -29,13 +28,32 @@ so_burl = "https://stackoverflow.com/?tab="  # Assuming browse URL
 google_search_url = "https://www.google.com/search?q=site:www.stackoverflow.com+"  # Google search query URL
 
 
-def get_question_by_url(question_url):
+def assess_url(question_url):
+    """
+    Assesses URLs and decides whether they require a redirect or can be directly used with API
+    :param query: stackoverflow URL as found from google search
+    :return: final question ID or None if page not available (e.g. removed by user)
+    """
     upper = 9 # Currently anticipated maximum question_ID length. Example: 9 digits being numbers upto hundred millionth places
-    question_page_url = requests.get(question_url).url
-    idindexstart = question_page_url.find("questions/") + 10 # The length of "questions/" being 10
-    question_id = question_page_url[idindexstart: idindexstart + upper].split("/")[0]
-    question = site.question(question_id)
-    return question
+    
+    if "/questions/" in question_url:
+        idindexstart = question_url.find("/questions/") + 11 # The length of "/questions/" being 10
+    elif "/a/" in question_url:
+        idindexstart = question_url.find("/a/") + 3 # The length of "/a/" being 3
+    
+    qa_id = question_url[idindexstart: idindexstart + upper].split("/")[0]
+    
+    try:
+        return site.question(qa_id)
+    except Exception:
+        try:
+            return site.question(site.answer(qa_id).question_id)
+        except Exception:
+            try:
+                question_page_url = requests.get(question_url).url
+                return site.question(qa_id)
+            except Exception:
+                return None
 
 
 def get_questions_for_query(query, count=10):
@@ -97,13 +115,13 @@ def get_questions_for_query_google(query, count=10):
             break
         try:
             question_url = result.find("a").get("href")  # Retrieves the Stack Overflow link
-            question_url = fix_google_url(question_url)
+            question_url = fix_google_url(question_url.lower())
 
             if question_url is None:
                 i = i - 1
                 continue
 
-            question = get_question_by_url(question_url)
+            question = assess_url(question_url)
             questions.append([question.title, question.body, question_url])
             i += 1
         except NameError:
@@ -124,7 +142,7 @@ def get_question_stats_and_answer(url):
     :param url: full url of a StackOverflow question
     :return: tuple of ( question_title, question_desc, question_stats, answers )
     """
-    question = get_question_by_url(url)
+    question = assess_url(url)
     answers = []
     for answer in question.answers:
         answers.append(BeautifulSoup(answer.body, 'html.parser').get_text())
