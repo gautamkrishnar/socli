@@ -390,7 +390,7 @@ def fix_google_url(url):
         url = "https://" + url  # Add the protocol if it doesn't already exist
 
     # Makes sure that we stay in the questions section of Stack Overflow
-    if not bool(re.search(r"/questions/[0-9]+", url)) and not bool(re.search(r"\.com/a/[0-9]", url)):
+    if not bool(re.search(r"/[qQ]uestions/[0-9]+", url)) and not bool(re.search(r"\.com/a/[0-9]", url)):
         return None
 
     if url[:17] == "https:///url?url=":  # Resolves rare bug in which this is a prefix
