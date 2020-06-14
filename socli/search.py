@@ -87,9 +87,8 @@ def get_questions_for_query_google(query, count=10):
             if question_desc == "":  # For avoiding instant answers
                 raise NameError  # Explicit raising
             question_url = result.find("a").get("href")  # Retrieves the Stack Overflow link
-            print(question_url)
             question_url = fix_google_url(question_url)
-            print(question_url)
+
             if question_url is None:
                 i = i - 1
                 continue
