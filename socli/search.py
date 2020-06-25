@@ -134,9 +134,25 @@ def get_stats(soup):
     question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
     question_stats = (soup.find_all("div", class_="js-vote-count")[0].get_text())
     try:
-        question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0]
-                                                                .get_text()).replace("\n", " ")).replace("     ",
-                                                                                                         " | "))
+        # question_stats = "Votes " + question_stats + " | " + (((soup.find_all("div", class_="module question-stats")[0]
+        #                                                         .get_text()).replace("\n", " ")).replace("     ",
+        #                                                                                                  " | "))
+        # active_info = soup.find("a", href="?lastactivity").get_text()
+        # asked_info = soup.find("time").get_text()
+        # Asked_branch = soup.find("time")
+        # asked_info = Asked_branch.get_text()
+        # Active_branch = Asked_branch.parent.findNext('div')
+        # Viewed_branch = Active_branch.parent.findNext('div')
+
+        # viewed_info = (soup.find("div", class_="grid--cell ws-nowrap mb8").get_text().split("\r"))[1].strip()
+        # viewed = (soup.find(text="Viewed"))
+        # viewed_class = viewed.parent
+        # viewed_info = viewed_class.get_text().split("\r")
+        # viewed_info = viewed
+        asked_info = soup.find("time").parent.get_text()
+        active_info = soup.find("time").parent.findNext('div').get_text()
+        viewed_info = soup.find("time").parent.findNext('div').findNext('div').get_text()#.findNext('class').get_text()
+        question_stats = "Votes " + question_stats + " | " + asked_info + " | " + active_info + " | " + viewed_info
     except IndexError:
         question_stats = "Could not load statistics."
     question_desc = (soup.find_all("div", class_="post-text")[0])
