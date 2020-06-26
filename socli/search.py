@@ -138,7 +138,7 @@ def get_stats(soup):
         active_info = soup.find("time").parent.findNext('div').get_text()
         viewed_info = soup.find("time").parent.findNext('div').findNext('div').get_text()
         question_stats = "Votes " + question_stats + " | " + asked_info + " | " + active_info + " | " + viewed_info
-    except IndexError:
+    except:
         question_stats = "Could not load statistics."
     question_desc = (soup.find_all("div", class_="post-text")[0])
     add_urls(question_desc)
