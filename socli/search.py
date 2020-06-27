@@ -134,8 +134,12 @@ def get_stats(soup):
     question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
     question_stats = (soup.find_all("div", class_="js-vote-count")[0].get_text())
     try:
-        question_stats = "Votes " + question_stats + " | asked " + (soup.find("time").get_text()) + " | active " + (soup.find("a", href="?lastactivity").get_text()) + " | viewed " + (soup.find("div", class_="grid--cell ws-nowrap mb8").get_text().split("\r"))[1].strip()
-    except IndexError:
+
+        asked_info = soup.find("time").parent.get_text()
+        active_info = soup.find("time").parent.findNext('div').get_text()
+        viewed_info = soup.find("time").parent.findNext('div').findNext('div').get_text()
+        question_stats = "Votes " + question_stats + " | " + asked_info + " | " + active_info + " | " + viewed_info
+    except:
         question_stats = "Could not load statistics."
     question_desc = (soup.find_all("div", class_="post-text")[0])
     add_urls(question_desc)
