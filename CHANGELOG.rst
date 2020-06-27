@@ -1,6 +1,11 @@
 SoCLI Changelog
 ================
 
+Release 4.1
+---------------------------
+
+* Fixed:  Question stats not working #179
+
 Release 4.0
 ---------------------------
 

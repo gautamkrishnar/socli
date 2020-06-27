@@ -87,7 +87,7 @@ def get_questions_for_query_google(query, count=10):
             if question_desc == "":  # For avoiding instant answers
                 raise NameError  # Explicit raising
             question_url = result.find("a").get("href")  # Retrieves the Stack Overflow link
-            question_url = fix_google_url(question_url)
+            question_url = fix_google_url(question_url.lower())
 
             if question_url is None:
                 i = i - 1
@@ -134,6 +134,7 @@ def get_stats(soup):
     question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
     question_stats = (soup.find_all("div", class_="js-vote-count")[0].get_text())
     try:
+
         asked_info = soup.find("time").parent.get_text()
         active_info = soup.find("time").parent.findNext('div').get_text()
         viewed_info = soup.find("time").parent.findNext('div').findNext('div').get_text()
