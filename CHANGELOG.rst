@@ -1,6 +1,13 @@
 SoCLI Changelog
 ================
 
+Release 4.2
+---------------------------
+
+* Improved regex implementation to lower in search.py (get_questions_for_query_google) #186
+* Improved fetching question stats logic #188
+
+
 Release 4.1
 ---------------------------
 
