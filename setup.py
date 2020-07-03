@@ -22,9 +22,17 @@ setup(
     url='http://www.github.com/gautamkrishnar/socli',
     keywords="stack overflow cli",
     license='BSD',
-    author='Gautam krishna R',
+    classifiers=[
+        "License :: OSI Approved :: BSD License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+    ],
+    author='Gautam Krishna R',
     author_email='r.gautamkrishna@gmail.com',
-    description='Stack overflow commnand line interface. SoCLI allows you to search and browse stack overflow from the terminal.',
+    description='Stack overflow command line interface. SoCLI allows you to search and browse stack overflow from the terminal.',
     long_description="\n\n"+longd,
     long_description_content_type='text/markdown'
 )
