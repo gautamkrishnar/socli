@@ -5,7 +5,7 @@ except ImportError:
     from distutils.core import setup
 from codecs import open
 
-with open('README.rst') as f:
+with open('README.md') as f:
     longd = f.read()
 
 setup(
@@ -25,5 +25,6 @@ setup(
     author='Gautam krishna R',
     author_email='r.gautamkrishna@gmail.com',
     description='Stack overflow commnand line interface. SoCLI allows you to search and browse stack overflow from the terminal.',
-    long_description="\n\n"+longd
+    long_description="\n\n"+longd,
+    long_description_content_type='text/markdown'
 )
