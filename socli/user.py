@@ -55,10 +55,16 @@ def user_page(user_id):
         total_questions = len(userprofile.questions.fetch())
         unaccepted_questions = len(userprofile.unaccepted_questions.fetch())
         accepted = total_questions - unaccepted_questions
-        rate = accepted / float(total_questions) * 100
         print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
-        print('\t\t        Accept rate is: %.2f%%.' % rate)
-        # check if the user have answers and questions or no.
+        try:
+            # the following division might raise ZeroDivisionError if
+            # total_questions is zero, so we wrapt it in try-except.
+            rate = accepted / float(total_questions) * 100
+            print('\t\t        Accept rate is: %.2f%%.' % rate)
+        except ZeroDivisionError:
+            pass # if total_question is zero we don't print accept rate.
+
+        # check if the user have answers and questions
         if userprofile.top_answer_tags.fetch():
             print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
         else:
