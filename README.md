@@ -168,7 +168,7 @@ If you are willing to contribute to SoCLI project, you are awesome! Just follow 
 6. Add changes to git index by using `git add --all .`
 7. Commit your changes: `git commit -am 'Added new feature'`
 8. Push to the branch: `git push`
-9. Submit a [new pull request](https://github.com/gautamkrishnar/socli/pull/new) :smile:
+9. Submit a [new pull request](https://github.com/gautamkrishnar/socli/pull/new) 😄
 
 ## Maintainers
 
@@ -259,7 +259,7 @@ sudo pip install pyopenssl or sudo easy_install pyopenssl
 ### Thanks
 * Thanks to all the existing users of SoCLI.
 * Thanks to all upvoters and followers on reddit.
-* [impress that girl in the Starbucks by browsing SO with your CLI app XD XD](https://www.reddit.com/r/programmingcirclejerk/comments/4pwil4/impress_that_girl_in_the_starbucks_by_browsing_so/) by [insane0hflex](https://www.reddit.com/user/insane0hflex). Thanks for the post :wink:
+* [impress that girl in the Starbucks by browsing SO with your CLI app XD XD](https://www.reddit.com/r/programmingcirclejerk/comments/4pwil4/impress_that_girl_in_the_starbucks_by_browsing_so/) by [insane0hflex](https://www.reddit.com/user/insane0hflex). Thanks for the post 😉
 * Special thanks to people who wrote about SoCLI on their blogs and websites:
 	* [wykop.pl](http://www.wykop.pl/wpis/18286681/python-stackoverflow-interfejs-bo-sciaga-musi-byc-/)
 	* [memect.com](http://forum.memect.com/blog/thread/py-2016-06-26/)
@@ -273,7 +273,7 @@ sudo pip install pyopenssl or sudo easy_install pyopenssl
 * Tweets:
  	* [@cyb3rops](https://twitter.com/cyb3rops/status/747380776350650368)
  	* [@pythontrending](https://twitter.com/pythontrending/status/745635512803819521)
-* Thanks to my favourite IDE JetBrains PyCharm :heart: :smile:
+* Thanks to my favourite IDE JetBrains PyCharm ❤️ 😄
 
 <img src="https://cloud.githubusercontent.com/assets/8397274/16355101/edb3b98a-3aca-11e6-8db5-5f54cd4b9969.png" width=80px>
 
@@ -283,4 +283,4 @@ Sponsor SoCLI on [Collaborizm](https://www.collaborizm.com/project/S1cbUui6) or 
 * Thanks [Steven Reubenstone](https://www.collaborizm.com/profile/1) for contributing $5 for the issue [#22](https://github.com/gautamkrishnar/socli/issues/22)
 
 ### Liked it?
-Hope you liked this project, don't forget to give it a star :star:
+Hope you liked this project, don't forget to give it a star ⭐
