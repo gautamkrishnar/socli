@@ -1,6 +1,17 @@
 SoCLI Changelog
 ================
 
+
+Release 4.3
+---------------------------
+1. Improved ``--user`` option: 
+
+* fixed displaying wrong output when user has 0 total questions
+* fixed KeyboardInterrupt error when using ``^C`` to abort set api key prompt
+
+2. Also added Python version support and license classifiers to setup.py for PyPI
+
+
 Release 4.2
 ---------------------------
 
