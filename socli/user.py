@@ -58,7 +58,7 @@ def user_page(user_id):
         print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
         try:
             # the following division might raise ZeroDivisionError if
-            # total_questions is zero, so we wrapt it in try-except.
+            # total_questions is zero, so we wrap it in try-except.
             rate = accepted / float(total_questions) * 100
             print('\t\t        Accept rate is: %.2f%%.' % rate)
         except ZeroDivisionError:
