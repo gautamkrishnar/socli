@@ -107,11 +107,14 @@ def set_api_key():
     :return:
     """
     global app_data
-    api_key = pr.inputs("Type an API key to continue: ")
-    if len(api_key) > 0:
-        app_data["api_key"] = api_key
-        save_datafile()
-    pr.print_warning("\nAPI Key saved...")
+    try:
+        api_key = pr.inputs("Type an API key to continue (^C to abort): ")
+        if len(api_key) > 0:
+            app_data["api_key"] = api_key
+            save_datafile()
+        pr.print_warning("\nAPI Key saved...")
+    except KeyboardInterrupt:
+        print("Aborted.")
 
 
 def save_datafile():
