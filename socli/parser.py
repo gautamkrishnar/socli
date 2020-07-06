@@ -60,6 +60,7 @@ def parse_arguments(command):
                                                       "its most voted answer. \n   eg:- socli --res 2 --query "
                                                       "foo bar: Displays the second search result of the query"
                                                       " \"foo bar\"'s most voted answer")
+    parser.add_argument('--open_url','-o',nargs=1,help='To load the given url',type=str)
     namespace = parser.parse_args(command)
     return namespace
 
