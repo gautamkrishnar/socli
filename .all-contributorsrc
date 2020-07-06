@@ -1,5 +1,5 @@
 {
-  "projectName": "SoCLI",
+  "projectName": "socli",
   "projectOwner": "gautamkrishnar",
   "repoType": "github",
   "repoHost": "https://github.com",
@@ -351,7 +351,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "adamjyz",
+      "name": "Adam Zhang",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/55098065?v=4",
+      "profile": "https://github.com/adamjyz",
+      "contributions": [
+        "code"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
