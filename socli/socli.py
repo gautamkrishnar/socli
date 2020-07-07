@@ -372,9 +372,13 @@ def main():
         else:
             url_to_use="https://" + url_to_use
         try:
-            request_output=requests.get(url_to_use)
-        except:
-            printer.print_warning("Url does not look right , or else something's wrong with your network and we are not able to connect to it")
+            requests.get(url_to_use)
+            if url_to_use == "https://stackoverflow.com/questions/":
+                raise ConnectionError
+            if url_to_use == "https://www.stackoverflow.com/questions/":
+                raise ConnectionError
+        except requests.ConnectionError:
+            printer.print_warning("Url does not look right , or the url cannot open in socli , or else something's wrong with your network and we are not able to connect to it")
             sys.exit()
         nostackoverflow=re.findall(r"stackoverflow\.com",url_to_use)
         if nostackoverflow == []:
@@ -398,7 +402,7 @@ def main():
             display_condition=False
             printer.print_warning("Your url belongs to blog")
             printer.print_warning("We are opening in browser...")
-        if display_condition: 
+        if display_condition:
             open_in_browser=False
             display_results(url_to_use)
         if open_in_browser:
