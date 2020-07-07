@@ -99,8 +99,11 @@ If you can't find an answer for your question in Stack Overflow, **socli** allow
 ```sh
 socli -n
 ```
-### Opening a url directly
-If you have the url of the stackoverflow post then you can pass it using --open_url or -o.Example `socli -open_url https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works`
+
+##### Opening a url directly
+If you have the url of the Stack Overflow post then you can pass it using `--open_url` or `-o`.
+For example
+``` socli --open_url https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works```
 
 ### Syntax:
 **socli** has the following syntax

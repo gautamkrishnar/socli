@@ -364,43 +364,40 @@ def main():
         has_tags()  # Adds tags to StackOverflow url (when not using google search.
     if namespace.open_url:
         import webbrowser
+        open_in_browser=False
         display_condition=True
         url_to_use=namespace.open_url[0]
-        nostackoverflow=re.search("stackoverflow",url_to_use)
-        if nostackoverflow:
-            pass
-        else:
-            printer.print_fail("Your url is not a stackoverflow url.\n Opening in your browser")
-            raise Exception("Given url is not a stackoverflow url")
-        if re.search("https:\/\/",url_to_use):
+        nostackoverflow=re.findall("stackoverflow\.com",url_to_use)
+        if nostackoverflow == []:
+            open_in_browser=True
+            display_condition=False
+            printer.print_warning("Your url is not a stackoverflow url.\n Opening in your browser....")
+        if re.findall("^https:\/\/",url_to_use) !=[]:
             pass
         else:
             url_to_use="https://" + url_to_use
-        tag_matcher=re.search("tags",url_to_use)
-        tagged_matcher=re.search("tagged",url_to_use)
-        blog_matcher=re.search("blog",url_to_use)
-        if tagged_matcher:
-            extracted_tag=re.split("\/",url_to_use)[4]
-            tag=extracted_tag
-            search.socli_interactive(tag)
-            display_condition=True
-        if tag_matcher:
-            extracted_tag=re.split("\/",url_to_use)[4]
-            tag=extracted_tag
-            search.socli_interactive(tag)
-            display_condition=True
-        if blog_matcher:
-            printer.print_fail("Your url belongs to blog")
-            printer.print_fail("We are opening in browser")
+        tag_matcher=re.findall("\/tag.+\/",url_to_use)
+        blog_matcher=re.findall("blog",url_to_use)
+        if tag_matcher != []:
+            extracted_tag=""
+            if re.findall("tagged",url_to_use) == []:
+                extracted_tag=re.split("\/",url_to_use)[4]
+            else:
+                extracted_tag=re.split("\/",url_to_use)[5]
+            open_in_browser=False
             display_condition=False
+            tag=extracted_tag
+            search.socli_interactive(tag)
+        if blog_matcher != []:
+            open_in_browser=True
+            display_condition=False
+            printer.print_warning("Your url belongs to blog")
+            printer.print_warning("We are opening in browser...")
         if display_condition: 
-            display_condition=True
+            open_in_browser=False
             display_results(url_to_use)
-        if display_condition == False:
+        if open_in_browser:
             webbrowser.open(url_to_use)
-
-
-
     if namespace.res is not None:  # If --res flag is present
         # Automatically displays the result specified by the number
         question_number = namespace.res
