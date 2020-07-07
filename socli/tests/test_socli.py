@@ -44,7 +44,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
-        self.assertTrue(namespace.open-url==[])
+        self.assertTrue(not namespace.open_url)
 
     def test02_socliParse(self):
         command = "-h".split()
@@ -62,7 +62,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
-        self.assertTrue(namespace.open-url==[])
+        self.assertTrue(not namespace.open_url)
 
     def test03_socliParse(self):
         command = "-iq python for loop".split()
@@ -80,7 +80,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
-        self.assertTrue(namespace.open-url==[])
+        self.assertTrue(not namespace.open_url)
 
     def test04_userJSON(self):
         try:
@@ -130,14 +130,14 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.debug)
         self.assertFalse(namespace.delete)
         self.assertFalse(namespace.help)
-        self.assertTrue(namespace.interactive)
+        self.assertFalse(namespace.interactive)
         self.assertFalse(namespace.new)
-        self.assertTrue(namespace.query == [x for x in command if (not x.startswith("-"))])
+        self.assertTrue(namespace.query == [])
         self.assertFalse(namespace.res)
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
-        self.assertTrue(namespace.open-url!=[])
+        self.assertTrue(namespace.open_url!=[])
 
 class SoCLITestingException(Exception):
 

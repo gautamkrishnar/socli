@@ -362,28 +362,33 @@ def main():
         search.google_search = False
         tag = namespace.tag
         has_tags()  # Adds tags to StackOverflow url (when not using google search.
-    if namespace.open-url:
+    if namespace.open_url:
         import webbrowser
         open_in_browser=False
         display_condition=True
-        url_to_use=namespace.open-url[0]
-        nostackoverflow=re.findall("stackoverflow\.com",url_to_use)
+        url_to_use=namespace.open_url[0]
+        if re.findall(r"^https:\/\/",url_to_use) !=[]:
+            pass
+        else:
+            url_to_use="https://" + url_to_use
+        try:
+            request_output=requests.get(url_to_use)
+        except:
+            printer.print_warning("Url does not look right , or else something's wrong with your network and we are not able to connect to it")
+            sys.exit()
+        nostackoverflow=re.findall(r"stackoverflow\.com",url_to_use)
         if nostackoverflow == []:
             open_in_browser=True
             display_condition=False
             printer.print_warning("Your url is not a stackoverflow url.\n Opening in your browser....")
-        if re.findall("^https:\/\/",url_to_use) !=[]:
-            pass
-        else:
-            url_to_use="https://" + url_to_use
-        tag_matcher=re.findall("\/tag.+\/",url_to_use)
-        blog_matcher=re.findall("blog",url_to_use)
+        tag_matcher=re.findall(r"\/tag.+\/",url_to_use)
+        blog_matcher=re.findall(r"blog",url_to_use)
         if tag_matcher != []:
             extracted_tag=""
-            if re.findall("tagged",url_to_use) == []:
-                extracted_tag=re.split("\/",url_to_use)[4]
+            if re.findall(r"tagged",url_to_use) == []:
+                extracted_tag=re.split(r"\/",url_to_use)[4]
             else:
-                extracted_tag=re.split("\/",url_to_use)[5]
+                extracted_tag=re.split(r"\/",url_to_use)[5]
             open_in_browser=False
             display_condition=False
             tag=extracted_tag
