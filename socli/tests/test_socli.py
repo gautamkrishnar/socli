@@ -44,7 +44,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
-        self.assertTrue(namespace.open_url==[])
+        self.assertTrue(namespace.open-url==[])
 
     def test02_socliParse(self):
         command = "-h".split()
@@ -62,7 +62,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
-        self.assertTrue(namespace.open_url==[])
+        self.assertTrue(namespace.open-url==[])
 
     def test03_socliParse(self):
         command = "-iq python for loop".split()
@@ -80,7 +80,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
-        self.assertTrue(namespace.open_url==[])
+        self.assertTrue(namespace.open-url==[])
 
     def test04_userJSON(self):
         try:
@@ -122,7 +122,7 @@ class TestSoCLI(unittest.TestCase):
             raise SoCLITestingException("Search SO stats test failed.")
 
     def test08_socliParse(self):
-        command = "-open_url https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works ".split()
+        command = "--open-url https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works ".split()
         namespace = _socli.parse_arguments(command)
 
         self.assertFalse(namespace.api)
@@ -137,7 +137,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
-        self.assertTrue(namespace.open_url!=[])
+        self.assertTrue(namespace.open-url!=[])
 
 class SoCLITestingException(Exception):
 

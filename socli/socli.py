@@ -362,11 +362,11 @@ def main():
         search.google_search = False
         tag = namespace.tag
         has_tags()  # Adds tags to StackOverflow url (when not using google search.
-    if namespace.open_url:
+    if namespace.open-url:
         import webbrowser
         open_in_browser=False
         display_condition=True
-        url_to_use=namespace.open_url[0]
+        url_to_use=namespace.open-url[0]
         nostackoverflow=re.findall("stackoverflow\.com",url_to_use)
         if nostackoverflow == []:
             open_in_browser=True

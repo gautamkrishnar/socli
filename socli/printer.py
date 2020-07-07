@@ -173,7 +173,7 @@ def helpman():
                    " : Sets a custom API key for socli" + '\n' + \
                    " " + bold("--sosearch or -s") + \
                    " : SoCLI uses google search by default. Use this option to search Stack Overflow directly." + '\n' \
-                   " " + bold("-open_url or -o") + \
+                   " " + bold("--open-url or -o") + \
                    " : Opens the given url in socli " +  '\n'
 
     help_text = make_header("\n\n< Search Query >:") + '\n' + \
