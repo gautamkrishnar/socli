@@ -8,7 +8,8 @@ pybrew \
     -r https://github.com/gautamkrishnar/socli/archive/${TRAVIS_TAG}.tar.gz \
     socli \
     socli.rb
-echo "Generated file:"
+echo "Generated formula:"
+echo "------------------------------------------------------------------------------------"
 cat socli.rb
 echo "------------------------------------------------------------------------------------"
 # Pushing to tap
@@ -23,4 +24,4 @@ git add --all
 echo "Committing formula..."
 git commit -m "Published ${TRAVIS_TAG}"
 echo "Pushing formula..."
-git push -f --quiet
+git push --quiet
