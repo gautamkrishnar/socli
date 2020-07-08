@@ -44,6 +44,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
+        self.assertTrue(not namespace.open_url)
 
     def test02_socliParse(self):
         command = "-h".split()
@@ -61,6 +62,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
+        self.assertTrue(not namespace.open_url)
 
     def test03_socliParse(self):
         command = "-iq python for loop".split()
@@ -78,6 +80,7 @@ class TestSoCLI(unittest.TestCase):
         self.assertFalse(namespace.sosearch)
         self.assertFalse(namespace.tag)
         self.assertFalse(namespace.user)
+        self.assertTrue(not namespace.open_url)
 
     def test04_userJSON(self):
         try:
@@ -118,6 +121,23 @@ class TestSoCLI(unittest.TestCase):
         except Exception:
             raise SoCLITestingException("Search SO stats test failed.")
 
+    def test08_socliParse(self):
+        command = "--open-url https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works ".split()
+        namespace = _socli.parse_arguments(command)
+
+        self.assertFalse(namespace.api)
+        self.assertTrue(namespace.browse == [])
+        self.assertFalse(namespace.debug)
+        self.assertFalse(namespace.delete)
+        self.assertFalse(namespace.help)
+        self.assertFalse(namespace.interactive)
+        self.assertFalse(namespace.new)
+        self.assertTrue(namespace.query == [])
+        self.assertFalse(namespace.res)
+        self.assertFalse(namespace.sosearch)
+        self.assertFalse(namespace.tag)
+        self.assertFalse(namespace.user)
+        self.assertTrue(namespace.open_url!=[])
 
 class SoCLITestingException(Exception):
 
