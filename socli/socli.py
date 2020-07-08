@@ -372,14 +372,14 @@ def main():
         else:
             url_to_use="https://" + url_to_use
         try:
-            requests.get(url_to_use)
             if url_to_use == "https://stackoverflow.com/questions/":
-                raise ConnectionError
+                raise Exception('URL Error')
             if url_to_use == "https://www.stackoverflow.com/questions/":
-                raise ConnectionError
-        except requests.ConnectionError:
+                raise Exception('URL Error')
+            requests.get(url_to_use)
+        except requests.ConnectionError or Exception:
             printer.print_warning("Url does not look right , or the url cannot open in socli , or else something's wrong with your network and we are not able to connect to it")
-            sys.exit()
+            sys.exit(0)
         nostackoverflow=re.findall(r"stackoverflow\.com",url_to_use)
         if nostackoverflow == []:
             open_in_browser=True
