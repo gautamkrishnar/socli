@@ -3,6 +3,10 @@ SoCLI Changelog
 
 Release 4.4
 ---------------------------
+* Brew formula initial version release
+
+Release 4.4
+---------------------------
 * Added ``-o`` or ``--open`` option to browse stack overflow pages directly from url #193
 * Added classifiers in setup.py
 
