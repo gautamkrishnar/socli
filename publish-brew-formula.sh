@@ -1,7 +1,7 @@
 # Generate formula
 pip install python-brewer
 pybrew \
-    -n "socli" \
+    -n "Socli" \
     -d "Stack overflow command line client. Search and browse stack overflow without leaving the terminal" \
     -H https://github.com/gautamkrishnar/socli \
     -g https://github.com/gautamkrishnar/socli.git \
@@ -11,6 +11,7 @@ pybrew \
 echo "Generated formula:"
 echo "------------------------------------------------------------------------------------"
 cat socli.rb
+echo ""
 echo "------------------------------------------------------------------------------------"
 # Pushing to tap
 git config --global user.email "gkr@tuta.io"
