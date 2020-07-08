@@ -35,11 +35,10 @@ easy_install socli
 ```
 
 ##### For Mac (via homebrew)
-Install **python** and **socli**:
+Install **socli**:
 ```bash
-brew install python
-easy_install pip
-pip install socli
+brew tap gautamkrishnar/socli
+brew install socli
 ```
 ### Updating
 Use the command below to update your existing version of **socli** to the newest version so that you won't miss any features:
