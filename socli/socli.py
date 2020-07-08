@@ -6,6 +6,7 @@
 """
 
 import os
+import re
 import sys
 import logging
 import requests
@@ -361,7 +362,51 @@ def main():
         search.google_search = False
         tag = namespace.tag
         has_tags()  # Adds tags to StackOverflow url (when not using google search.
-
+    if namespace.open_url:
+        import webbrowser
+        open_in_browser=False
+        display_condition=True
+        url_to_use=namespace.open_url[0]
+        if re.findall(r"^https:\/\/",url_to_use) !=[]:
+            pass
+        else:
+            url_to_use="https://" + url_to_use
+        try:
+            if url_to_use == "https://stackoverflow.com/questions/":
+                raise Exception('URL Error')
+            if url_to_use == "https://www.stackoverflow.com/questions/":
+                raise Exception('URL Error')
+            requests.get(url_to_use)
+        except Exception:
+            printer.print_warning("Error, could be:\n- invalid url\n- url cannot be opened in socli\n- internet connection error")
+            sys.exit(0)
+        nostackoverflow=re.findall(r"stackoverflow\.com",url_to_use)
+        if nostackoverflow == []:
+            open_in_browser=True
+            display_condition=False
+            printer.print_warning("Your url is not a stack overflow url.\nOpening in your browser...")
+        tag_matcher=re.findall(r"\/tag.+\/",url_to_use)
+        blog_matcher=re.findall(r"blog",url_to_use)
+        if tag_matcher != []:
+            extracted_tag=""
+            if re.findall(r"tagged",url_to_use) == []:
+                extracted_tag=re.split(r"\/",url_to_use)[4]
+            else:
+                extracted_tag=re.split(r"\/",url_to_use)[5]
+            open_in_browser=False
+            display_condition=False
+            tag=extracted_tag
+            search.socli_interactive(tag)
+        if blog_matcher != []:
+            open_in_browser=True
+            display_condition=False
+            printer.print_warning("Your url belongs to blog")
+            printer.print_warning("Opening in browser...")
+        if display_condition:
+            open_in_browser=False
+            display_results(url_to_use)
+        if open_in_browser:
+            webbrowser.open(url_to_use)
     if namespace.res is not None:  # If --res flag is present
         # Automatically displays the result specified by the number
         question_number = namespace.res
@@ -394,6 +439,7 @@ def main():
                              'to search posts with the "python" tag in interactive mode.')
         else:
             printer.helpman()
+
 
 
 if __name__ == '__main__':
