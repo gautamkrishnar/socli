@@ -377,7 +377,7 @@ def main():
             if url_to_use == "https://www.stackoverflow.com/questions/":
                 raise Exception('URL Error')
             requests.get(url_to_use)
-        except requests.ConnectionError or Exception:
+        except Exception:
             printer.print_warning("Url does not look right , or the url cannot open in socli , or else something's wrong with your network and we are not able to connect to it")
             sys.exit(0)
         nostackoverflow=re.findall(r"stackoverflow\.com",url_to_use)
