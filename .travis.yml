@@ -41,7 +41,4 @@ jobs:
         - pip install -r requirements.txt
         - find . -name '*.pyc' -delete
         - python setup.py install
-      script: skip
-      deploy:
-        provider: script
-        script: bash publish-brew-formula.sh
+      script: bash publish-brew-formula.sh
