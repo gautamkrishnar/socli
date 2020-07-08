@@ -1,7 +1,11 @@
 SoCLI Changelog
 ================
 
-Release 4.4
+Release 4.6
+---------------------------
+* Brew formula final version added
+
+Release 4.5
 ---------------------------
 * Brew formula initial version release
 
