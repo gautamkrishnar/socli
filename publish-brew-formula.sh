@@ -1,13 +1,6 @@
 # Generate formula
-pip install python-brewer
-pybrew \
-    -n "Socli" \
-    -d "Stack overflow command line client. Search and browse stack overflow without leaving the terminal" \
-    -H https://github.com/gautamkrishnar/socli \
-    -g https://github.com/gautamkrishnar/socli.git \
-    -r https://github.com/gautamkrishnar/socli/archive/${TRAVIS_TAG}.tar.gz \
-    socli \
-    socli.rb
+pip install homebrew-pypi-poet
+poet -f socli > socli.rb
 echo "Generated formula:"
 echo "------------------------------------------------------------------------------------"
 cat socli.rb
