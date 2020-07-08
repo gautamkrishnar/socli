@@ -8,6 +8,9 @@ pybrew \
     -r https://github.com/gautamkrishnar/socli/archive/${TRAVIS_TAG}.tar.gz \
     socli \
     socli.rb
+echo "Generated file:"
+cat socli.rb
+echo "------------------------------------------------------------------------------------"
 # Pushing to tap
 git config --global user.email "gkr@tuta.io"
 git config --global user.name "gkr-bot"
