@@ -378,13 +378,13 @@ def main():
                 raise Exception('URL Error')
             requests.get(url_to_use)
         except Exception:
-            printer.print_warning("Url does not look right , or the url cannot open in socli , or else something's wrong with your network and we are not able to connect to it")
+            printer.print_warning("Error, could be:\n- invalid url\n- url cannot be opened in socli\n- internet connection error")
             sys.exit(0)
         nostackoverflow=re.findall(r"stackoverflow\.com",url_to_use)
         if nostackoverflow == []:
             open_in_browser=True
             display_condition=False
-            printer.print_warning("Your url is not a stackoverflow url.\n Opening in your browser....")
+            printer.print_warning("Your url is not a stack overflow url.\nOpening in your browser...")
         tag_matcher=re.findall(r"\/tag.+\/",url_to_use)
         blog_matcher=re.findall(r"blog",url_to_use)
         if tag_matcher != []:
@@ -401,7 +401,7 @@ def main():
             open_in_browser=True
             display_condition=False
             printer.print_warning("Your url belongs to blog")
-            printer.print_warning("We are opening in browser...")
+            printer.print_warning("Opening in browser...")
         if display_condition:
             open_in_browser=False
             display_results(url_to_use)
