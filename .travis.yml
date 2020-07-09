@@ -37,8 +37,5 @@ jobs:
       if: tag IS present
       python: 3.7
       install:
-        - pip install -U setuptools
-        - pip install -r requirements.txt
-        - find . -name '*.pyc' -delete
-        - python setup.py install
+        - pip install socli # installs the latest version published
       script: bash publish-brew-formula.sh
