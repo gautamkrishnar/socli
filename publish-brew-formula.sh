@@ -1,6 +1,7 @@
 # Generate formula
 pip install homebrew-pypi-poet
-poet -f socli | sed "s|Shiny new formula|Stack overflow command line client. Search and browse stack overflow without leaving the terminal|g" > socli.rb
+poet -f socli > socli.rb
+patch socli.rb formula-changes.patch
 echo "Generated formula:"
 echo "------------------------------------------------------------------------------------"
 cat socli.rb
