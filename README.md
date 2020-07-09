@@ -19,7 +19,7 @@ Stack Overflow command line written in python. Using SoCLI you can search and br
 ##### For Linux
 Install **python** and just use **pip** command to install **socli**:
 ```bash
-sudo apt-get install python python-pip
+sudo apt-get install python3 python3-pip
 pip install socli
 ```
 ##### For Windows
@@ -34,7 +34,7 @@ Use **easy_install** if your python path has a space in it. [Read more: "Failed 
 easy_install socli
 ```
 
-##### For Mac (via homebrew)
+##### For Mac/Linux (via [homebrew](https://brew.sh/))
 Install **socli**:
 ```bash
 brew tap gautamkrishnar/socli
