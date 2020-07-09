@@ -1,5 +1,5 @@
 # Generate formula
-pip install homebrew-pypi-poet
+pip install homebrew-pypi-poet==0.10.0
 poet -f socli > socli.rb
 patch socli.rb formula-changes.patch
 echo "Generated formula:"
