@@ -189,7 +189,7 @@ def socli_interactive_windows(query):
                 print("  " + socli.printer.display_str(question_desc) + "\n")
                 i = i + 1
             try:
-                op = int(socli.printer.inputs("\nType the option no to continue or any other key to exit:"))
+                op = int(socli.printer.inputs("\nType the option number to continue or any other key to exit:"))
                 while 1:
                     if (op > 0) and (op <= i):
                         socli.printer.display_results(so_url + question_local_url[op - 1])
