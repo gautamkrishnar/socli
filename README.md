@@ -156,7 +156,7 @@ Automated tests are setup by using
 [pytest](https://docs.pytest.org/en/latest/contents.html), the tests can be run
 locally by invoking a `python setup.py test`.
 
-All tests are in the `/tests/` subdirectory of this repository.
+All tests are in the `socli/tests/` subdirectory of this repository.
 
 TravisCI is supposed to run the test-suite on build.
 
@@ -170,10 +170,10 @@ If you are willing to contribute to SoCLI project, you are awesome! Just follow 
   ```
 
 3. Switch to the directory: `cd socli` 
-4. Create your new branch: `git checkout -b feature name`
+4. Create your new branch: `git checkout -b feature-name`
 5. Make necessary changes to the source code
-6. Add changes to git index by using `git add --all .`
-7. Commit your changes: `git commit -am 'Added new feature'`
+6. Add changes to git index by using `git add .`
+7. Commit your changes: `git commit -m 'Added new feature'`
 8. Push to the branch: `git push`
 9. Submit a [new pull request](https://github.com/gautamkrishnar/socli/pull/new) 😄
 
