@@ -19,7 +19,7 @@ setup(
     tests_require=['pytest'],
     requires=['BeautifulSoup4','requests','colorama','PyStackExchange', 'urwid'],
     version='4.6',
-    url='http://www.github.com/gautamkrishnar/socli',
+    url='https://www.github.com/gautamkrishnar/socli',
     keywords="stack overflow cli",
     license='BSD',
     classifiers=[
