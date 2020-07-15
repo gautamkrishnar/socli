@@ -443,7 +443,9 @@ def random_headers():
     Sets header variable to a random value
     :return:
     """
+    load_user_agents()
     global uas
     global header
+    print(uas)
     ua = random.choice(uas)
     header = {"User-Agent": ua}
