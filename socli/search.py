@@ -446,6 +446,5 @@ def random_headers():
     load_user_agents()
     global uas
     global header
-    print(uas)
     ua = random.choice(uas)
     header = {"User-Agent": ua}
