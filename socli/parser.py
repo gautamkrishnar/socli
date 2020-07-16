@@ -62,6 +62,5 @@ def parse_arguments(command):
                                                       " \"foo bar\"'s most voted answer")
     parser.add_argument('--open-url' , '-o' , nargs=1 , type=str , help='To load the given url')
     namespace = parser.parse_args(command)
-    print(namespace)
     return namespace
 
