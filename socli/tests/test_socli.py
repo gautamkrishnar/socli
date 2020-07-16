@@ -2,7 +2,6 @@
 Tests for socli
 """
 
-import unittest
 import sys
 import socli.socli as _socli
 import socli.user as _user
@@ -11,139 +10,129 @@ import socli.search as _search
 sys.path.append("..")
 
 
-class TestSoCLI(unittest.TestCase):
+squery = "python for loop"
+surl = "https://stackoverflow.com/questions/522563/accessing-the-index-in-for-loops?rq=1"
 
-    squery = "python for loop"
-    surl = "https://stackoverflow.com/questions/522563/accessing-the-index-in-for-loops?rq=1"
+def test_wrongsyn():
+    """ socli.wrongsyn() detects `"sdf"` as non-empty string """
+    assert _socli.wrongsyn("sdf") == None
 
-    def test_wrongsyn(self):
-        """ socli.wrongsyn() detects `"sdf"` as non-empty string """
-        self.assertEqual(_socli.wrongsyn("sdf"), None)
+def test_fix_google_url():
+    """ socli.fix_google_url() adds `https` protocol if not existent yet """
+    url = _search.fix_google_url("www.example.com/questions/1234")
+    assert url == "https://www.example.com/questions/1234"
 
-    def test_fixGoogleURL(self):
-        """ socli.fixGoogleURL() adds `https` protocol if not existent yet """
-        url = _search.fix_google_url("www.example.com/questions/1234")
-        self.assertEqual(url, "https://www.example.com/questions/1234")
+def load_user_agents():
+    _search.load_user_agents()
 
-    def setUp(self):
-        _search.load_user_agents()
+def test_parse_query():
+    command = "python for loop".split()
+    namespace = _socli.parse_arguments(command)
 
-    def test01_socliParse(self):
-        command = "python for loop".split()
-        namespace = _socli.parse_arguments(command)
+    assert not namespace.api
+    assert namespace.browse == []
+    assert not namespace.debug
+    assert not namespace.delete
+    assert not namespace.help
+    assert not namespace.interactive
+    assert not namespace.new
+    assert namespace.query == []
+    assert namespace.userQuery == "python for loop".split()
+    assert not namespace.res
+    assert not namespace.sosearch
+    assert not namespace.tag
+    assert not namespace.user
+    assert not namespace.open_url
 
-        self.assertFalse(namespace.api)
-        self.assertTrue(namespace.browse == [])
-        self.assertFalse(namespace.debug)
-        self.assertFalse(namespace.delete)
-        self.assertFalse(namespace.help)
-        self.assertFalse(namespace.interactive)
-        self.assertFalse(namespace.new)
-        self.assertTrue(namespace.query == [])
-        self.assertFalse(namespace.res)
-        self.assertFalse(namespace.sosearch)
-        self.assertFalse(namespace.tag)
-        self.assertFalse(namespace.user)
-        self.assertTrue(not namespace.open_url)
+def test_parse_help():
+    command = "-h".split()
+    namespace = _socli.parse_arguments(command)
 
-    def test02_socliParse(self):
-        command = "-h".split()
-        namespace = _socli.parse_arguments(command)
+    assert not namespace.api
+    assert namespace.browse == []
+    assert not namespace.debug
+    assert not namespace.delete
+    assert namespace.help
+    assert not namespace.interactive
+    assert not namespace.new
+    assert namespace.query == []
+    assert not namespace.res
+    assert not namespace.sosearch
+    assert not namespace.tag
+    assert not namespace.user
+    assert not namespace.open_url
 
-        self.assertFalse(namespace.api)
-        self.assertTrue(namespace.browse == [])
-        self.assertFalse(namespace.debug)
-        self.assertFalse(namespace.delete)
-        self.assertTrue(namespace.help)
-        self.assertFalse(namespace.interactive)
-        self.assertFalse(namespace.new)
-        self.assertTrue(namespace.query == [])
-        self.assertFalse(namespace.res)
-        self.assertFalse(namespace.sosearch)
-        self.assertFalse(namespace.tag)
-        self.assertFalse(namespace.user)
-        self.assertTrue(not namespace.open_url)
+def test_parse_interactive():
+    command = "-iq python for loop".split()
+    namespace = _socli.parse_arguments(command)
 
-    def test03_socliParse(self):
-        command = "-iq python for loop".split()
-        namespace = _socli.parse_arguments(command)
+    assert not namespace.api
+    assert namespace.browse == []
+    assert not namespace.debug
+    assert not namespace.delete
+    assert not namespace.help
+    assert namespace.interactive
+    assert not namespace.new
+    assert namespace.query == "python for loop".split()
+    assert not namespace.res
+    assert not namespace.sosearch
+    assert not namespace.tag
+    assert not namespace.user
+    assert not namespace.open_url
 
-        self.assertFalse(namespace.api)
-        self.assertTrue(namespace.browse == [])
-        self.assertFalse(namespace.debug)
-        self.assertFalse(namespace.delete)
-        self.assertFalse(namespace.help)
-        self.assertTrue(namespace.interactive)
-        self.assertFalse(namespace.new)
-        self.assertTrue(namespace.query == [x for x in command if (not x.startswith("-"))])
-        self.assertFalse(namespace.res)
-        self.assertFalse(namespace.sosearch)
-        self.assertFalse(namespace.tag)
-        self.assertFalse(namespace.user)
-        self.assertTrue(not namespace.open_url)
+def test_parse_open_url():
+    command = "--open-url https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works ".split()
+    namespace = _socli.parse_arguments(command)
 
-    def test04_userJSON(self):
-        try:
-            _user.app_data = {"user": "John Smith"}
-            _user.save_datafile()
-            _user.load_datafile()
-            _user.del_datafile()
-        except Exception:
-            raise SoCLITestingException("User JSON test failed.")
+    assert not namespace.api
+    assert namespace.browse == []
+    assert not namespace.debug
+    assert not namespace.delete
+    assert not namespace.help
+    assert not namespace.interactive
+    assert not namespace.new
+    assert namespace.query == []
+    assert not namespace.res
+    assert not namespace.sosearch
+    assert not namespace.tag
+    assert not namespace.user
+    assert namespace.open_url!=[]
 
-    def test05_userJSON(self):
-        try:
-            name = "John Smith"
-            _user.app_data = {"user": name}
-            _user.save_datafile()
-            user = _user.retrieve_saved_profile()
-            self.assertEqual(user, name)
+def test_user_json():
+    try:
+        _user.app_data = {"user": "John Smith"}
+        _user.save_datafile()
+        _user.load_datafile()
+        _user.del_datafile()
+    except Exception:
+        raise SoCLITestingException("User JSON test failed.")
 
-            _user.del_datafile()
-        except Exception:
-            raise SoCLITestingException("User JSON test failed.")
+    try:
+        name = "John Smith"
+        _user.app_data = {"user": name}
+        _user.save_datafile()
+        user = _user.retrieve_saved_profile()
+        assert user == name
+        _user.del_datafile()
+    except Exception:
+        raise SoCLITestingException("User JSON test failed.")
 
-    def test06_searchSO(self):
-        try:
-            _search.get_questions_for_query(self.squery)
-        except Exception:
-            raise SoCLITestingException("Search Stack Overflow test failed.")
 
-    # def test07_searchGoogle(self):
-    #     try:
-    #         _search.get_questions_for_query_google(self.squery)
-    #     except Exception:
-    #         raise SoCLITestingException("Search Google test failed.")
+def test_searchSO():
+    try:
+         _search.get_questions_for_query(squery)
+    except Exception:
+        raise SoCLITestingException("Search Stack Overflow test failed.")
 
-    def test07_searchStats(self):
-        try:
-            _search.get_question_stats_and_answer(self.surl)
-        except Exception:
-            raise SoCLITestingException("Search SO stats test failed.")
 
-    def test08_socliParse(self):
-        command = "--open-url https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works ".split()
-        namespace = _socli.parse_arguments(command)
+def test_searchStats():
+    try:
+        _search.get_question_stats_and_answer(surl)
+    except Exception:
+        raise SoCLITestingException("Search SO stats test failed.")
 
-        self.assertFalse(namespace.api)
-        self.assertTrue(namespace.browse == [])
-        self.assertFalse(namespace.debug)
-        self.assertFalse(namespace.delete)
-        self.assertFalse(namespace.help)
-        self.assertFalse(namespace.interactive)
-        self.assertFalse(namespace.new)
-        self.assertTrue(namespace.query == [])
-        self.assertFalse(namespace.res)
-        self.assertFalse(namespace.sosearch)
-        self.assertFalse(namespace.tag)
-        self.assertFalse(namespace.user)
-        self.assertTrue(namespace.open_url!=[])
 
 class SoCLITestingException(Exception):
 
     def __init__(self, msg):
         super().__init__(msg)
-
-
-if __name__ == "__main__":
-    unittest.main()
