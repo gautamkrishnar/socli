@@ -405,7 +405,7 @@ def fix_google_url(url):
 
 def captcha_check(url):
     """
-    Exits program when their is a captcha. Prevents errors.
+    Exits program when there is a captcha, preventing any error.
     Users will have to manually verify their identity.
     :param url: URL from Stack Overflow
     :return:
