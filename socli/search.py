@@ -17,7 +17,7 @@ import socli.tui
 uas = []  # User agent list
 header = {}  # Request header
 google_search = True
-
+dup_url = None #Stores the url of the duplicate question, if any
 so_url = "http://stackoverflow.com"  # Site URL
 so_qurl = "http://stackoverflow.com/search?q="  # Query URL
 so_burl = "https://stackoverflow.com/?tab="  # Assuming browse URL
@@ -118,11 +118,20 @@ def get_question_stats_and_answer(url):
     captcha_check(res_page.url)
     soup = BeautifulSoup(res_page.text, 'html.parser')
     question_title, question_desc, question_stats = get_stats(soup)
+
+    if '[duplicate]' in question_title:
+        dup_answer = [s for s in soup.find_all("div", class_="post-text")][
+              0] 
+        
+        for a in dup_answer.find_all('a')[0:1]:
+            dup_url = so_url+div['href']
+            
+    
     answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][
-              1:]  # first post is question, discard it.
+                1:]  # first post is question, discard it.
     if len(answers) == 0:
         answers.append('No answers for this question ...')
-    return question_title, question_desc, question_stats, answers
+    return question_title, question_desc, question_stats, answers, dup_url
 
 
 def get_stats(soup):
