@@ -17,7 +17,6 @@ import socli.tui
 uas = []  # User agent list
 header = {}  # Request header
 google_search = True
- #Stores the url of the duplicate question, if any
 so_url = "http://stackoverflow.com"  # Site URL
 so_qurl = "http://stackoverflow.com/search?q="  # Query URL
 so_burl = "https://stackoverflow.com/?tab="  # Assuming browse URL
