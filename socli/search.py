@@ -123,7 +123,7 @@ def get_question_stats_and_answer(url):
               0] 
         
         for a in dup_answer.find_all('a')[0:1]:
-            dup_url = so_url+div['href']
+            dup_url = so_url+a['href']
             
     
     answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][
