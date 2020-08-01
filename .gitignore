@@ -1,5 +1,5 @@
 # Python .gitignore
-
+*Pipfile
 .DS_Store
 .idea/
 __pycache__/

@@ -124,8 +124,7 @@ def get_question_stats_and_answer(url):
         
         for a in dup_answer.find_all('a')[0:1]:
             dup_url = so_url+a['href']
-            
-    
+        question_desc = 'This is a duplicate question.'
     answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][
                 1:]  # first post is question, discard it.
     if len(answers) == 0:
