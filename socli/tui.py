@@ -83,7 +83,6 @@ class QuestionPage(urwid.WidgetWrap):
         :return: a new urwid.Frame object
         """
         answers, question_title, question_desc, question_stats, question_url, dup_url = data
-        
         self.data = data
         self.question_desc = question_desc
         self.url = question_url

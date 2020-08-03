@@ -120,8 +120,7 @@ def get_question_stats_and_answer(url):
     dup_url = None
     if '[duplicate]' in question_title:
         dup_answer = [s for s in soup.find_all("div", class_="post-text")][
-              0] 
-        
+              0]
         for a in dup_answer.find_all('a')[0:1]:
             dup_url = so_url+a['href']
         question_desc = 'This is a duplicate question.'
@@ -149,6 +148,8 @@ def get_stats(soup):
     except:
         question_stats = "Could not load statistics."
     question_desc = (soup.find_all("div", class_="post-text")[0])
+    if '[duplicate]' in question_title:
+        question_desc.find('div').decompose()
     add_urls(question_desc)
     question_desc = question_desc.get_text()
     question_stats = ' '.join(question_stats.split())
