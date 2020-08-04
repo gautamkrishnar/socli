@@ -82,16 +82,34 @@ class QuestionPage(urwid.WidgetWrap):
         :param data: tuple of (answers, question_title, question_desc, question_stats, question_url)
         :return: a new urwid.Frame object
         """
-        answers, question_title, question_desc, question_stats, question_url = data
+        answers, question_title, question_desc, question_stats, question_url, dup_url = data
         self.data = data
         self.question_desc = question_desc
         self.url = question_url
+        self.dup_url = dup_url
         self.answer_text = AnswerText(answers)
         self.screenHeight, screenWidth = subprocess.check_output(
             ['stty', 'size']).split()
         self.question_text = urwid.BoxAdapter(QuestionDescription(question_desc),
                                               int(max(1, (int(self.screenHeight) - 9) / 2)))
-        answer_frame = urwid.Frame(
+        if dup_url:
+            answer_frame = urwid.Frame(
+                header=urwid.Pile([
+                    display_header,
+                    QuestionTitle(question_title),
+                    self.question_text,
+                    QuestionStats(question_stats),
+                    urwid.Divider('-')
+                ]),
+                body=self.answer_text,
+                footer=urwid.Pile([
+                    QuestionURL(question_url),
+                    UnicodeText(
+                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, d: visit duplicated question, q: quit')
+                ])
+            )
+        else:
+            answer_frame = urwid.Frame(
             header=urwid.Pile([
                 display_header,
                 QuestionTitle(question_title),
@@ -136,6 +154,9 @@ class QuestionPage(urwid.WidgetWrap):
                 urwid.WidgetWrap.__init__(self, answer_frame)
         elif key in {'q', 'Q'}:
             sys.exit(0)
+        elif key in {'d', 'D'}:
+            if self.dup_url:
+                pr.display_results(self.dup_url)
 
 
 class AnswerText(urwid.WidgetWrap):
