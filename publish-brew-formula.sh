@@ -1,4 +1,5 @@
 # Generate formula
+set -e
 pip install homebrew-pypi-poet==0.10.0 requests==2.24.0
 
 # Code to wait till the latest package is available in pypi
@@ -31,10 +32,10 @@ def get_version(package, url_pattern=URL_PATTERN):
 
 
 if __name__ == '__main__':
-    tag = parse(os.getenv('TRAVIS_TAG'))
+    tag = os.getenv('TRAVIS_TAG')
     flag = True
     while flag:
-        version = get_version('socli')
+        version = str(get_version('socli'))
         if version == tag:
             print('Got latest version from pypi, version:' + version)
             flag = False
@@ -43,12 +44,46 @@ if __name__ == '__main__':
             time.sleep(5)
 EOF
 python wait-till-publish.py
+rm -rf wait-till-publish.py
 
 # When latest version of socli is available in pypi do install
 pip install  --no-cache socli==${TRAVIS_TAG}
 # Generate formula
 poet -f socli > socli.rb
-patch socli.rb formula-changes.patch
+
+# Replacing with required values for linux
+cat << EOF > replace-brew.py
+text_to_replace = '''
+  def install
+    virtualenv_create(libexec, "python3")
+    virtualenv_install_with_resources
+  end
+'''
+
+new_text = '''
+  def install
+    venv = virtualenv_create(libexec, "python3")
+    if OS.mac?
+      virtualenv_install_with_resources
+    else
+      venv.pip_install resources
+      venv.pip_install_and_link buildpath
+    end
+  end
+'''
+
+file = open('socli.rb', 'r')
+data = file.read()
+file.close()
+data = data.replace(text_to_replace, new_text)
+data = data.replace("Shiny new formula", "Stack overflow command line client. Search and browse stack overflow without leaving the terminal.")
+file = open('socli.rb', 'w')
+file.write(data)
+file.close()
+EOF
+python replace-brew.py
+rm -rf replace-brew.py
+
 echo "Generated formula:"
 echo "------------------------------------------------------------------------------------"
 cat socli.rb
