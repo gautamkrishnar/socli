@@ -35,7 +35,6 @@ jobs:
         distributions: sdist bdist_wheel
     - stage: Deploy to Brew Tap
       if: tag IS present
+      install: skip
       python: 3.7
-      install:
-        - pip install socli # installs the latest version published
-      script: bash publish-brew-formula.sh
+      script: bash publish-brew-formula.sh # installs the latest published version and generates formula
