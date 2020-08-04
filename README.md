@@ -46,6 +46,11 @@ Use the command below to update your existing version of **socli** to the newest
 pip install --upgrade socli
 ```
 
+If you installed via homebrew:
+```bash
+brew upgrade socli
+```
+
 ### Usage
 ##### Quick Search
 Use the **socli** command followed by the search query:
