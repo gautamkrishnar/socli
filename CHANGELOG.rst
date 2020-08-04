@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 5.0
+---------------------------
+* Formula generation bug fixes
+
 Release 4.9
 ---------------------------
 * Formula generation bug fixes
