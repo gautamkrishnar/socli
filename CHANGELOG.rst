@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 5.1
+---------------------------
+* Using no-cache on pypi to get the latest version
+
 Release 5.0
 ---------------------------
 * Formula generation bug fixes

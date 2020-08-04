@@ -45,11 +45,10 @@ EOF
 python wait-till-publish.py
 
 # When latest version of socli is available in pypi do install
-pip install socli==${TRAVIS_TAG}
+pip install  --no-cache socli==${TRAVIS_TAG}
 # Generate formula
 poet -f socli > socli.rb
 patch socli.rb formula-changes.patch
-exit
 echo "Generated formula:"
 echo "------------------------------------------------------------------------------------"
 cat socli.rb
