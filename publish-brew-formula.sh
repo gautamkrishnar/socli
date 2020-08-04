@@ -31,11 +31,11 @@ def get_version(package, url_pattern=URL_PATTERN):
 
 
 if __name__ == '__main__':
-    tag = os.getenv('TRAVIS_TAG')
+    tag = parse(os.getenv('TRAVIS_TAG'))
     flag = True
     while flag:
         version = get_version('socli')
-        if version.base_version == tag:
+        if version == tag:
             print('Got latest version from pypi, version:' + version.base_version)
             flag = False
         else:
