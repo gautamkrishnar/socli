@@ -1,5 +1,6 @@
 # Python .gitignore
 *Pipfile
+*Pipfile.lock
 .DS_Store
 .idea/
 __pycache__/

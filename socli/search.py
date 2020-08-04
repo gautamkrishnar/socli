@@ -6,6 +6,7 @@ import os
 import random
 import re
 import sys
+import copy
 
 from bs4 import BeautifulSoup
 import requests
@@ -116,14 +117,8 @@ def get_question_stats_and_answer(url):
     res_page = requests.get(url, headers=header)
     captcha_check(res_page.url)
     soup = BeautifulSoup(res_page.text, 'html.parser')
-    question_title, question_desc, question_stats = get_stats(soup)
     dup_url = None
-    if '[duplicate]' in question_title:
-        dup_answer = [s for s in soup.find_all("div", class_="post-text")][
-              0]
-        for a in dup_answer.find_all('a')[0:1]:
-            dup_url = so_url+a['href']
-        question_desc = 'This is a duplicate question.'
+    question_title, question_desc, question_stats, dup_url = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][
                 1:]  # first post is question, discard it.
     if len(answers) == 0:
@@ -139,6 +134,7 @@ def get_stats(soup):
     """
     question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
     question_stats = (soup.find_all("div", class_="js-vote-count")[0].get_text())
+    dup_url = None
     try:
 
         asked_info = soup.find("time").parent.get_text()
@@ -149,11 +145,16 @@ def get_stats(soup):
         question_stats = "Could not load statistics."
     question_desc = (soup.find_all("div", class_="post-text")[0])
     if '[duplicate]' in question_title:
+        dup_answer = (soup.find_all("div", class_="post-text")[0])
+        link = dup_answer.find('a')['href']
+        link = so_url+link
+        dup_url = copy.deepcopy(link)
+        #using deepcopy else after the decompose of the first div, the url will be lost.
         question_desc.find('div').decompose()
     add_urls(question_desc)
     question_desc = question_desc.get_text()
     question_stats = ' '.join(question_stats.split())
-    return question_title, question_desc, question_stats
+    return question_title, question_desc, question_stats, dup_url
 
 
 def add_urls(tags):
