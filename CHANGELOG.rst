@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 4.9
+---------------------------
+* Formula generation bug fixes
+
 Release 4.8
 ---------------------------
 * Improved brew formula generation
