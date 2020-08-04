@@ -36,10 +36,10 @@ if __name__ == '__main__':
     while flag:
         version = get_version('socli')
         if version == tag:
-            print('Got latest version from pypi, version:' + version.base_version)
+            print('Got latest version from pypi, version:' + version)
             flag = False
         else:
-            print('Cant get version ' + tag + ' from pypi, got: ' + version.base_version + ', Retrying in 5 secs...')
+            print('Cant get version ' + tag + ' from pypi, got: ' + version + ', Retrying in 5 secs...')
             time.sleep(5)
 EOF
 python wait-till-publish.py
