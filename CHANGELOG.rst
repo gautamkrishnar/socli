@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 4.8
+---------------------------
+* Improved brew formula generation
+
 Release 4.7
 ---------------------------
 * Fixed duplicate question display in interactive mode #195
