@@ -16,5 +16,3 @@ venv
 .eggs
 socli/data.json
 socli.rb
-wait-till-publish.py
-replace-brew.py

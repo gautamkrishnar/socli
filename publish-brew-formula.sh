@@ -3,7 +3,7 @@ set -e
 pip install homebrew-pypi-poet==0.10.0 requests==2.24.0
 
 # Code to wait till the latest package is available in pypi
-cat << EOF > wait-till-publish.py
+cat << EOF | python
 import requests
 import json
 import os
@@ -43,8 +43,6 @@ if __name__ == '__main__':
             print('Cant get version ' + tag + ' from pypi, got: ' + version + ', Retrying in 5 secs...')
             time.sleep(5)
 EOF
-python wait-till-publish.py
-rm -rf wait-till-publish.py
 
 # When latest version of socli is available in pypi do install
 pip install  --no-cache socli==${TRAVIS_TAG}
@@ -52,7 +50,7 @@ pip install  --no-cache socli==${TRAVIS_TAG}
 poet -f socli > socli.rb
 
 # Replacing with required values for linux
-cat << EOF > replace-brew.py
+cat << EOF | python
 text_to_replace = '''
   def install
     virtualenv_create(libexec, "python3")
@@ -81,14 +79,13 @@ file = open('socli.rb', 'w')
 file.write(data)
 file.close()
 EOF
-python replace-brew.py
-rm -rf replace-brew.py
 
 echo "Generated formula:"
 echo "------------------------------------------------------------------------------------"
 cat socli.rb
 echo ""
 echo "------------------------------------------------------------------------------------"
+exit
 # Pushing to tap
 git config --global user.email "gkr@tuta.io"
 git config --global user.name "gkr-bot"
