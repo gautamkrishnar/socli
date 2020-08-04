@@ -1,6 +1,13 @@
 SoCLI Changelog
 ================
 
+Release 4.7
+---------------------------
+* Fixed duplicate question display in interactive mode #195
+* Improved tests
+* Typo fixes
+* Always use chrome useragent to prevent inconsistencies in results
+
 Release 4.6
 ---------------------------
 * Brew formula final version added

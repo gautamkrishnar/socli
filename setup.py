@@ -18,7 +18,7 @@ setup(
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     requires=['BeautifulSoup4','requests','colorama','PyStackExchange', 'urwid'],
-    version='4.6',
+    version='4.7',
     url='https://www.github.com/gautamkrishnar/socli',
     keywords="stack overflow cli",
     license='BSD',
