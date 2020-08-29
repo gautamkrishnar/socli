@@ -85,7 +85,6 @@ echo "--------------------------------------------------------------------------
 cat socli.rb
 echo ""
 echo "------------------------------------------------------------------------------------"
-exit
 # Pushing to tap
 git config --global user.email "gkr@tuta.io"
 git config --global user.name "gkr-bot"
