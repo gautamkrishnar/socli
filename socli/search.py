@@ -119,7 +119,7 @@ def get_question_stats_and_answer(url):
     soup = BeautifulSoup(res_page.text, 'html.parser')
     dup_url = None
     question_title, question_desc, question_stats, dup_url = get_stats(soup)
-    answers = [s.get_text() for s in soup.find_all("div", class_="post-text")][
+    answers = [s.get_text() for s in soup.find_all("div", class_="js-post-body")][
                 1:]  # first post is question, discard it.
     if len(answers) == 0:
         answers.append('No answers for this question ...')
@@ -143,9 +143,9 @@ def get_stats(soup):
         question_stats = "Votes " + question_stats + " | " + asked_info + " | " + active_info + " | " + viewed_info
     except:
         question_stats = "Could not load statistics."
-    question_desc = (soup.find_all("div", class_="post-text")[0])
+    question_desc = (soup.find_all("div", class_="js-post-body")[0])
     if '[duplicate]' in question_title:
-        dup_answer = (soup.find_all("div", class_="post-text")[0])
+        dup_answer = (soup.find_all("div", class_="js-post-body")[0])
         link = dup_answer.find('a')['href']
         link = so_url+link
         dup_url = copy.deepcopy(link)
@@ -210,7 +210,7 @@ def socli_interactive_windows(query):
                                     "b") + " for previous answer or any other key to exit:")
                             if qna in ["n", "N"]:
                                 try:
-                                    answer = (tmpsoup.find_all("div", class_="post-text")[cnt + 1].get_text())
+                                    answer = (tmpsoup.find_all("div", class_="js-post-body")[cnt + 1].get_text())
                                     socli.printer.print_green("\n\nAnswer:\n")
                                     print("-------\n" + answer + "\n-------\n")
                                     cnt = cnt + 1
@@ -222,7 +222,7 @@ def socli_interactive_windows(query):
                                 if cnt == 1:
                                     socli.printer.print_warning(" You cant go further back. You are on the first answer!")
                                     continue
-                                answer = (tmpsoup.find_all("div", class_="post-text")[cnt - 1].get_text())
+                                answer = (tmpsoup.find_all("div", class_="js-post-body")[cnt - 1].get_text())
                                 socli.printer.print_green("\n\nAnswer:\n")
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
