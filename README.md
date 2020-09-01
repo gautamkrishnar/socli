@@ -192,6 +192,9 @@ Please reach out to any of the following people if you have any queries:
   </tr>
 </table>
 
+## Hall of Fame
+[![hall-of-fame](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/images/0)](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/links/0)[![](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/images/1)](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/links/1)[![](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/images/2)](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/links/2)[![](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/images/3)](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/links/3)[![](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/images/4)](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/links/4)[![](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/images/5)](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/links/5)[![](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/images/6)](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/links/6)[![](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/images/7)](https://sourcerer.io/fame/gautamkrishnar/gautamkrishnar/socli/links/7)
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
