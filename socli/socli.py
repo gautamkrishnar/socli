@@ -31,7 +31,6 @@ import socli.printer as printer
 from socli.parser import parse_arguments
 from socli.printer import display_results
 
-
 tag = ""  # tag based search
 query = ""  # Query
 
@@ -39,6 +38,7 @@ query = ""  # Query
 urllib3.disable_warnings()
 # logger for debugging
 logger = logging.getLogger(__name__)
+
 
 # Switch on logging of the requests module.
 def debug_requests_on():
@@ -54,6 +54,7 @@ def debug_requests_on():
     requests_log = logging.getLogger('requests.packages.urllib3')
     requests_log.setLevel(logging.DEBUG)
     requests_log.propagate = True
+
 
 # Fixes windows active page code errors
 def fix_code_page():
@@ -74,7 +75,7 @@ def wrongsyn(query):
     :param query:
     :return:
     """
-    if query == "":
+    if not query:
         printer.print_warning("Wrong syntax!...\n")
         printer.helpman()
         sys.exit(1)
@@ -364,13 +365,13 @@ def main():
         has_tags()  # Adds tags to StackOverflow url (when not using google search.
     if namespace.open_url:
         import webbrowser
-        open_in_browser=False
-        display_condition=True
-        url_to_use=namespace.open_url[0]
-        if re.findall(r"^https:\/\/",url_to_use) !=[]:
+        open_in_browser = False
+        display_condition = True
+        url_to_use = namespace.open_url[0]
+        if re.findall(r"^https:\/\/", url_to_use):
             pass
         else:
-            url_to_use="https://" + url_to_use
+            url_to_use = "https://" + url_to_use
         try:
             if url_to_use == "https://stackoverflow.com/questions/":
                 raise Exception('URL Error')
@@ -378,32 +379,33 @@ def main():
                 raise Exception('URL Error')
             requests.get(url_to_use)
         except Exception:
-            printer.print_warning("Error, could be:\n- invalid url\n- url cannot be opened in socli\n- internet connection error")
+            printer.print_warning(
+                "Error, could be:\n- invalid url\n- url cannot be opened in socli\n- internet connection error")
             sys.exit(0)
-        nostackoverflow=re.findall(r"stackoverflow\.com",url_to_use)
-        if nostackoverflow == []:
-            open_in_browser=True
-            display_condition=False
+        nostackoverflow = re.findall(r"stackoverflow\.com", url_to_use)
+        if not nostackoverflow:
+            open_in_browser = True
+            display_condition = False
             printer.print_warning("Your url is not a stack overflow url.\nOpening in your browser...")
-        tag_matcher=re.findall(r"\/tag.+\/",url_to_use)
-        blog_matcher=re.findall(r"blog",url_to_use)
-        if tag_matcher != []:
-            extracted_tag=""
-            if re.findall(r"tagged",url_to_use) == []:
-                extracted_tag=re.split(r"\/",url_to_use)[4]
+        tag_matcher = re.findall(r"\/tag.+\/", url_to_use)
+        blog_matcher = re.findall(r"blog", url_to_use)
+        if tag_matcher:
+            extracted_tag = ""
+            if not re.findall(r"tagged", url_to_use):
+                extracted_tag = re.split(r"\/", url_to_use)[4]
             else:
-                extracted_tag=re.split(r"\/",url_to_use)[5]
-            open_in_browser=False
-            display_condition=False
-            tag=extracted_tag
+                extracted_tag = re.split(r"\/", url_to_use)[5]
+            open_in_browser = False
+            display_condition = False
+            tag = extracted_tag
             search.socli_interactive(tag)
-        if blog_matcher != []:
-            open_in_browser=True
-            display_condition=False
+        if blog_matcher:
+            open_in_browser = True
+            display_condition = False
             printer.print_warning("Your url belongs to blog")
             printer.print_warning("Opening in browser...")
         if display_condition:
-            open_in_browser=False
+            open_in_browser = False
             display_results(url_to_use)
         if open_in_browser:
             webbrowser.open(url_to_use)
@@ -413,10 +415,11 @@ def main():
         if namespace.query != [] or namespace.tag is not None:  # There must either be a tag or a query
             search.socli_manual_search(query, question_number)
         else:
-            printer.print_warning('You must specify a query or a tag. For example, use: "socli -r 3 -q python for loop" '
-                             'to retrieve the third result when searching about "python for loop". '
-                             'You can also use "socli -r 3 -t python" '
-                             'to retrieve the third result when searching for posts with the "python" tag.')
+            printer.print_warning(
+                'You must specify a query or a tag. For example, use: "socli -r 3 -q python for loop" '
+                'to retrieve the third result when searching about "python for loop". '
+                'You can also use "socli -r 3 -t python" '
+                'to retrieve the third result when searching for posts with the "python" tag.')
 
     if namespace.browse:
         # Browse mode
@@ -434,12 +437,11 @@ def main():
         # Help text for interactive mode
         if namespace.interactive and namespace.query == [] and namespace.tag is None:
             printer.print_warning('You must specify a query or a tag. For example, use: "socli -iq python for loop" '
-                             'to search about "python for loop" in interactive mode. '
-                             'You can also use "socli -it python" '
-                             'to search posts with the "python" tag in interactive mode.')
+                                  'to search about "python for loop" in interactive mode. '
+                                  'You can also use "socli -it python" '
+                                  'to search posts with the "python" tag in interactive mode.')
         else:
             printer.helpman()
-
 
 
 if __name__ == '__main__':
