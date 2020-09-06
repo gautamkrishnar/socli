@@ -255,6 +255,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/adamjyz"><img src="https://avatars1.githubusercontent.com/u/55098065?v=4" width="100px;" alt=""/><br /><sub><b>Adam Zhang</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=adamjyz" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/prathampowar2001"><img src="https://avatars0.githubusercontent.com/u/30765406?v=4" width="100px;" alt=""/><br /><sub><b>prathampowar2001</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=prathampowar2001" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/suvhotta"><img src="https://avatars0.githubusercontent.com/u/16841978?v=4" width="100px;" alt=""/><br /><sub><b>Subhankar Hotta</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=suvhotta" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/ankushduacodes"><img src="https://avatars3.githubusercontent.com/u/61025943?v=4" width="100px;" alt=""/><br /><sub><b>ankushduacodes</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=ankushduacodes" title="Code">💻</a></td>
   </tr>
 </table>
 
