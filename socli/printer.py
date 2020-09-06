@@ -48,8 +48,8 @@ else:
     def display_str(inp):
         return inp
 
-    def inputs(str=""):
-        sys.stdout.write(str)
+    def inputs(string=""):
+        sys.stdout.write(string)
         tempx = input()
         return tempx
 
