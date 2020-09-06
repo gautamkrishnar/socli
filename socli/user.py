@@ -62,7 +62,7 @@ def user_page(user_id):
             rate = accepted / float(total_questions) * 100
             print('\t\t        Accept rate is: %.2f%%.' % rate)
         except ZeroDivisionError:
-            pass # if total_question is zero we don't print accept rate.
+            pass  # if total_question is zero we don't print accept rate.
 
         # check if the user have answers and questions
         if userprofile.top_answer_tags.fetch():
@@ -84,7 +84,7 @@ def user_page(user_id):
             exit(1)
         elif str(e) in ("not enough values to unpack (expected 1, got 0)", "400 [bad_parameter]: ids"):
             global manual
-            if manual == 1:
+            if manual:
                 pr.print_warning("Wrong user ID specified...")
                 pr.helpman()
                 exit(1)
