@@ -28,7 +28,8 @@ def get_questions_for_query(query, count=10):
     """
     Fetch questions for a query using Stack Overflow default search mechanism.
     Returned question urls are relative to SO homepage.
-    At most 10 questions are returned. (Can be altered by passing count)
+
+    :param count: At most 10 questions are returned. (Can be altered by passing count)
     :param query: User-entered query string
     :return: list of [ (question_text, question_description, question_url) ]
     """
@@ -47,7 +48,7 @@ def get_questions_for_query(query, count=10):
     tmp = (soup.find_all("div", class_="question-summary"))
     tmp1 = (soup.find_all("div", class_="excerpt"))
     i = 0
-    while i < len(tmp) and i < count: # iterate over and limit results
+    while i < len(tmp) and i < count:  # iterate over and limit results
         question_text = ' '.join((tmp[i].a.get_text()).split())
         question_text = question_text.replace("Q: ", "")
         question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
@@ -120,7 +121,7 @@ def get_question_stats_and_answer(url):
     dup_url = None
     question_title, question_desc, question_stats, dup_url = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="js-post-body")][
-                1:]  # first post is question, discard it.
+              1:]  # first post is question, discard it.
     if len(answers) == 0:
         answers.append('No answers for this question ...')
     return question_title, question_desc, question_stats, answers, dup_url
@@ -147,9 +148,9 @@ def get_stats(soup):
     if '[duplicate]' in question_title:
         dup_answer = (soup.find_all("div", class_="js-post-body")[0])
         link = dup_answer.find('a')['href']
-        link = so_url+link
+        link = so_url + link
         dup_url = copy.deepcopy(link)
-        #using deepcopy else after the decompose of the first div, the url will be lost.
+        # using deepcopy else after the decompose of the first div, the url will be lost.
         question_desc.find('div').decompose()
     add_urls(question_desc)
     question_desc = question_desc.get_text()
@@ -188,7 +189,8 @@ def socli_interactive_windows(query):
             question_local_url = []
             print(socli.printer.bold("\nSelect a question below:\n"))
             while i < len(tmp):
-                if i == 10: break  # limiting results
+                if i == 10:
+                    break  # limiting results
                 question_text = ' '.join((tmp[i].a.get_text()).split())
                 question_text = question_text.replace("Q: ", "")
                 question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
@@ -206,7 +208,8 @@ def socli_interactive_windows(query):
                         while 1:
                             global tmpsoup
                             qna = socli.printer.inputs(
-                                "Type " + socli.printer.bold("o") + " to open in browser, " + socli.printer.bold("n") + " to next answer, " + socli.printer.bold(
+                                "Type " + socli.printer.bold("o") + " to open in browser, " + socli.printer.bold(
+                                    "n") + " to next answer, " + socli.printer.bold(
                                     "b") + " for previous answer or any other key to exit:")
                             if qna in ["n", "N"]:
                                 try:
@@ -214,13 +217,14 @@ def socli_interactive_windows(query):
                                     socli.printer.print_green("\n\nAnswer:\n")
                                     print("-------\n" + answer + "\n-------\n")
                                     cnt = cnt + 1
-                                except IndexError as e:
+                                except IndexError:
                                     socli.printer.print_warning(" No more answers found for this question. Exiting...")
                                     sys.exit(0)
                                 continue
                             elif qna in ["b", "B"]:
                                 if cnt == 1:
-                                    socli.printer.print_warning(" You cant go further back. You are on the first answer!")
+                                    socli.printer.print_warning(
+                                        " You cant go further back. You are on the first answer!")
                                     continue
                                 answer = (tmpsoup.find_all("div", class_="js-post-body")[cnt - 1].get_text())
                                 socli.printer.print_green("\n\nAnswer:\n")
@@ -273,7 +277,7 @@ def socli_interactive(query):
             text = [
                 ("warning", u"{}. {}\n".format(index, question_text)),
                 question_desc + "\n",
-                ]
+            ]
             return text
 
         def __init__(self, questions):
@@ -284,8 +288,8 @@ def socli_interactive(query):
             self.header = socli.tui.UnicodeText(('less-important', 'Select a question below:\n'))
             self.footerText = '0-' + str(len(self.questions) - 1) + ': select a question, any other key: exit.'
             self.errorText = socli.tui.UnicodeText.to_unicode('Question numbers range from 0-' +
-                                                        str(len(self.questions) - 1) +
-                                                        ". Please select a valid question number.")
+                                                              str(len(self.questions) - 1) +
+                                                              ". Please select a valid question number.")
             self.footer = socli.tui.UnicodeText(self.footerText)
             self.footerText = socli.tui.UnicodeText.to_unicode(self.footerText)
             frame = urwid.Frame(header=self.header,
@@ -318,7 +322,8 @@ def socli_interactive(query):
                 if not google_search:
                     url = so_url + url
                 question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
-                socli.tui.question_post = socli.tui.QuestionPage((answers, question_title, question_desc, question_stats, url))
+                socli.tui.question_post = socli.tui.QuestionPage(
+                    (answers, question_title, question_desc, question_stats, url))
                 self.cachedQuestions[index] = socli.tui.question_post
                 socli.tui.MAIN_LOOP.widget = socli.tui.question_post
 
@@ -374,7 +379,7 @@ def socli_manual_search(query, rn):
             sys.exit(1)
     except UnicodeEncodeError:
         socli.printer.print_warning("Encoding error: Use \"chcp 65001\" command before "
-                         "using socli...")
+                                    "using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError:
         socli.printer.print_fail("Please check your internet connectivity...")
@@ -429,7 +434,8 @@ def captcha_check(url):
             exit(0)
     else:
         if re.search(r"\.com/nocaptcha", url):  # Searching for stackoverflow captcha check
-            socli.printer.print_warning("StackOverflow captcha check triggered. Please wait a few seconds before trying again.")
+            socli.printer.print_warning(
+                "StackOverflow captcha check triggered. Please wait a few seconds before trying again.")
             exit(0)
 
 
@@ -454,7 +460,7 @@ def random_headers():
     """
     global uas
     global header
-    if uas == []:
+    if not uas:
         load_user_agents()
     ua = random.choice(uas)
     header = {"User-Agent": ua}
