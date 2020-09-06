@@ -105,25 +105,26 @@ class QuestionPage(urwid.WidgetWrap):
                 footer=urwid.Pile([
                     QuestionURL(question_url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, d: visit duplicated question, q: quit')
+                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, d: visit '
+                        u'duplicated question, q: quit')
                 ])
             )
         else:
             answer_frame = urwid.Frame(
-            header=urwid.Pile([
-                display_header,
-                QuestionTitle(question_title),
-                self.question_text,
-                QuestionStats(question_stats),
-                urwid.Divider('-')
-            ]),
-            body=self.answer_text,
-            footer=urwid.Pile([
-                QuestionURL(question_url),
-                UnicodeText(
-                    u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit')
-            ])
-        )
+                header=urwid.Pile([
+                    display_header,
+                    QuestionTitle(question_title),
+                    self.question_text,
+                    QuestionStats(question_stats),
+                    urwid.Divider('-')
+                ]),
+                body=self.answer_text,
+                footer=urwid.Pile([
+                    QuestionURL(question_url),
+                    UnicodeText(
+                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit')
+                ])
+            )
         return answer_frame
 
     def keypress(self, size, key):
