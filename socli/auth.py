@@ -2,6 +2,7 @@
 Contains all functions used for socli authentication
 """
 import os
+from datetime import datetime
 
 from functools import wraps
 from getpass import getpass
@@ -89,7 +90,7 @@ def login_prompt():
     email = input('Email: ')
     password = getpass()
 
-    return (email, password)
+    return email, password
 
 
 def login(email, password):
@@ -152,4 +153,3 @@ def logout():
         resp['message'] = 'There were some problems. Please try again!'
 
     return resp
-
