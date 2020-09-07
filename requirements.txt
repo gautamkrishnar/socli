@@ -1,7 +1,5 @@
 BeautifulSoup4~=4.9.1
 requests~=2.24.0
 colorama~=0.4.3
-Py-StackExchange
+py-stackexchange==2.2.7
 urwid~=2.1.1
-urllib3~=1.25.10
-setuptools~=49.6.0
