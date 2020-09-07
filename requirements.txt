@@ -3,6 +3,5 @@ requests~=2.24.0
 colorama~=0.4.3
 Py-StackExchange
 urwid~=2.1.1
-socli~=5.2
 urllib3~=1.25.10
 setuptools~=49.6.0
