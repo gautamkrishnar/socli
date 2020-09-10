@@ -71,58 +71,64 @@ class QuestionPage(urwid.WidgetWrap):
     def __init__(self, data):
         """
         Construct the Question Page.
-        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url)
+        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url, comments)
         """
+        answers, question_title, question_desc, question_stats, question_url, comments, dup_url = data
+        self.data = data
+        self.dup_url = dup_url
+        self.question_desc = question_desc
+        self.question_title = question_title
+        self.question_stats = question_stats
+        self.question_url = question_url
+        self.url = question_url
+        self.dup_url = dup_url
+        self.answer_text = AnswerText(answers)
+        self.screenHeight, self.screenWidth = subprocess.check_output(
+            ['stty', 'size']).split()
+        self.question_text = urwid.BoxAdapter(QuestionDescription(self.question_desc),
+                                              int(max(1, (int(self.screenHeight) - 9) / 2)))
         answer_frame = self.make_frame(data)
         urwid.WidgetWrap.__init__(self, answer_frame)
 
     def make_frame(self, data):
         """
         Returns a new frame that is formatted correctly with respect to the window's dimensions.
-        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url)
+        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url, comments)
         :return: a new urwid.Frame object
         """
-        answers, question_title, question_desc, question_stats, question_url, dup_url = data
-        self.data = data
-        self.question_desc = question_desc
-        self.url = question_url
-        self.dup_url = dup_url
-        self.answer_text = AnswerText(answers)
-        self.screenHeight, screenWidth = subprocess.check_output(
-            ['stty', 'size']).split()
-        self.question_text = urwid.BoxAdapter(QuestionDescription(question_desc),
-                                              int(max(1, (int(self.screenHeight) - 9) / 2)))
-        if dup_url:
+
+        if self.dup_url:
             answer_frame = urwid.Frame(
                 header=urwid.Pile([
                     display_header,
-                    QuestionTitle(question_title),
+                    QuestionTitle(self.question_title),
                     self.question_text,
-                    QuestionStats(question_stats),
+                    QuestionStats(self.question_stats),
                     urwid.Divider('-')
                 ]),
                 body=self.answer_text,
                 footer=urwid.Pile([
-                    QuestionURL(question_url),
+                    QuestionURL(self.question_url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, d: visit '
-                        u'duplicated question, q: quit')
+                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, c: comments, '
+                        u'\u2190: back, d: visit duplicated question, q: quit')
                 ])
             )
         else:
             answer_frame = urwid.Frame(
                 header=urwid.Pile([
                     display_header,
-                    QuestionTitle(question_title),
+                    QuestionTitle(self.question_title),
                     self.question_text,
-                    QuestionStats(question_stats),
+                    QuestionStats(self.question_stats),
                     urwid.Divider('-')
                 ]),
                 body=self.answer_text,
                 footer=urwid.Pile([
-                    QuestionURL(question_url),
+                    QuestionURL(self.question_url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit')
+                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, c: comments, '
+                        u'\u2190: back, q: quit')
                 ])
             )
         return answer_frame
