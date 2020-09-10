@@ -112,7 +112,7 @@ def socli(query):
             res_url = questions[0][2]
             display_results(search.so_url + res_url)  # Returned URL is relative to SO homepage
     
-    except IndexError as e:
+    except IndexError:
         for i in range(8):
             res_url=questions[i][2]
             try:
