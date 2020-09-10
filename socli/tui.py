@@ -82,15 +82,15 @@ class QuestionPage(urwid.WidgetWrap):
         self.question_url = question_url
         self.url = question_url
         self.dup_url = dup_url
-        self.answer_text = AnswerText(answers)
+        self.answer_text = self.AnswerText(answers, comments)
         self.screenHeight, self.screenWidth = subprocess.check_output(
             ['stty', 'size']).split()
         self.question_text = urwid.BoxAdapter(QuestionDescription(self.question_desc),
                                               int(max(1, (int(self.screenHeight) - 9) / 2)))
-        answer_frame = self.make_frame(data)
+        answer_frame = self.make_frame()
         urwid.WidgetWrap.__init__(self, answer_frame)
 
-    def make_frame(self, data):
+    def make_frame(self):
         """
         Returns a new frame that is formatted correctly with respect to the window's dimensions.
         :param data: tuple of (answers, question_title, question_desc, question_stats, question_url, comments)
@@ -133,14 +133,44 @@ class QuestionPage(urwid.WidgetWrap):
             )
         return answer_frame
 
+    def make_comment_frame(self):
+        comment_frame = urwid.Frame(
+            header=urwid.Pile([
+                display_header,
+                QuestionTitle(self.question_title),
+                self.question_text,
+                QuestionStats(self.question_stats),
+                urwid.Divider('-')
+            ]),
+            body=self.answer_text,
+            footer=urwid.Pile([
+                QuestionURL(self.question_url),
+                UnicodeText(
+                    'o: open in browser, v: back to answer, \u2190: back, q: quit')
+            ])
+        )
+        return comment_frame
+
     def keypress(self, size, key):
         """
         Overrides keypress in superclass, so don't fall for the trap! size parameter is needed!
         """
-        if key in {'down', 'n', 'N'}:
+        if key in {'down', 'n', 'N'} and not self.answer_text.comments_toggled:
             self.answer_text.next_ans()
-        elif key in {'up', 'b', 'B'}:
+        elif key in {'up', 'b', 'B'} and not self.answer_text.comments_toggled:
             self.answer_text.prev_ans()
+        elif key in {'c', 'C'}:
+            self.answer_text.show_comments()
+            self._invalidate()
+            comment_frame = self.make_comment_frame()
+            urwid.WidgetWrap.__init__(self, comment_frame)
+            self.answer_text.comments_toggled = True
+        elif key in {'v', 'V'}:
+            self.answer_text.set_content()
+            self._invalidate()
+            answer_frame = self.make_frame()
+            self.answer_text.comments_toggled = False
+            urwid.WidgetWrap.__init__(self, answer_frame)
         elif key in {'o', 'O'}:
             import webbrowser
             display_header.event('browser', "Opening in your browser...")
@@ -157,7 +187,7 @@ class QuestionPage(urwid.WidgetWrap):
             screen_height, screen_width = subprocess.check_output(['stty', 'size']).split()
             if self.screenHeight != screen_height:
                 self._invalidate()
-                answer_frame = self.make_frame(self.data)
+                answer_frame = self.make_frame()
                 urwid.WidgetWrap.__init__(self, answer_frame)
         elif key in {'q', 'Q'}:
             sys.exit(0)
@@ -165,53 +195,57 @@ class QuestionPage(urwid.WidgetWrap):
             if self.dup_url:
                 pr.display_results(self.dup_url)
 
+    class AnswerText(urwid.WidgetWrap):
+        """Answers to the question.
 
-class AnswerText(urwid.WidgetWrap):
-    """Answers to the question.
-
-    Long answers can be navigated up or down using the mouse.
-    """
-
-    def __init__(self, answers):
-        urwid.WidgetWrap.__init__(self, UnicodeText(''))
-        self._selectable = True  # so that we receive keyboard input
-        self.answers = answers
-        self.index = 0
-        self.set_answer()
-
-    def set_answer(self):
+        Long answers can be navigated up or down using the mouse.
         """
-        We must use a box adapter to get the text to scroll when this widget is already in
-        a Pile from the main question page. Scrolling is necessary for long answers which are longer
-        than the length of the terminal.
-        """
-        self.content = [('less-important', 'Answer: ')] + self.answers[self.index].split("\n")
-        self._w = ScrollableTextBox(self.content)
 
-    def prev_ans(self):
-        """go to previous answer."""
-        self.index -= 1
-        if self.index < 0:
+        def __init__(self, answers, comments):
+            urwid.WidgetWrap.__init__(self, UnicodeText(''))
+            self._selectable = True  # so that we receive keyboard input
+            self.answers = answers
+            self.comments_list = comments
             self.index = 0
-            display_header.event('answer-bounds', "No previous answers.")
-        else:
-            display_header.clear('answer-bounds')
-        self.set_answer()
+            self.set_content()
+            self.comments_toggled = False
 
-    def next_ans(self):
-        """go to next answer."""
-        self.index += 1
-        if self.index > len(self.answers) - 1:
-            self.index = len(self.answers) - 1
-            display_header.event('answer-bounds', "No more answers.")
-        else:
-            display_header.clear('answer-bounds')
-        self.set_answer()
+        def set_content(self):
+            """
+            We must use a box adapter to get the text to scroll when this widget is already in
+            a Pile from the main question page. Scrolling is necessary for long answers which are longer
+            than the length of the terminal.
+            """
+            self.content = [('less-important', 'Answer: ')] + self.answers[self.index].split("\n")
+            self._w = ScrollableTextBox(self.content)
 
-    def __len__(self):
-        """ return number of rows in this widget """
-        return len(self.content)
+        def prev_ans(self):
+            """go to previous answer."""
+            self.index -= 1
+            if self.index < 0:
+                self.index = 0
+                display_header.event('answer-bounds', "No previous answers.")
+            else:
+                display_header.clear('answer-bounds')
+            self.set_content()
 
+        def next_ans(self):
+            """go to next answer."""
+            self.index += 1
+            if self.index > len(self.answers) - 1:
+                self.index = len(self.answers) - 1
+                display_header.event('answer-bounds', "No more answers.")
+            else:
+                display_header.clear('answer-bounds')
+            self.set_content()
+
+        def show_comments(self):
+            self.content = [('less-important', 'Comments: \n')] + self.comments_list[self.index]
+            self._w = ScrollableTextBox(self.content)
+
+        def __len__(self):
+            """ return number of rows in this widget """
+            return len(self.content)
 
 class ScrollableTextBox(urwid.ListBox):
     """ Display input text, scrolling through when there is not enough room.
