@@ -111,6 +111,11 @@ def socli(query):
             questions = search.get_questions_for_query(query)
             res_url = questions[0][2]
             display_results(search.so_url + res_url)  # Returned URL is relative to SO homepage
+    
+    except IndexError:
+        res_url=questions[1][2] #gets the second result if the first one is unavailable
+        display_results(res_url)
+
     except UnicodeEncodeError as e:
         printer.showerror(e)
         printer.print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
