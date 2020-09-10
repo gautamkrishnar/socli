@@ -215,6 +215,6 @@ def display_results(url):
     tui.display_header = tui.Header()
     question_title, question_desc, question_stats, answers, comments, dup_url = \
         search.get_question_stats_and_answer_comments(url)
-    tui.question_post = tui.QuestionPage((answers, question_title, question_desc, question_stats, url,comments, dup_url))
+    tui.question_post = tui.QuestionPage((answers, question_title, question_desc, question_stats, url, comments, dup_url))
     tui.MAIN_LOOP = tui.EditedMainLoop(tui.question_post, palette)
     tui.MAIN_LOOP.run()

@@ -112,10 +112,12 @@ def get_comments(soup):
     comments_list = []
     raw_comments_list = soup.find_all("ul", class_="js-comments-list")
     for raw_comments in raw_comments_list:
-        comments_list.append([raw_comment.get_text() for raw_comment in raw_comments.find_all(
+        comments_list.append(['===>  ' + raw_comment.get_text() + '\n' for raw_comment in raw_comments.find_all(
             "span",
             class_='comment-copy')
                               ])
+    if len(comments_list) <= 1:
+        comments_list.append(["No comments as there are no answers to this question"])
     return comments_list[1::]
 
 
