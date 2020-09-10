@@ -111,7 +111,7 @@ def socli(query):
             questions = search.get_questions_for_query(query)
             res_url = questions[0][2]
             display_results(search.so_url + res_url)  # Returned URL is relative to SO homepage
-    
+
     except IndexError:
         for i in range(8):
             res_url=questions[i][2]
@@ -119,7 +119,7 @@ def socli(query):
                 display_results(res_url)
             except IndexError:
                 continue
-            break        
+            break
 
     except UnicodeEncodeError as e:
         printer.showerror(e)
