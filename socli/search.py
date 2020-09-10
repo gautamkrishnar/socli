@@ -108,7 +108,18 @@ def get_questions_for_query_google(query, count=10):
     return questions
 
 
-def get_question_stats_and_answer(url):
+def get_comments(soup):
+    comments_list = []
+    raw_comments_list = soup.find_all("ul", class_="js-comments-list")
+    for raw_comments in raw_comments_list:
+        comments_list.append([raw_comment.get_text() for raw_comment in raw_comments.find_all(
+            "span",
+            class_='comment-copy')
+                              ])
+    return comments_list[1::]
+
+
+def get_question_stats_and_answer_comments(url):
     """
     Fetch the content of a StackOverflow page for a particular question.
     :param url: full url of a StackOverflow question
@@ -122,9 +133,10 @@ def get_question_stats_and_answer(url):
     question_title, question_desc, question_stats, dup_url = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="js-post-body")][
               1:]  # first post is question, discard it.
+    comments = get_comments(soup)
     if len(answers) == 0:
         answers.append('No answers for this question ...')
-    return question_title, question_desc, question_stats, answers, dup_url
+    return question_title, question_desc, question_stats, answers, comments, dup_url
 
 
 def get_stats(soup):
@@ -201,11 +213,11 @@ def socli_interactive_windows(query):
                 i = i + 1
             try:
                 op = int(socli.printer.inputs("\nType the option number to continue or any other key to exit:"))
-                while 1:
+                while True:
                     if (op > 0) and (op <= i):
                         socli.printer.display_results(so_url + question_local_url[op - 1])
                         cnt = 1  # this is because the 1st post is the question itself
-                        while 1:
+                        while True:
                             global tmpsoup
                             qna = socli.printer.inputs(
                                 "Type " + socli.printer.bold("o") + " to open in browser, " + socli.printer.bold(
@@ -321,9 +333,10 @@ def socli_interactive(query):
             else:
                 if not google_search:
                     url = so_url + url
-                question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
+                question_title, question_desc, question_stats, answers, comments = \
+                    get_question_stats_and_answer_comments(url)
                 socli.tui.question_post = socli.tui.QuestionPage(
-                    (answers, question_title, question_desc, question_stats, url))
+                    (answers, question_title, question_desc, question_stats, url, comments))
                 self.cachedQuestions[index] = socli.tui.question_post
                 socli.tui.MAIN_LOOP.widget = socli.tui.question_post
 
