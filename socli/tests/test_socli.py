@@ -127,7 +127,7 @@ def test_searchSO():
 
 def test_searchStats():
     try:
-        _search.get_question_stats_and_answer(surl)
+        _search.get_question_stats_and_answer_comments(surl)
     except Exception:
         raise SoCLITestingException("Search SO stats test failed.")
 
