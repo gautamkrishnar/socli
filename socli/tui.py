@@ -217,9 +217,9 @@ class AnswerText(urwid.WidgetWrap):
         self.comments_list = comments
         self.index = 0
         self.set_content()
-        #if the comments are being shown then comments_toggled will be True else when are answers are being
-        #shown then comments_toggled will be False
-        #This Bool is necessary to disable up/down arrow keys when comments are being shown
+        # if the comments are being shown then comments_toggled will be True else when are answers are being
+        # shown then comments_toggled will be False
+        # This Bool is necessary to disable up/down arrow keys when comments are being shown
         self.comments_toggled = False
 
     def set_content(self):
@@ -229,7 +229,7 @@ class AnswerText(urwid.WidgetWrap):
         than the length of the terminal.
         """
         self.content = [('less-important', 'Answer: ')] + \
-            self.answers[self.index].split("\n")
+                       self.answers[self.index].split("\n")
         self._w = ScrollableTextBox(self.content)
 
     def prev_ans(self):
@@ -256,7 +256,7 @@ class AnswerText(urwid.WidgetWrap):
         """Shows comments by loading a new frame name QuestionPage.make_comment_frame()
         """
         self.content = [('less-important', 'Comments: \n')] + \
-            self.comments_list[self.index]
+                       self.comments_list[self.index]
         self._w = ScrollableTextBox(self.content)
 
     def __len__(self):
