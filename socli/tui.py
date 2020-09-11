@@ -15,7 +15,7 @@ MAIN_LOOP = None
 
 
 class UnicodeText(urwid.Text):
-    """ encode all text to utf-8 """
+    """encode all text to utf-8"""
 
     def __init__(self, text):
         # As we were encoding all text to utf-8 in output before with dispstr, do it automatically for all input
@@ -246,15 +246,13 @@ class AnswerText(urwid.WidgetWrap):
         self.set_content()
 
     def show_comments(self):
-        """Shows comments by loading a new frame name QuestionPage.make_comment_frame()
-        """
+        """Shows comments by loading a new frame name QuestionPage.make_comment_frame()"""
         self.content = [('less-important', 'Comments: \n')] + \
                        self.comments_list[self.index]
         self._w = ScrollableTextBox(self.content)
 
     def __len__(self):
-        """return number of rows in this widget
-        """
+        """return number of rows in this widget"""
         return len(self.content)
 
 
@@ -285,8 +283,7 @@ class ScrollableTextBox(urwid.ListBox):
 
 
 class QuestionTitle(UnicodeText):
-    """Title of the question
-    """
+    """Title of the question"""
 
     def __init__(self, title):
         text = ["Question: ", ('title', title), "\n"]
@@ -295,8 +292,7 @@ class QuestionTitle(UnicodeText):
 
 # Must convert to BoxAdapter object if used as a flow widget.
 class QuestionDescription(urwid.WidgetWrap):
-    """Description of the question
-    """
+    """Description of the question"""
 
     def __init__(self, description):
         urwid.WidgetWrap.__init__(self, UnicodeText(''))
@@ -319,8 +315,7 @@ class QuestionDescription(urwid.WidgetWrap):
 
 
 class QuestionStats(UnicodeText):
-    """Stats of the question
-    """
+    """Stats of the question"""
 
     def __init__(self, stats):
         text = ["\n", ('metadata', stats)]
@@ -328,8 +323,7 @@ class QuestionStats(UnicodeText):
 
 
 class QuestionURL(UnicodeText):
-    """url of the question
-    """
+    """url of the question"""
 
     def __init__(self, url):
         text = ["\n", ('heading', 'Question URL: '), url]
