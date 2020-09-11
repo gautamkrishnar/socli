@@ -93,39 +93,28 @@ class QuestionPage(urwid.WidgetWrap):
             ['stty', 'size']).split()
         self.question_text = urwid.BoxAdapter(QuestionDescription(self.question_desc),
                                               int(max(1, (int(self.screenHeight) - 9) / 2)))
-        if self.dup_url:
-            answer_frame = urwid.Frame(
-                header=urwid.Pile([
-                    display_header,
-                    QuestionTitle(self.question_title),
-                    self.question_text,
-                    QuestionStats(self.question_stats),
-                    urwid.Divider('-')
-                ]),
-                body=self.answer_text,
-                footer=urwid.Pile([
-                    QuestionURL(self.url),
-                    UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, d: visit '
-                        u'duplicated question, q: quit')
-                ])
-            )
-        else:
-            answer_frame = urwid.Frame(
-                header=urwid.Pile([
-                    display_header,
-                    QuestionTitle(self.question_title),
-                    self.question_text,
-                    QuestionStats(self.question_stats),
-                    urwid.Divider('-')
-                ]),
-                body=self.answer_text,
-                footer=urwid.Pile([
-                    QuestionURL(self.url),
-                    UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit')
-                ])
-            )
+        #
+        # u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit'
+
+        footer_options = u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, d: visit ' \
+                         u'duplicated question, q: quit' if self.dup_url else u'\u2191: previous answer, \u2193: next' \
+                                                                              u'answer, o: open in browser, ' \
+                                                                              u'\u2190: back, q: quit '
+
+        answer_frame = urwid.Frame(
+            header=urwid.Pile([
+                display_header,
+                QuestionTitle(self.question_title),
+                self.question_text,
+                QuestionStats(self.question_stats),
+                urwid.Divider('-')
+            ]),
+            body=self.answer_text,
+            footer=urwid.Pile([
+                QuestionURL(self.url),
+                UnicodeText(footer_options)
+            ])
+        )
         return answer_frame
 
     def make_comment_frame(self):
@@ -308,6 +297,7 @@ class QuestionTitle(UnicodeText):
 class QuestionDescription(urwid.WidgetWrap):
     """Description of the question
     """
+
     def __init__(self, description):
         urwid.WidgetWrap.__init__(self, UnicodeText(''))
         self.description = description
