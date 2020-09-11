@@ -74,7 +74,6 @@ class QuestionPage(urwid.WidgetWrap):
         :param data: tuple of (answers, question_title, question_desc, question_stats, question_url, comments, dup_url)
         """
         answers, question_title, question_desc, question_stats, question_url, comments, dup_url = data
-        self.data = data
         self.dup_url = dup_url
         self.question_title = question_title
         self.question_desc = question_desc
