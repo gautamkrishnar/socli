@@ -89,7 +89,8 @@ class QuestionPage(urwid.WidgetWrap):
         Returns a new frame that is formatted correctly with respect to the window's dimensions.
         :return: a new urwid.Frame object
         """
-        self.screenHeight, screenWidth = subprocess.check_output(['stty', 'size']).split()
+        self.screenHeight, screenWidth = subprocess.check_output(
+            ['stty', 'size']).split()
         self.question_text = urwid.BoxAdapter(QuestionDescription(self.question_desc),
                                               int(max(1, (int(self.screenHeight) - 9) / 2)))
         if self.dup_url:
@@ -132,7 +133,8 @@ class QuestionPage(urwid.WidgetWrap):
         Returns a new frame that is formatted correctly with respect to the window's dimensions.
         :return: a new urwid.Frame object
         """
-        self.screenHeight, screenWidth = subprocess.check_output(['stty', 'size']).split()
+        self.screenHeight, screenWidth = subprocess.check_output(
+            ['stty', 'size']).split()
         self.question_text = urwid.BoxAdapter(QuestionDescription(self.question_desc),
                                               int(max(1, (int(self.screenHeight) - 9) / 2)))
 
@@ -186,7 +188,8 @@ class QuestionPage(urwid.WidgetWrap):
             else:
                 MAIN_LOOP.widget = question_page
         elif key == 'window resize':
-            screen_height, screen_width = subprocess.check_output(['stty', 'size']).split()
+            screen_height, screen_width = subprocess.check_output(
+                ['stty', 'size']).split()
             if self.screenHeight != screen_height and not self.answer_text.comments_toggled:
                 self._invalidate()
                 answer_frame = self.make_frame()
@@ -225,7 +228,8 @@ class AnswerText(urwid.WidgetWrap):
         a Pile from the main question page. Scrolling is necessary for long answers which are longer
         than the length of the terminal.
         """
-        self.content = [('less-important', 'Answer: ')] + self.answers[self.index].split("\n")
+        self.content = [('less-important', 'Answer: ')] + \
+            self.answers[self.index].split("\n")
         self._w = ScrollableTextBox(self.content)
 
     def prev_ans(self):
@@ -251,7 +255,8 @@ class AnswerText(urwid.WidgetWrap):
     def show_comments(self):
         """Shows comments by loading a new frame name QuestionPage.make_comment_frame()"""
 
-        self.content = [('less-important', 'Comments: \n')] + self.comments_list[self.index]
+        self.content = [('less-important', 'Comments: \n')] + \
+            self.comments_list[self.index]
         self._w = ScrollableTextBox(self.content)
 
     def __len__(self):

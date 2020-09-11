@@ -21,7 +21,8 @@ google_search = True
 so_url = "http://stackoverflow.com"  # Site URL
 so_qurl = "http://stackoverflow.com/search?q="  # Query URL
 so_burl = "https://stackoverflow.com/?tab="  # Assuming browse URL
-google_search_url = "https://www.google.com/search?q=site:www.stackoverflow.com+"  # Google search query URL
+# Google search query URL
+google_search_url = "https://www.google.com/search?q=site:www.stackoverflow.com+"
 
 
 def get_questions_for_query(query, count=10):
@@ -41,7 +42,8 @@ def get_questions_for_query(query, count=10):
     captcha_check(search_res.url)
     soup = BeautifulSoup(search_res.text, 'html.parser')
     try:
-        soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
+        # For explicitly raising exception
+        soup.find_all("div", class_="question-summary")[0]
     except IndexError:
         socli.printer.print_warning("No results found...")
         sys.exit(0)
@@ -83,11 +85,13 @@ def get_questions_for_query_google(query, count=10):
         if i == count:
             break
         try:
-            question_title = result.find("div", class_="r").find("h3").get_text().replace(' - Stack Overflow', '')
+            question_title = result.find("div", class_="r").find(
+                "h3").get_text().replace(' - Stack Overflow', '')
             question_desc = result.find("span", class_="st").get_text()
             if question_desc == "":  # For avoiding instant answers
                 raise NameError  # Explicit raising
-            question_url = result.find("a").get("href")  # Retrieves the Stack Overflow link
+            # Retrieves the Stack Overflow link
+            question_url = result.find("a").get("href")
             question_url = fix_google_url(question_url.lower())
 
             if question_url is None:
@@ -115,7 +119,8 @@ def get_comments(soup):
         comments_list.append([str(index + 1) + ' ' + raw_comment.get_text() + '\n' for index, raw_comment in
                               enumerate(raw_comments.find_all("span", class_='comment-copy'))])
     if len(comments_list) <= 1:
-        comments_list.append(["No comments as there are no answers to this question..."])
+        comments_list.append(
+            ["No comments as there are no answers to this question..."])
     return comments_list[1::]
 
 
@@ -132,7 +137,7 @@ def get_question_stats_and_answer_comments(url):
     dup_url = None
     question_title, question_desc, question_stats, dup_url = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="js-post-body")][
-              1:]  # first post is question, discard it.
+        1:]  # first post is question, discard it.
     comments = get_comments(soup)
     if len(answers) == 0:
         answers.append('No answers for this question ...')
@@ -145,15 +150,19 @@ def get_stats(soup):
     :param soup:
     :return:
     """
-    question_title = (soup.find_all("a", class_="question-hyperlink")[0].get_text())
-    question_stats = (soup.find_all("div", class_="js-vote-count")[0].get_text())
+    question_title = (soup.find_all(
+        "a", class_="question-hyperlink")[0].get_text())
+    question_stats = (soup.find_all(
+        "div", class_="js-vote-count")[0].get_text())
     dup_url = None
     try:
 
         asked_info = soup.find("time").parent.get_text()
         active_info = soup.find("time").parent.findNext('div').get_text()
-        viewed_info = soup.find("time").parent.findNext('div').findNext('div').get_text()
-        question_stats = "Votes " + question_stats + " | " + asked_info + " | " + active_info + " | " + viewed_info
+        viewed_info = soup.find("time").parent.findNext(
+            'div').findNext('div').get_text()
+        question_stats = "Votes " + question_stats + " | " + \
+            asked_info + " | " + active_info + " | " + viewed_info
     except:
         question_stats = "Could not load statistics."
     question_desc = (soup.find_all("div", class_="js-post-body")[0])
@@ -194,7 +203,8 @@ def socli_interactive_windows(query):
         captcha_check(search_res.url)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
-            soup.find_all("div", class_="question-summary")[0]  # For explictly raising exception
+            # For explictly raising exception
+            soup.find_all("div", class_="question-summary")[0]
             tmp = (soup.find_all("div", class_="question-summary"))
             tmp1 = (soup.find_all("div", class_="excerpt"))
             i = 0
@@ -207,15 +217,18 @@ def socli_interactive_windows(query):
                 question_text = question_text.replace("Q: ", "")
                 question_desc = (tmp1[i].get_text()).replace("'\r\n", "")
                 question_desc = ' '.join(question_desc.split())
-                socli.printer.print_warning(str(i + 1) + ". " + socli.printer.display_str(question_text))
+                socli.printer.print_warning(
+                    str(i + 1) + ". " + socli.printer.display_str(question_text))
                 question_local_url.append(tmp[i].a.get("href"))
                 print("  " + socli.printer.display_str(question_desc) + "\n")
                 i = i + 1
             try:
-                op = int(socli.printer.inputs("\nType the option number to continue or any other key to exit:"))
+                op = int(socli.printer.inputs(
+                    "\nType the option number to continue or any other key to exit:"))
                 while True:
                     if (op > 0) and (op <= i):
-                        socli.printer.display_results(so_url + question_local_url[op - 1])
+                        socli.printer.display_results(
+                            so_url + question_local_url[op - 1])
                         cnt = 1  # this is because the 1st post is the question itself
                         while True:
                             global tmpsoup
@@ -225,12 +238,14 @@ def socli_interactive_windows(query):
                                     "b") + " for previous answer or any other key to exit:")
                             if qna in ["n", "N"]:
                                 try:
-                                    answer = (tmpsoup.find_all("div", class_="js-post-body")[cnt + 1].get_text())
+                                    answer = (tmpsoup.find_all(
+                                        "div", class_="js-post-body")[cnt + 1].get_text())
                                     socli.printer.print_green("\n\nAnswer:\n")
                                     print("-------\n" + answer + "\n-------\n")
                                     cnt = cnt + 1
                                 except IndexError:
-                                    socli.printer.print_warning(" No more answers found for this question. Exiting...")
+                                    socli.printer.print_warning(
+                                        " No more answers found for this question. Exiting...")
                                     sys.exit(0)
                                 continue
                             elif qna in ["b", "B"]:
@@ -238,7 +253,8 @@ def socli_interactive_windows(query):
                                     socli.printer.print_warning(
                                         " You cant go further back. You are on the first answer!")
                                     continue
-                                answer = (tmpsoup.find_all("div", class_="js-post-body")[cnt - 1].get_text())
+                                answer = (tmpsoup.find_all(
+                                    "div", class_="js-post-body")[cnt - 1].get_text())
                                 socli.printer.print_green("\n\nAnswer:\n")
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
@@ -249,13 +265,16 @@ def socli_interactive_windows(query):
                                     browser = webbrowser.get('safari')
                                 else:
                                     browser = webbrowser.get()
-                                socli.printer.print_warning("Opening in your browser...")
-                                browser.open(so_url + question_local_url[op - 1])
+                                socli.printer.print_warning(
+                                    "Opening in your browser...")
+                                browser.open(
+                                    so_url + question_local_url[op - 1])
                             else:
                                 break
                         sys.exit(0)
                     else:
-                        op = int(input("\n\nWrong option. select the option no to continue:"))
+                        op = int(
+                            input("\n\nWrong option. select the option no to continue:"))
             except Exception as e:
                 socli.printer.showerror(e)
                 socli.printer.print_warning("\n Exiting...")
@@ -265,7 +284,8 @@ def socli_interactive_windows(query):
             sys.exit(0)
 
     except UnicodeEncodeError:
-        socli.printer.print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        socli.printer.print_warning(
+            "\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError:
         socli.printer.print_fail("Please check your internet connectivity...")
@@ -295,17 +315,22 @@ def socli_interactive(query):
         def __init__(self, questions):
             self.questions = questions
             self.cachedQuestions = [None for _ in range(10)]
-            widgets = [self.display_text(i, q) for i, q in enumerate(questions)]
+            widgets = [self.display_text(i, q)
+                       for i, q in enumerate(questions)]
             self.questions_box = socli.tui.ScrollableTextBox(widgets)
-            self.header = socli.tui.UnicodeText(('less-important', 'Select a question below:\n'))
-            self.footerText = '0-' + str(len(self.questions) - 1) + ': select a question, any other key: exit.'
+            self.header = socli.tui.UnicodeText(
+                ('less-important', 'Select a question below:\n'))
+            self.footerText = '0-' + \
+                str(len(self.questions) - 1) + \
+                ': select a question, any other key: exit.'
             self.errorText = socli.tui.UnicodeText.to_unicode('Question numbers range from 0-' +
                                                               str(len(self.questions) - 1) +
                                                               ". Please select a valid question number.")
             self.footer = socli.tui.UnicodeText(self.footerText)
             self.footerText = socli.tui.UnicodeText.to_unicode(self.footerText)
             frame = urwid.Frame(header=self.header,
-                                body=urwid.Filler(self.questions_box, height=('relative', 100), valign='top'),
+                                body=urwid.Filler(self.questions_box, height=(
+                                    'relative', 100), valign='top'),
                                 footer=self.footer)
             urwid.WidgetWrap.__init__(self, frame)
 
@@ -348,11 +373,13 @@ def socli_interactive(query):
         else:
             questions = get_questions_for_query(query)
         question_page = SelectQuestionPage(questions)
-        socli.tui.MAIN_LOOP = socli.tui.EditedMainLoop(question_page, socli.printer.palette)
+        socli.tui.MAIN_LOOP = socli.tui.EditedMainLoop(
+            question_page, socli.printer.palette)
         socli.tui.MAIN_LOOP.run()
 
     except UnicodeEncodeError:
-        socli.printer.print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        socli.printer.print_warning(
+            "\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError:
         socli.printer.print_fail("Please check your internet connectivity...")

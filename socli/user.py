@@ -8,7 +8,8 @@ import os
 import socli.printer as pr
 
 app_data = dict()  # Data file dictionary
-data_file = os.path.join(os.path.dirname(__file__), "data.json")  # Data file location
+data_file = os.path.join(os.path.dirname(
+    __file__), "data.json")  # Data file location
 
 
 def user_page(user_id):
@@ -43,7 +44,8 @@ def user_page(user_id):
     try:
         if "api_key" not in app_data:
             app_data["api_key"] = None
-        userprofile = stackexchange.Site(stackexchange.StackOverflow, app_key=app_data["api_key"]).user(user_id)
+        userprofile = stackexchange.Site(
+            stackexchange.StackOverflow, app_key=app_data["api_key"]).user(user_id)
         print(pr.bold("\n User: " + userprofile.display_name.format()))
         print("\n\tReputations: " + userprofile.reputation.format())
         pr.print_warning("\n\tBadges:")
@@ -55,7 +57,8 @@ def user_page(user_id):
         total_questions = len(userprofile.questions.fetch())
         unaccepted_questions = len(userprofile.unaccepted_questions.fetch())
         accepted = total_questions - unaccepted_questions
-        print("\t\t Total Questions Asked: " + str(len(userprofile.questions.fetch())))
+        print("\t\t Total Questions Asked: " +
+              str(len(userprofile.questions.fetch())))
         try:
             # the following division might raise ZeroDivisionError if
             # total_questions is zero, so we wrap it in try-except.
@@ -66,11 +69,13 @@ def user_page(user_id):
 
         # check if the user have answers and questions
         if userprofile.top_answer_tags.fetch():
-            print('\nMost experienced on %s.' % userprofile.top_answer_tags.fetch()[0].tag_name)
+            print('\nMost experienced on %s.' %
+                  userprofile.top_answer_tags.fetch()[0].tag_name)
         else:
             print("You have 0 answers")
         if userprofile.top_question_tags.fetch():
-            print('Most curious about %s.' % userprofile.top_question_tags.fetch()[0].tag_name)
+            print('Most curious about %s.' %
+                  userprofile.top_question_tags.fetch()[0].tag_name)
         else:
             print("You have 0 questions")
     except URLError:
@@ -150,7 +155,8 @@ def del_datafile():
     try:
         os.remove(data_file)
     except FileNotFoundError:
-        pr.print_warning("File not created.... Use socli -u to create a new configuration file.")
+        pr.print_warning(
+            "File not created.... Use socli -u to create a new configuration file.")
         exit(0)
 
 
@@ -180,7 +186,8 @@ def retrieve_saved_profile():
         pr.print_warning("Default user not set...\n")
         try:
             # Code to execute when first time user runs socli -u
-            app_data['user'] = int(pr.inputs("Enter your Stackoverflow User ID: "))
+            app_data['user'] = int(
+                pr.inputs("Enter your Stackoverflow User ID: "))
             save_datafile()
             user = app_data['user']
             pr.print_green("\nUserID saved...\n")

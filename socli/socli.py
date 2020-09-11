@@ -110,10 +110,12 @@ def socli(query):
         else:
             questions = search.get_questions_for_query(query)
             res_url = questions[0][2]
-            display_results(search.so_url + res_url)  # Returned URL is relative to SO homepage
+            # Returned URL is relative to SO homepage
+            display_results(search.so_url + res_url)
     except UnicodeEncodeError as e:
         printer.showerror(e)
-        printer.print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        printer.print_warning(
+            "\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError:
         printer.print_fail("Please check your internet connectivity...")
@@ -133,7 +135,8 @@ def socli_browse_interactive_windows(query_tag):
         search.captcha_check(search_res.url)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
-            soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
+            # For explicitly raising exception
+            soup.find_all("div", class_="question-summary")[0]
             tmp = (soup.find_all("div", class_="question-summary"))
             i = 0
             question_local_url = []
@@ -143,18 +146,22 @@ def socli_browse_interactive_windows(query_tag):
                     break  # limiting results
                 question_text = ' '.join((tmp[i].a.get_text()).split())
                 question_text = question_text.replace("Q: ", "")
-                printer.print_warning(str(i + 1) + ". " + printer.display_str(question_text))
+                printer.print_warning(
+                    str(i + 1) + ". " + printer.display_str(question_text))
                 q_tag = (soup.find_all("div", class_="question-summary"))[i]
-                answers = [s.get_text() for s in q_tag.find_all("a", class_="post-tag")][0:]
+                answers = [s.get_text()
+                           for s in q_tag.find_all("a", class_="post-tag")][0:]
                 ques_tags = " ".join(str(x) for x in answers)
                 question_local_url.append(tmp[i].a.get("href"))
                 print("  " + printer.display_str(ques_tags) + "\n")
                 i = i + 1
             try:
-                op = int(printer.inputs("\nType the option no to continue or any other key to exit:"))
+                op = int(printer.inputs(
+                    "\nType the option no to continue or any other key to exit:"))
                 while 1:
                     if (op > 0) and (op <= i):
-                        display_results(search.so_burl + question_local_url[op - 1])
+                        display_results(search.so_burl +
+                                        question_local_url[op - 1])
                         cnt = 1  # this is because the 1st post is the question itself
                         while 1:
                             global tmpsoup
@@ -164,32 +171,39 @@ def socli_browse_interactive_windows(query_tag):
                                     "b") + " for previous answer or any other key to exit:")
                             if qna in ["n", "N"]:
                                 try:
-                                    answer = (tmpsoup.find_all("div", class_="js-post-body")[cnt + 1].get_text())
+                                    answer = (tmpsoup.find_all(
+                                        "div", class_="js-post-body")[cnt + 1].get_text())
                                     printer.print_green("\n\nAnswer:\n")
                                     print("-------\n" + answer + "\n-------\n")
                                     cnt = cnt + 1
                                 except IndexError:
-                                    printer.print_warning(" No more answers found for this question. Exiting...")
+                                    printer.print_warning(
+                                        " No more answers found for this question. Exiting...")
                                     sys.exit(0)
                                 continue
                             elif qna in ["b", "B"]:
                                 if cnt == 1:
-                                    printer.print_warning(" You cant go further back. You are on the first answer!")
+                                    printer.print_warning(
+                                        " You cant go further back. You are on the first answer!")
                                     continue
-                                answer = (tmpsoup.find_all("div", class_="js-post-body")[cnt - 1].get_text())
+                                answer = (tmpsoup.find_all(
+                                    "div", class_="js-post-body")[cnt - 1].get_text())
                                 printer.print_green("\n\nAnswer:\n")
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
                                 continue
                             elif qna in ["o", "O"]:
                                 import webbrowser
-                                printer.print_warning("Opening in your browser...")
-                                webbrowser.open(search.so_burl + question_local_url[op - 1])
+                                printer.print_warning(
+                                    "Opening in your browser...")
+                                webbrowser.open(
+                                    search.so_burl + question_local_url[op - 1])
                             else:
                                 break
                         sys.exit(0)
                     else:
-                        op = int(input("\n\nWrong option. select the option no to continue:"))
+                        op = int(
+                            input("\n\nWrong option. select the option no to continue:"))
             except Exception as e:
                 printer.showerror(e)
                 printer.print_warning("\n Exiting...")
@@ -199,7 +213,8 @@ def socli_browse_interactive_windows(query_tag):
             sys.exit(0)
 
     except UnicodeEncodeError:
-        printer.print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        printer.print_warning(
+            "\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError:
         printer.print_fail("Please check your internet connectivity...")
@@ -229,17 +244,22 @@ def socli_browse_interactive(query_tag):
         def __init__(self, questions):
             self.questions = questions
             self.cachedQuestions = [None for _ in range(10)]
-            widgets = [self.display_text(i, q) for i, q in enumerate(questions)]
+            widgets = [self.display_text(i, q)
+                       for i, q in enumerate(questions)]
             self.questions_box = tui.ScrollableTextBox(widgets)
-            self.header = tui.UnicodeText(('less-important', 'Select a question below:\n'))
-            self.footerText = '0-' + str(len(self.questions) - 1) + ': select a question, any other key: exit.'
+            self.header = tui.UnicodeText(
+                ('less-important', 'Select a question below:\n'))
+            self.footerText = '0-' + \
+                str(len(self.questions) - 1) + \
+                ': select a question, any other key: exit.'
             self.errorText = tui.UnicodeText.to_unicode('Question numbers range from 0-' +
                                                         str(len(self.questions) - 1) +
                                                         ". Please select a valid question number.")
             self.footer = tui.UnicodeText(self.footerText)
             self.footerText = tui.UnicodeText.to_unicode(self.footerText)
             frame = urwid.Frame(header=self.header,
-                                body=urwid.Filler(self.questions_box, height=('relative', 100), valign='top'),
+                                body=urwid.Filler(self.questions_box, height=(
+                                    'relative', 100), valign='top'),
                                 footer=self.footer)
             urwid.WidgetWrap.__init__(self, frame)
 
@@ -270,7 +290,8 @@ def socli_browse_interactive(query_tag):
                 question_title, question_desc, question_stats, answers, comments = \
                     search.get_question_stats_and_answer_comments(url)
                 question_post = tui.QuestionPage(
-                    (answers, question_title, question_desc, question_stats, url, comments)
+                    (answers, question_title, question_desc,
+                     question_stats, url, comments)
                 )
                 self.cachedQuestions[index] = question_post
                 tui.MAIN_LOOP.widget = question_post
@@ -291,7 +312,8 @@ def socli_browse_interactive(query_tag):
         tui.MAIN_LOOP.run()
 
     except UnicodeEncodeError:
-        printer.print_warning("\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
+        printer.print_warning(
+            "\n\nEncoding error: Use \"chcp 65001\" command before using socli...")
         sys.exit(0)
     except requests.exceptions.ConnectionError:
         printer.print_fail("Please check your internet connectivity...")
@@ -347,7 +369,8 @@ def main():
             user_module.manual = 1  # Enabling manual mode
             user = namespace.user
         else:  # If user did not provide a user id
-            user = user_module.retrieve_saved_profile()  # Reading saved user id from app data
+            # Reading saved user id from app data
+            user = user_module.retrieve_saved_profile()
         user_module.user_page(user)
         sys.exit(0)
 
@@ -365,7 +388,8 @@ def main():
         global tag
         search.google_search = False
         tag = namespace.tag
-        has_tags()  # Adds tags to StackOverflow url (when not using google search.
+        # Adds tags to StackOverflow url (when not using google search.
+        has_tags()
     if namespace.open_url:
         import webbrowser
         open_in_browser = False
@@ -389,7 +413,8 @@ def main():
         if not nostackoverflow:
             open_in_browser = True
             display_condition = False
-            printer.print_warning("Your url is not a stack overflow url.\nOpening in your browser...")
+            printer.print_warning(
+                "Your url is not a stack overflow url.\nOpening in your browser...")
         tag_matcher = re.findall(r"\/tag.+\/", url_to_use)
         blog_matcher = re.findall(r"blog", url_to_use)
         if tag_matcher:
