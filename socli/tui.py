@@ -211,6 +211,10 @@ class AnswerText(urwid.WidgetWrap):
     """
 
     def __init__(self, answers, comments):
+        """
+        :param answers
+        :param comments
+        """
         urwid.WidgetWrap.__init__(self, UnicodeText(''))
         self._selectable = True  # so that we receive keyboard input
         self.answers = answers
@@ -260,12 +264,13 @@ class AnswerText(urwid.WidgetWrap):
         self._w = ScrollableTextBox(self.content)
 
     def __len__(self):
-        """ return number of rows in this widget """
+        """return number of rows in this widget
+        """
         return len(self.content)
 
 
 class ScrollableTextBox(urwid.ListBox):
-    """ Display input text, scrolling through when there is not enough room.
+    """Display input text, scrolling through when there is not enough room.
 
     Scrolling through text takes a little work to support on Urwid.
     """
@@ -291,7 +296,8 @@ class ScrollableTextBox(urwid.ListBox):
 
 
 class QuestionTitle(UnicodeText):
-    """ Title of the question,"""
+    """Title of the question
+    """
 
     def __init__(self, title):
         text = ["Question: ", ('title', title), "\n"]
@@ -300,8 +306,8 @@ class QuestionTitle(UnicodeText):
 
 # Must convert to BoxAdapter object if used as a flow widget.
 class QuestionDescription(urwid.WidgetWrap):
-    """ Description of the question """
-
+    """Description of the question
+    """
     def __init__(self, description):
         urwid.WidgetWrap.__init__(self, UnicodeText(''))
         self.description = description
@@ -317,12 +323,14 @@ class QuestionDescription(urwid.WidgetWrap):
         self._w = ScrollableTextBox(self.content)
 
     def __len__(self):
-        """ return number of rows in this widget """
+        """return number of rows in this widget
+        """
         return len(self.content)
 
 
 class QuestionStats(UnicodeText):
-    """ Stats of the question,"""
+    """Stats of the question
+    """
 
     def __init__(self, stats):
         text = ["\n", ('metadata', stats)]
@@ -330,7 +338,8 @@ class QuestionStats(UnicodeText):
 
 
 class QuestionURL(UnicodeText):
-    """ url of the question """
+    """url of the question
+    """
 
     def __init__(self, url):
         text = ["\n", ('heading', 'Question URL: '), url]
