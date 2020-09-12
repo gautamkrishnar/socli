@@ -96,10 +96,17 @@ class QuestionPage(urwid.WidgetWrap):
         #
         # u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit'
 
-        footer_options = u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, d: visit ' \
-                         u'duplicated question, q: quit' if self.dup_url else u'\u2191: previous answer, \u2193: next' \
-                                                                              u'answer, o: open in browser, ' \
-                                                                              u'\u2190: back, q: quit '
+        footer_options = u'\u2191: previous answer, \u2193: next answer, c: comments, o: open in browser, ' \
+                         u'\u2190: back, d: visit duplicated question, q: quit' if self.dup_url else u'\u2191: ' \
+                                                                                                     u'previous ' \
+                                                                                                     u'answer, ' \
+                                                                                                     u'\u2193: next ' \
+                                                                                                     u'answer, ' \
+                                                                                                     u'c: comments, ' \
+                                                                                                     u'o: open in ' \
+                                                                                                     u'browser, ' \
+                                                                                                     u'\u2190: back, ' \
+                                                                                                     u'q: quit '
 
         answer_frame = urwid.Frame(
             header=urwid.Pile([
