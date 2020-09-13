@@ -107,8 +107,8 @@ class QuestionPage(urwid.WidgetWrap):
                 footer=urwid.Pile([
                     QuestionURL(self.question_url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, d: visit '
-                        u'duplicated question, q: quit')
+                        u'\u2191: previous answer, \u2193: next answer, c:comments, o: open in browser, \u2190: back, '
+                        u'd: visit duplicated question, q: quit')
                 ])
             )
         else:
@@ -124,10 +124,38 @@ class QuestionPage(urwid.WidgetWrap):
                 footer=urwid.Pile([
                     QuestionURL(self.question_url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit')
+                        u'\u2191: previous answer, \u2193: next answer, c: comments, o: open in browser, '
+                        u'\u2190: back, q: quit')
                 ])
             )
         return answer_frame
+
+    def make_comment_frame(self):
+        """
+        Returns a new frame that is formatted correctly with respect to the window's dimensions.
+        :return: a new urwid.Frame object
+        """
+        self.screenHeight, screenWidth = subprocess.check_output(
+            ['stty', 'size']).split()
+        self.question_text = urwid.BoxAdapter(QuestionDescription(self.question_desc),
+                                              int(max(1, (int(self.screenHeight) - 9) / 2)))
+
+        comment_frame = urwid.Frame(
+            header=urwid.Pile([
+                display_header,
+                QuestionTitle(self.question_title),
+                self.question_text,
+                QuestionStats(self.question_stats),
+                urwid.Divider('-')
+            ]),
+            body=self.answer_text,
+            footer=urwid.Pile([
+                QuestionURL(self.url),
+                UnicodeText(
+                    'o: open in browser, v: back to answer, \u2190: back, q: quit')
+            ])
+        )
+        return comment_frame
 
     def keypress(self, size, key):
         """
