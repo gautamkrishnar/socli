@@ -279,8 +279,11 @@ def socli_browse_interactive(query_tag):
             else:
                 if not search.google_search:
                     url = search.so_url + url
-                question_title, question_desc, question_stats, answers = search.get_question_stats_and_answer(url)
-                question_post = tui.QuestionPage((answers, question_title, question_desc, question_stats, url))
+                question_title, question_desc, question_stats, answers, comments = \
+                    search.get_question_stats_and_answer_and_comments(url)
+                question_post = tui.QuestionPage(
+                    (answers, question_title, question_desc, question_stats, url, comments)
+                )
                 self.cachedQuestions[index] = question_post
                 tui.MAIN_LOOP.widget = question_post
 
