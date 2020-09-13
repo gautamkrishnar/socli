@@ -45,7 +45,7 @@ if __name__ == '__main__':
 EOF
 
 # When latest version of socli is available in pypi do install
-pip install  --no-cache socli==${TRAVIS_TAG}
+pip install  --no-cache socli==${TRAVIS_TAG} || exit 1
 # Generate formula
 poet -f socli > socli.rb
 
