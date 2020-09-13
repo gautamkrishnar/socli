@@ -71,7 +71,7 @@ class QuestionPage(urwid.WidgetWrap):
     def __init__(self, data):
         """
         Construct the Question Page.
-        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url)
+        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url, comments, dup_url)
         """
         answers, question_title, question_desc, question_stats, question_url, comments, dup_url = data
         self.dup_url = dup_url
@@ -86,7 +86,6 @@ class QuestionPage(urwid.WidgetWrap):
     def make_frame(self):
         """
         Returns a new frame that is formatted correctly with respect to the window's dimensions.
-        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url)
         :return: a new urwid.Frame object
         """
         self.screenHeight, screenWidth = subprocess.check_output(

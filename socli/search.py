@@ -109,6 +109,10 @@ def get_questions_for_query_google(query, count=10):
 
 
 def get_comments(soup):
+    """
+    :param soup
+    extacts comments on the answers
+    """
     comments_list = []
     raw_comments_list = soup.find_all("ul", class_="js-comments-list")
     for raw_comments in raw_comments_list:
@@ -123,7 +127,7 @@ def get_question_stats_and_answer_and_comments(url):
     """
     Fetch the content of a StackOverflow page for a particular question.
     :param url: full url of a StackOverflow question
-    :return: tuple of ( question_title, question_desc, question_stats, answers )
+    :return: tuple of ( question_title, question_desc, question_stats, answers, comments )
     """
     random_headers()
     res_page = requests.get(url, headers=header)
