@@ -116,15 +116,20 @@ def get_question_stats_and_answer(url):
     """
     random_headers()
     res_page = requests.get(url, headers=header)
-    captcha_check(res_page.url)
-    soup = BeautifulSoup(res_page.text, 'html.parser')
-    dup_url = None
-    question_title, question_desc, question_stats, dup_url = get_stats(soup)
-    answers = [s.get_text() for s in soup.find_all("div", class_="js-post-body")][
-              1:]  # first post is question, discard it.
-    if len(answers) == 0:
-        answers.append('No answers for this question ...')
-    return question_title, question_desc, question_stats, answers, dup_url
+    if "stackoverflow.com" in url and res_page.status_code == 404:
+        fail_msg = "The URL specified is returning a 404, please check the url and try again!"
+        socli.printer.print_fail(fail_msg)
+        sys.exit(0)
+    else:
+        captcha_check(res_page.url)
+        soup = BeautifulSoup(res_page.text, 'html.parser')
+        dup_url = None
+        question_title, question_desc, question_stats, dup_url = get_stats(soup)
+        answers = [s.get_text() for s in soup.find_all("div", class_="js-post-body")][
+                1:]  # first post is question, discard it.
+        if len(answers) == 0:
+            answers.append('No answers for this question ...')
+        return question_title, question_desc, question_stats, answers, dup_url
 
 
 def get_stats(soup):
