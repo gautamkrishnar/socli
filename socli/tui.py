@@ -160,6 +160,7 @@ class QuestionPage(urwid.WidgetWrap):
         Overrides keypress in superclass, so don't fall for the trap! size parameter is needed!
         """
         if key in {'down', 'n', 'N'} and not self.answer_text.comments_toggled:
+            # bool comparison is necessary to disable up down buttons when comments are being shown
             self.answer_text.next_ans()
         elif key in {'up', 'b', 'B'} and not self.answer_text.comments_toggled:
             self.answer_text.prev_ans()
@@ -216,6 +217,9 @@ class AnswerText(urwid.WidgetWrap):
         self._selectable = True  # so that we receive keyboard input
         self.answers = answers
         self.comments_list = comments
+        # if the comments are being shown then comments_toggled will be True else when are answers are being
+        # shown then comments_toggled will be False
+        # This Bool is necessary to disable up/down arrow keys when comments are being shown
         self.comments_toggled = False
         self.index = 0
         self.set_content()
