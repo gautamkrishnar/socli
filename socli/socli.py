@@ -113,13 +113,15 @@ def socli(query):
             display_results(search.so_url + res_url)  # Returned URL is relative to SO homepage
 
     except IndexError:
-        for i in range(8):
-            res_url=questions[i][2]
-            try:
-                display_results(res_url)
-            except IndexError:
-                continue
-            break
+        if len(questions) > 1:
+            for i in range(1, len(questions)):
+                res_url = questions[i][2]
+                try:
+                    display_results(res_url)
+                except IndexError:
+                    continue
+                break
+        printer.print_warning("No results found...")
 
     except UnicodeEncodeError as e:
         printer.showerror(e)
