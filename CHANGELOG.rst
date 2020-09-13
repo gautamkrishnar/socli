@@ -1,6 +1,15 @@
 SoCLI Changelog
 ================
 
+Release 5.3
+---------------------------
+* Made code pep8 compliant
+* Fixed 404 page crashing issue
+
+Release 5.2
+---------------------------
+* Fixed bug caused due to StackOverflow class changes #202
+
 Release 5.1
 ---------------------------
 * Using no-cache on pypi to get the latest version
