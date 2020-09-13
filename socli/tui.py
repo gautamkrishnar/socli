@@ -79,12 +79,11 @@ class QuestionPage(urwid.WidgetWrap):
         self.question_desc = question_desc
         self.question_stats = question_stats
         self.url = question_url
-        self.dup_url = dup_url
         self.answer_text = AnswerText(answers, comments)
         answer_frame = self.make_frame()
         urwid.WidgetWrap.__init__(self, answer_frame)
 
-    def make_frame(self, data):
+    def make_frame(self):
         """
         Returns a new frame that is formatted correctly with respect to the window's dimensions.
         :param data: tuple of (answers, question_title, question_desc, question_stats, question_url)
@@ -105,7 +104,7 @@ class QuestionPage(urwid.WidgetWrap):
                 ]),
                 body=self.answer_text,
                 footer=urwid.Pile([
-                    QuestionURL(self.question_url),
+                    QuestionURL(self.url),
                     UnicodeText(
                         u'\u2191: previous answer, \u2193: next answer, c:comments, o: open in browser, \u2190: back, '
                         u'd: visit duplicated question, q: quit')
@@ -122,7 +121,7 @@ class QuestionPage(urwid.WidgetWrap):
                 ]),
                 body=self.answer_text,
                 footer=urwid.Pile([
-                    QuestionURL(self.question_url),
+                    QuestionURL(self.url),
                     UnicodeText(
                         u'\u2191: previous answer, \u2193: next answer, c: comments, o: open in browser, '
                         u'\u2190: back, q: quit')
@@ -218,6 +217,7 @@ class AnswerText(urwid.WidgetWrap):
         self._selectable = True  # so that we receive keyboard input
         self.answers = answers
         self.comments_list = comments
+        self.comments_toggled = False
         self.index = 0
         self.set_content()
 
