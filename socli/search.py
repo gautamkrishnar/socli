@@ -108,7 +108,18 @@ def get_questions_for_query_google(query, count=10):
     return questions
 
 
-def get_question_stats_and_answer(url):
+def get_comments(soup):
+    comments_list = []
+    raw_comments_list = soup.find_all("ul", class_="js-comments-list")
+    for raw_comments in raw_comments_list:
+        comments_list.append([str(index + 1) + ' ' + raw_comment.get_text() + '\n' for index, raw_comment in
+                              enumerate(raw_comments.find_all("span", class_='comment-copy'))])
+    if len(comments_list) <= 1:
+        comments_list.append(["No comments as there are no answers to this question..."])
+    return comments_list[1::]
+
+
+def get_question_stats_and_answer_and_comments(url):
     """
     Fetch the content of a StackOverflow page for a particular question.
     :param url: full url of a StackOverflow question
@@ -122,9 +133,10 @@ def get_question_stats_and_answer(url):
     question_title, question_desc, question_stats, dup_url = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="js-post-body")][
               1:]  # first post is question, discard it.
+    comments = get_comments(soup)
     if len(answers) == 0:
         answers.append('No answers for this question ...')
-    return question_title, question_desc, question_stats, answers, dup_url
+    return question_title, question_desc, question_stats, answers, comments, dup_url
 
 
 def get_stats(soup):
@@ -321,7 +333,7 @@ def socli_interactive(query):
             else:
                 if not google_search:
                     url = so_url + url
-                question_title, question_desc, question_stats, answers = get_question_stats_and_answer(url)
+                question_title, question_desc, question_stats, answers = get_question_stats_and_answer_and_comments(url)
                 socli.tui.question_post = socli.tui.QuestionPage(
                     (answers, question_title, question_desc, question_stats, url))
                 self.cachedQuestions[index] = socli.tui.question_post
