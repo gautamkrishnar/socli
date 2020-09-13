@@ -258,7 +258,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/ankushduacodes"><img src="https://avatars3.githubusercontent.com/u/61025943?v=4" width="100px;" alt=""/><br /><sub><b>ankushduacodes</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=ankushduacodes" title="Code">💻</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/Artorias11"><img src="https://avatars3.githubusercontent.com/u/69323839?v=4" width="100px;" alt=""/><br /><sub><b>artorias11</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=artorias11" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/artorias111"><img src="https://avatars2.githubusercontent.com/u/48955393?v=4" width="100px;" alt=""/><br /><sub><b>Shriram Bhat</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=artorias111" title="Code">💻</a></td>
   </tr>
 </table>
 
