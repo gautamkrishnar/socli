@@ -161,10 +161,22 @@ class QuestionPage(urwid.WidgetWrap):
         """
         Overrides keypress in superclass, so don't fall for the trap! size parameter is needed!
         """
-        if key in {'down', 'n', 'N'}:
+        if key in {'down', 'n', 'N'} and not self.answer_text.comments_toggled:
             self.answer_text.next_ans()
-        elif key in {'up', 'b', 'B'}:
+        elif key in {'up', 'b', 'B'} and not self.answer_text.comments_toggled:
             self.answer_text.prev_ans()
+        elif key in {'c', 'C'}:
+            self.answer_text.show_comments()
+            self._invalidate()
+            comment_frame = self.make_comment_frame()
+            urwid.WidgetWrap.__init__(self, comment_frame)
+            self.answer_text.comments_toggled = True
+        elif key in {'v', 'V'}:
+            self.answer_text.set_content()
+            self._invalidate()
+            answer_frame = self.make_frame()
+            urwid.WidgetWrap.__init__(self, answer_frame)
+            self.answer_text.comments_toggled = False
         elif key in {'o', 'O'}:
             import webbrowser
             display_header.event('browser', "Opening in your browser...")
@@ -178,11 +190,16 @@ class QuestionPage(urwid.WidgetWrap):
             else:
                 MAIN_LOOP.widget = question_page
         elif key == 'window resize':
-            screen_height, screen_width = subprocess.check_output(['stty', 'size']).split()
-            if self.screenHeight != screen_height:
+            screen_height, screen_width = subprocess.check_output(
+                ['stty', 'size']).split()
+            if self.screenHeight != screen_height and not self.answer_text.comments_toggled:
                 self._invalidate()
-                answer_frame = self.make_frame(self.data)
+                answer_frame = self.make_frame()
                 urwid.WidgetWrap.__init__(self, answer_frame)
+            elif self.screenHeight != screen_height and self.answer_text.comments_toggled:
+                self._invalidate()
+                comment_frame = self.make_comment_frame()
+                urwid.WidgetWrap.__init__(self, comment_frame)
         elif key in {'q', 'Q'}:
             sys.exit(0)
         elif key in {'d', 'D'}:
@@ -232,6 +249,11 @@ class AnswerText(urwid.WidgetWrap):
         else:
             display_header.clear('answer-bounds')
         self.set_content()
+
+    def show_comments(self):
+        """Shows comments by loading a new frame name QuestionPage.make_comment_frame()"""
+        self.content = [('less-important', 'Comments: \n')] + self.comments_list[self.index]
+        self._w = ScrollableTextBox(self.content)
 
     def __len__(self):
         """ return number of rows in this widget """
