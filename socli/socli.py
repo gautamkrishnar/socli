@@ -418,7 +418,11 @@ def main():
             printer.print_warning("Opening in browser...")
         if display_condition:
             open_in_browser = False
-            display_results(url_to_use)
+            try:
+                display_results(url_to_use)
+            except IndexError:
+                printer.print_fail("The URL specified is returning a 404, please check the url and try again!")
+                sys.exit(0)
         if open_in_browser:
             webbrowser.open(url_to_use)
     if namespace.res is not None:  # If --res flag is present

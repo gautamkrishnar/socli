@@ -116,7 +116,7 @@ def get_question_stats_and_answer(url):
     """
     random_headers()
     res_page = requests.get(url, headers=header)
-    if "stackoverflow.com" in url and res_page.status_code == 404:
+    if res_page.status_code == 404:
         fail_msg = "The URL specified is returning a 404, please check the url and try again!"
         socli.printer.print_fail(fail_msg)
         sys.exit(0)
