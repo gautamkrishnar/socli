@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 5.4
+---------------------------
+* fix for 404 not handled while opening url with -o argument
+
 Release 5.3
 ---------------------------
 * Made code pep8 compliant
