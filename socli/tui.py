@@ -71,70 +71,111 @@ class QuestionPage(urwid.WidgetWrap):
     def __init__(self, data):
         """
         Construct the Question Page.
-        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url)
+        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url, comments, dup_url)
         """
-        answer_frame = self.make_frame(data)
+        answers, question_title, question_desc, question_stats, question_url, comments, dup_url = data
+        self.dup_url = dup_url
+        self.question_title = question_title
+        self.question_desc = question_desc
+        self.question_stats = question_stats
+        self.url = question_url
+        self.answer_text = AnswerText(answers, comments)
+        answer_frame = self.make_frame()
         urwid.WidgetWrap.__init__(self, answer_frame)
 
-    def make_frame(self, data):
+    def make_frame(self):
         """
         Returns a new frame that is formatted correctly with respect to the window's dimensions.
-        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url)
         :return: a new urwid.Frame object
         """
-        answers, question_title, question_desc, question_stats, question_url, dup_url = data
-        self.data = data
-        self.question_desc = question_desc
-        self.url = question_url
-        self.dup_url = dup_url
-        self.answer_text = AnswerText(answers)
         self.screenHeight, screenWidth = subprocess.check_output(
             ['stty', 'size']).split()
-        self.question_text = urwid.BoxAdapter(QuestionDescription(question_desc),
+        self.question_text = urwid.BoxAdapter(QuestionDescription(self.question_desc),
                                               int(max(1, (int(self.screenHeight) - 9) / 2)))
-        if dup_url:
+        if self.dup_url:
             answer_frame = urwid.Frame(
                 header=urwid.Pile([
                     display_header,
-                    QuestionTitle(question_title),
+                    QuestionTitle(self.question_title),
                     self.question_text,
-                    QuestionStats(question_stats),
+                    QuestionStats(self.question_stats),
                     urwid.Divider('-')
                 ]),
                 body=self.answer_text,
                 footer=urwid.Pile([
-                    QuestionURL(question_url),
+                    QuestionURL(self.url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, d: visit '
-                        u'duplicated question, q: quit')
+                        u'\u2191: previous answer, \u2193: next answer, c:comments, o: open in browser, \u2190: back, '
+                        u'd: visit duplicated question, q: quit')
                 ])
             )
         else:
             answer_frame = urwid.Frame(
                 header=urwid.Pile([
                     display_header,
-                    QuestionTitle(question_title),
+                    QuestionTitle(self.question_title),
                     self.question_text,
-                    QuestionStats(question_stats),
+                    QuestionStats(self.question_stats),
                     urwid.Divider('-')
                 ]),
                 body=self.answer_text,
                 footer=urwid.Pile([
-                    QuestionURL(question_url),
+                    QuestionURL(self.url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, o: open in browser, \u2190: back, q: quit')
+                        u'\u2191: previous answer, \u2193: next answer, c: comments, o: open in browser, '
+                        u'\u2190: back, q: quit')
                 ])
             )
         return answer_frame
+
+    def make_comment_frame(self):
+        """
+        Returns a new frame that is formatted correctly with respect to the window's dimensions.
+        :return: a new urwid.Frame object
+        """
+        self.screenHeight, screenWidth = subprocess.check_output(
+            ['stty', 'size']).split()
+        self.question_text = urwid.BoxAdapter(QuestionDescription(self.question_desc),
+                                              int(max(1, (int(self.screenHeight) - 9) / 2)))
+
+        comment_frame = urwid.Frame(
+            header=urwid.Pile([
+                display_header,
+                QuestionTitle(self.question_title),
+                self.question_text,
+                QuestionStats(self.question_stats),
+                urwid.Divider('-')
+            ]),
+            body=self.answer_text,
+            footer=urwid.Pile([
+                QuestionURL(self.url),
+                UnicodeText(
+                    'o: open in browser, v: back to answer, \u2190: back, q: quit')
+            ])
+        )
+        return comment_frame
 
     def keypress(self, size, key):
         """
         Overrides keypress in superclass, so don't fall for the trap! size parameter is needed!
         """
-        if key in {'down', 'n', 'N'}:
+        if key in {'down', 'n', 'N'} and not self.answer_text.comments_toggled:
+            # bool comparison is necessary to disable up down buttons when comments are being shown
             self.answer_text.next_ans()
-        elif key in {'up', 'b', 'B'}:
+        elif key in {'up', 'b', 'B'} and not self.answer_text.comments_toggled:
             self.answer_text.prev_ans()
+        elif key in {'c', 'C'}:
+            self.answer_text.show_comments()
+            self._invalidate()
+            comment_frame = self.make_comment_frame()
+            urwid.WidgetWrap.__init__(self, comment_frame)
+            self.answer_text.comments_toggled = True
+        elif key in {'v', 'V'}:
+            self.answer_text.set_content()
+            self._invalidate()
+            answer_frame = self.make_frame()
+            urwid.WidgetWrap.__init__(self, answer_frame)
+            self.answer_text.comments_toggled = False
         elif key in {'o', 'O'}:
             import webbrowser
             display_header.event('browser', "Opening in your browser...")
@@ -148,11 +189,16 @@ class QuestionPage(urwid.WidgetWrap):
             else:
                 MAIN_LOOP.widget = question_page
         elif key == 'window resize':
-            screen_height, screen_width = subprocess.check_output(['stty', 'size']).split()
-            if self.screenHeight != screen_height:
+            screen_height, screen_width = subprocess.check_output(
+                ['stty', 'size']).split()
+            if self.screenHeight != screen_height and not self.answer_text.comments_toggled:
                 self._invalidate()
-                answer_frame = self.make_frame(self.data)
+                answer_frame = self.make_frame()
                 urwid.WidgetWrap.__init__(self, answer_frame)
+            elif self.screenHeight != screen_height and self.answer_text.comments_toggled:
+                self._invalidate()
+                comment_frame = self.make_comment_frame()
+                urwid.WidgetWrap.__init__(self, comment_frame)
         elif key in {'q', 'Q'}:
             sys.exit(0)
         elif key in {'d', 'D'}:
@@ -166,14 +212,19 @@ class AnswerText(urwid.WidgetWrap):
     Long answers can be navigated up or down using the mouse.
     """
 
-    def __init__(self, answers):
+    def __init__(self, answers, comments):
         urwid.WidgetWrap.__init__(self, UnicodeText(''))
         self._selectable = True  # so that we receive keyboard input
         self.answers = answers
+        self.comments_list = comments
+        # if the comments are being shown then comments_toggled will be True else when are answers are being
+        # shown then comments_toggled will be False
+        # This Bool is necessary to disable up/down arrow keys when comments are being shown
+        self.comments_toggled = False
         self.index = 0
-        self.set_answer()
+        self.set_content()
 
-    def set_answer(self):
+    def set_content(self):
         """
         We must use a box adapter to get the text to scroll when this widget is already in
         a Pile from the main question page. Scrolling is necessary for long answers which are longer
@@ -190,7 +241,7 @@ class AnswerText(urwid.WidgetWrap):
             display_header.event('answer-bounds', "No previous answers.")
         else:
             display_header.clear('answer-bounds')
-        self.set_answer()
+        self.set_content()
 
     def next_ans(self):
         """go to next answer."""
@@ -200,7 +251,13 @@ class AnswerText(urwid.WidgetWrap):
             display_header.event('answer-bounds', "No more answers.")
         else:
             display_header.clear('answer-bounds')
-        self.set_answer()
+        self.set_content()
+
+    def show_comments(self):
+        """Shows comments by loading a new frame name QuestionPage.make_comment_frame()"""
+        self.content = [('less-important', 'Comments: \n')] + \
+                       self.comments_list[self.index]
+        self._w = ScrollableTextBox(self.content)
 
     def __len__(self):
         """ return number of rows in this widget """
