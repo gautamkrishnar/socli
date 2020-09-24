@@ -43,6 +43,7 @@ def test_parse_query():
     assert not namespace.tag
     assert not namespace.user
     assert not namespace.open_url
+    assert not namespace.version
 
 def test_parse_help():
     command = "-h".split()
@@ -61,6 +62,26 @@ def test_parse_help():
     assert not namespace.tag
     assert not namespace.user
     assert not namespace.open_url
+    assert not namespace.version
+
+def test_parse_version():
+    command = "-v".split()
+    namespace = _socli.parse_arguments(command)
+
+    assert not namespace.api
+    assert namespace.browse == []
+    assert not namespace.debug
+    assert not namespace.delete
+    assert not namespace.help
+    assert not namespace.interactive
+    assert not namespace.new
+    assert namespace.query == []
+    assert not namespace.res
+    assert not namespace.sosearch
+    assert not namespace.tag
+    assert not namespace.user
+    assert not namespace.open_url
+    assert namespace.version
 
 def test_parse_interactive():
     command = "-iq python for loop".split()
@@ -79,6 +100,7 @@ def test_parse_interactive():
     assert not namespace.tag
     assert not namespace.user
     assert not namespace.open_url
+    assert not namespace.version
 
 def test_parse_open_url():
     command = "--open-url https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works ".split()
@@ -97,6 +119,7 @@ def test_parse_open_url():
     assert not namespace.tag
     assert not namespace.user
     assert namespace.open_url!=[]
+    assert not namespace.version
 
 def test_user_json():
     try:

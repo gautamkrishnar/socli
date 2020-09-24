@@ -4,9 +4,15 @@ try:
 except ImportError:
     from distutils.core import setup
 from codecs import open
+from distutils.util import convert_path
 
 with open('README.md') as f:
     longd = f.read()
+
+main_ns = {}
+ver_path = convert_path('socli/version.py')
+with open(ver_path) as ver_file:
+    exec(ver_file.read(), main_ns)
 
 setup(
     name='socli',
@@ -18,7 +24,7 @@ setup(
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     requires=['BeautifulSoup4', 'requests', 'colorama', 'PyStackExchange', 'urwid'],
-    version='5.5',
+    version=main_ns['__version__'],
     url='https://www.github.com/gautamkrishnar/socli',
     keywords="stack overflow cli",
     license='BSD',

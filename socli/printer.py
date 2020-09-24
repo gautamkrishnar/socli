@@ -174,7 +174,9 @@ def helpman():
                    " " + bold("--sosearch or -s") + \
                    " : SoCLI uses google search by default. Use this option to search Stack Overflow directly." + '\n' \
                    " " + bold("--open-url or -o") + \
-                   " : Opens the given url in socli " +  '\n'
+                   " : Opens the given url in socli " +  '\n' \
+                   " " + bold("--version or -v") + \
+                   " : Displays the current version of socli " +  '\n'
 
     help_text = make_header("\n\n< Search Query >:") + '\n' + \
                "\nQuery to search on Stack Overflow" + '\n' + \
