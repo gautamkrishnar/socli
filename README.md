@@ -259,6 +259,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/artorias111"><img src="https://avatars2.githubusercontent.com/u/48955393?v=4" width="100px;" alt=""/><br /><sub><b>Shriram Bhat</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=artorias111" title="Code">💻</a></td>
+    <td align="center"><a href="http://vjspranav.stag-os.org"><img src="https://avatars0.githubusercontent.com/u/17949836?v=4" width="100px;" alt=""/><br /><sub><b>Vjs Pranav</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=vjspranav" title="Code">💻</a></td>
   </tr>
 </table>
 
