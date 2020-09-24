@@ -1,6 +1,11 @@
 SoCLI Changelog
 ================
 
+Release 5.5
+---------------------------
+* Added toggle to view comments (for answers)
+* Improved google search querying to get better results
+
 Release 5.4
 ---------------------------
 * fix for 404 not handled while opening url with -o argument
@@ -104,7 +109,7 @@ Release 3.5
 * Made SoCLI more interactive
 * Minor bugfixes
 
-Release 3.4 
+Release 3.4
 ---------------------------
 
 * Bugfix release
@@ -112,12 +117,12 @@ Release 3.4
 Release 3.3
 ---------------------------
 
-* Minor bugfix 
+* Minor bugfix
 
 Release 3.2
 ---------------------------
 
-* Added user profiles 
+* Added user profiles
 
 Release 3.1
 ---------------------------
