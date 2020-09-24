@@ -61,5 +61,8 @@ def parse_arguments(command):
                                                       "foo bar: Displays the second search result of the query"
                                                       " \"foo bar\"'s most voted answer")
     parser.add_argument('--open-url', '-o', nargs=1, type=str, help='To load the given url')
+
+    parser.add_argument('--version' , '-v', action='store_true', help='Prints the current version of socli')
+
     namespace = parser.parse_args(command)
     return namespace

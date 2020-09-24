@@ -30,6 +30,7 @@ import socli.search as search
 import socli.printer as printer
 from socli.parser import parse_arguments
 from socli.printer import display_results
+from socli.version import __version__
 
 tag = ""  # tag based search
 query = ""  # Query
@@ -440,6 +441,11 @@ def main():
                 'You can also use "socli -r 3 -t python" '
                 'to retrieve the third result when searching for posts with the "python" tag.')
 
+
+    if namespace.version:
+        print('Socli ' + __version__)
+        sys.exit(0)
+
     if namespace.browse:
         # Browse mode
         search.google_search = False
@@ -461,7 +467,6 @@ def main():
                                   'to search posts with the "python" tag in interactive mode.')
         else:
             printer.helpman()
-
 
 if __name__ == '__main__':
     main()

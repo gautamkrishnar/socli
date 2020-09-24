@@ -62,6 +62,25 @@ def test_parse_help():
     assert not namespace.user
     assert not namespace.open_url
 
+def test_parse_version():
+    command = "-v".split()
+    namespace = _socli.parse_arguments(command)
+
+    assert not namespace.api
+    assert not namespace.browse == []
+    assert not namespace.debug
+    assert not namespace.delete
+    assert not namespace.help
+    assert not namespace.interactive
+    assert not namespace.new
+    assert not namespace.query == []
+    assert not namespace.res
+    assert not namespace.sosearch
+    assert not namespace.tag
+    assert not namespace.user
+    assert not namespace.open_url
+    assert not namespace.version
+
 def test_parse_interactive():
     command = "-iq python for loop".split()
     namespace = _socli.parse_arguments(command)
