@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 5.6
+---------------------------
+* Added `-v` or `--version` argument for displaying the current version
+
 Release 5.5
 ---------------------------
 * Added toggle to view comments (for answers)
