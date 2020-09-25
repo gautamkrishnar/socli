@@ -71,9 +71,9 @@ class QuestionPage(urwid.WidgetWrap):
     def __init__(self, data):
         """
         Construct the Question Page.
-        :param data: tuple of (answers, question_title, question_desc, question_stats, question_url, comments, dup_url)
+        :param data: tuple of (question_url, question_title, question_desc, question_stats, answers, comments, dup_url)
         """
-        answers, question_title, question_desc, question_stats, question_url, comments, dup_url = data
+        question_url, question_title, question_desc, question_stats, answers, comments, dup_url = data
         self.dup_url = dup_url
         self.question_title = question_title
         self.question_desc = question_desc

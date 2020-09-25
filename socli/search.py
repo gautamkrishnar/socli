@@ -337,9 +337,9 @@ def socli_interactive(query):
             else:
                 if not google_search:
                     url = so_url + url
-                question_title, question_desc, question_stats, answers = get_question_stats_and_answer_and_comments(url)
+                question_title, question_desc, question_stats, answers, comments, dup_url = get_question_stats_and_answer_and_comments(url)
                 socli.tui.question_post = socli.tui.QuestionPage(
-                    (answers, question_title, question_desc, question_stats, url))
+                    (url, question_title, question_desc, question_stats, answers, comments, dup_url))
                 self.cachedQuestions[index] = socli.tui.question_post
                 socli.tui.MAIN_LOOP.widget = socli.tui.question_post
 
