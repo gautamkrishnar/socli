@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 5.7
+---------------------------
+* Fixing issues with `-iq` argument
+
 Release 5.6
 ---------------------------
 * Added `-v` or `--version` argument for displaying the current version
