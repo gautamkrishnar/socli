@@ -2,50 +2,13 @@
 set -e
 pip install homebrew-pypi-poet==0.10.0 requests==2.24.0
 
-# Code to wait till the latest package is available in pypi
-cat << EOF | python
-import requests
-import json
-import os
-import time
+# Code to wait till the latest package is available in pypi, if available do install
+until pip install  --no-cache socli==${TRAVIS_TAG}
+do
+  echo "Retrying again in 10 seconds..."
+  sleep 10
+done
 
-try:
-    from packaging.version import parse
-except ImportError:
-    from pip._vendor.packaging.version import parse
-
-URL_PATTERN = 'https://pypi.python.org/pypi/{package}/json'
-
-
-def get_version(package, url_pattern=URL_PATTERN):
-    """Return version of package on pypi.python.org using json."""
-    req = requests.get(url_pattern.format(package=package))
-    version = parse('0')
-    if req.status_code == requests.codes.ok:
-        j = json.loads(req.text.encode('utf-8'))
-        releases = j.get('releases', [])
-        for release in releases:
-            ver = parse(release)
-            if not ver.is_prerelease:
-                version = max(version, ver)
-    return version
-
-
-if __name__ == '__main__':
-    tag = os.getenv('TRAVIS_TAG')
-    flag = True
-    while flag:
-        version = str(get_version('socli'))
-        if version == tag:
-            print('Got latest version from pypi, version:' + version)
-            flag = False
-        else:
-            print('Cant get version ' + tag + ' from pypi, got: ' + version + ', Retrying in 5 secs...')
-            time.sleep(5)
-EOF
-
-# When latest version of socli is available in pypi do install
-pip install  --no-cache socli==${TRAVIS_TAG} || exit 1
 # Generate formula
 poet -f socli > socli.rb
 
