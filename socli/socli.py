@@ -4,7 +4,7 @@
 # Gautam Krishna R : www.github.com/gautamkrishnar
 # And open source contributors at GitHub: https://github.com/gautamkrishnar/socli#contributors
 """
-import importlib
+
 import os
 import re
 import sys
@@ -39,14 +39,6 @@ query = ""  # Query
 urllib3.disable_warnings()
 # logger for debugging
 logger = logging.getLogger(__name__)
-
-# Initialize Sentry if sentry-sdk is installed
-if importlib.util.find_spec('sentry_sdk'):
-    import sentry_sdk
-    sentry_sdk.init(
-        "https://95c4106659044cbda2ea0fe499f4be7e@o323465.ingest.sentry.io/5445901",
-        traces_sample_rate=0.5
-    )
 
 
 # Switch on logging of the requests module.
@@ -475,6 +467,7 @@ def main():
                                   'to search posts with the "python" tag in interactive mode.')
         else:
             printer.helpman()
+
 
 if __name__ == '__main__':
     main()
