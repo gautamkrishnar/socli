@@ -205,10 +205,11 @@ def helpman():
     print(help_text)
 
 
-def display_results(url):
+def display_results(url, dup_link=None):
     """
     Display result page
     :param url: URL of the search result
+    :param dup_link: URL to the duplicate question visited from
     :return:
     """
     search.random_headers()
@@ -217,6 +218,6 @@ def display_results(url):
     tui.display_header = tui.Header()
     question_title, question_desc, question_stats, answers, comments, dup_url = \
         search.get_question_stats_and_answer_and_comments(url)
-    tui.question_post = tui.QuestionPage((url, question_title, question_desc, question_stats, answers, comments, dup_url))
+    tui.question_post = tui.QuestionPage((url, question_title, question_desc, question_stats, answers, comments, dup_url, dup_link))
     tui.MAIN_LOOP = tui.EditedMainLoop(tui.question_post, palette)
     tui.MAIN_LOOP.run()

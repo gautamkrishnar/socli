@@ -71,10 +71,11 @@ class QuestionPage(urwid.WidgetWrap):
     def __init__(self, data):
         """
         Construct the Question Page.
-        :param data: tuple of (question_url, question_title, question_desc, question_stats, answers, comments, dup_url)
+        :param data: tuple of (question_url, question_title, question_desc, question_stats, answers, comments, dup_url, dup_link)
         """
-        question_url, question_title, question_desc, question_stats, answers, comments, dup_url = data
+        question_url, question_title, question_desc, question_stats, answers, comments, dup_url, dup_link = data
         self.dup_url = dup_url
+        self.dup_link = dup_link
         self.question_title = question_title
         self.question_desc = question_desc
         self.question_stats = question_stats
@@ -107,6 +108,23 @@ class QuestionPage(urwid.WidgetWrap):
                     UnicodeText(
                         u'\u2191: previous answer, \u2193: next answer, c:comments, o: open in browser, \u2190: back, '
                         u'd: visit duplicated question, q: quit')
+                ])
+            )
+        elif self.dup_link:
+            answer_frame = urwid.Frame(
+                header=urwid.Pile([
+                    display_header,
+                    QuestionTitle(self.question_title),
+                    self.question_text,
+                    QuestionStats(self.question_stats),
+                    urwid.Divider('-')
+                ]),
+                body=self.answer_text,
+                footer=urwid.Pile([
+                    QuestionURL(self.url),
+                    UnicodeText(
+                        u'\u2191: previous answer, \u2193: next answer, c:comments, o: open in browser, \u2190: back, '
+                        u'd: back to original question, q: quit')
                 ])
             )
         else:
@@ -203,7 +221,9 @@ class QuestionPage(urwid.WidgetWrap):
             sys.exit(0)
         elif key in {'d', 'D'}:
             if self.dup_url:
-                pr.display_results(self.dup_url)
+                pr.display_results(self.dup_url, self.url)
+            elif self.dup_link:
+                pr.display_results(self.dup_link) 
 
 
 class AnswerText(urwid.WidgetWrap):
