@@ -75,16 +75,16 @@ def get_questions_for_query_google(query, count=10):
     captcha_check(search_results.url)
     soup = BeautifulSoup(search_results.text, 'html.parser')
     try:
-        soup.find_all("div", class_="g")[0]  # For explicitly raising exception
+        soup.find_all("div", class_="ZINbbc xpd O9g5cc uUPGi")[0]  # For explicitly raising exception
     except IndexError:
         socli.printer.print_warning("No results found...")
         sys.exit(0)
-    for result in soup.find_all("div", class_="g"):
+    for result in soup.find_all("div", class_="ZINbbc xpd O9g5cc uUPGi"):
         if i == count:
             break
         try:
-            question_title = result.find("div", class_="r").find("h3").get_text().replace(' - Stack Overflow', '')
-            question_desc = result.find("span", class_="st").get_text()
+            question_title = result.find("h3", class_="zBAuLc").get_text().replace(' - Stack Overflow', '')
+            question_desc = result.find("div", class_="BNeawe s3v9rd AP7Wnd").get_text()
             if question_desc == "":  # For avoiding instant answers
                 raise NameError  # Explicit raising
             question_url = result.find("a").get("href")  # Retrieves the Stack Overflow link
