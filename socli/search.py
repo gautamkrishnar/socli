@@ -75,11 +75,11 @@ def get_questions_for_query_google(query, count=10):
     captcha_check(search_results.url)
     soup = BeautifulSoup(search_results.text, 'html.parser')
     try:
-        soup.find_all("div", class_="ZINbbc xpd O9g5cc uUPGi")[0]  # For explicitly raising exception
+        soup.find_all("div", class_="g")[0]  # For explicitly raising exception
     except IndexError:
         socli.printer.print_warning("No results found...")
         sys.exit(0)
-    for result in soup.find_all("div", class_="ZINbbc xpd O9g5cc uUPGi"):
+    for result in soup.find_all("div", class_="g"):
         if i == count:
             break
         try:
