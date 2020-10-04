@@ -1,6 +1,11 @@
 SoCLI Changelog
 ================
 
+Release 5.8
+---------------------------
+* Added sentry for error logging
+* Fixed google search class change
+
 Release 5.7
 ---------------------------
 * Fixing issues with `-iq` argument
