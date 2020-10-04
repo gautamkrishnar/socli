@@ -83,8 +83,9 @@ def get_questions_for_query_google(query, count=10):
         if i == count:
             break
         try:
-            question_title = result.find("h3", class_="zBAuLc").get_text().replace(' - Stack Overflow', '')
-            question_desc = result.find("div", class_="BNeawe s3v9rd AP7Wnd").get_text()
+            question_title = result.find("h3").get_text().replace(' - Stack Overflow', '')
+            question_desc = result.find("div", recursive=False).find_all("div", recursive=False)[1] \
+                .find_all("span")[-2].get_text()
             if question_desc == "":  # For avoiding instant answers
                 raise NameError  # Explicit raising
             question_url = result.find("a").get("href")  # Retrieves the Stack Overflow link
