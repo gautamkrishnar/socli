@@ -94,7 +94,7 @@ def has_tags():
         search.so_qurl = search.so_qurl + "[" + tags + "]" + "+"
 
 
-def socli(query, raw_output=False):
+def socli(query, json_output=False):
     """
     SoCLI Code
     :param query: Query to search on Stack Overflow.
@@ -107,18 +107,18 @@ def socli(query, raw_output=False):
         if search.google_search:
             questions = search.get_questions_for_query_google(query)
             res_url = questions[0][2]  # Gets the first result
-            display_results(res_url, raw_output=raw_output)
+            display_results(res_url, json_output=json_output)
         else:
             questions = search.get_questions_for_query(query)
             res_url = questions[0][2]
-            display_results(search.so_url + res_url, raw_output=raw_output)  # Returned URL is relative to SO homepage
+            display_results(search.so_url + res_url, json_output=json_output)  # Returned URL is relative to SO homepage
 
     except IndexError:
         if len(questions) > 1:
             for i in range(1, len(questions)):
                 res_url = questions[i][2]
                 try:
-                    display_results(res_url, raw_output=raw_output)
+                    display_results(res_url, json_output=json_output)
                 except IndexError:
                     continue
                 break
@@ -337,7 +337,7 @@ def main():
         printer.helpman()
         sys.exit(0)
 
-    raw_output = True if namespace.raw_output else False
+    json_output = True if namespace.json else False
 
     if namespace.debug:  # If --debug flag is present
         # Prints out error used for debugging
@@ -425,7 +425,7 @@ def main():
         if display_condition:
             open_in_browser = False
             try:
-                display_results(url_to_use, raw_output=raw_output)
+                display_results(url_to_use, json_output=json_output)
             except IndexError:
                 printer.print_fail("The URL specified is returning a 404, please check the url and try again!")
                 sys.exit(0)
@@ -456,10 +456,10 @@ def main():
         if namespace.interactive:
             search.socli_interactive(query)
         else:
-            socli(query, raw_output=raw_output)
+            socli(query, json_output=json_output)
     elif query not in [' ', ''] and not (
             namespace.tag or namespace.res or namespace.interactive or namespace.browse):  # If there are no flags
-        socli(query, raw_output=raw_output)
+        socli(query, json_output=json_output)
     else:
         # Help text for interactive mode
         if namespace.interactive and namespace.query == [] and namespace.tag is None:

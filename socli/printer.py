@@ -206,7 +206,7 @@ def helpman():
     print(help_text)
 
 
-def display_results(url, raw_output=False):
+def display_results(url, json_output=False):
     """
     Display result page
     :param url: URL of the search result
@@ -217,7 +217,7 @@ def display_results(url, raw_output=False):
     search.captcha_check(res_page.url)
     question_title, question_desc, question_stats, answers, comments, dup_url = \
         search.get_question_stats_and_answer_and_comments(url)
-    if raw_output:
+    if json_output:
         sys.stdout.write(urllib.parse.unquote(json.dumps({
             'title': question_title,
             'desc': question_desc,
