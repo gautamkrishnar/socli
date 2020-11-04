@@ -24,6 +24,7 @@ setup(
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     requires=['BeautifulSoup4', 'requests', 'colorama', 'PyStackExchange', 'sentry_sdk', 'urwid'],
+    data_files=[('man/man1',['socli.1'])],
     version=main_ns['__version__'],
     url='https://www.github.com/gautamkrishnar/socli',
     keywords="stack overflow cli",
