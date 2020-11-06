@@ -105,7 +105,7 @@ class QuestionPage(urwid.WidgetWrap):
                 footer=urwid.Pile([
                     QuestionURL(self.url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, c:comments, o: open in browser, \u2190: back, '
+                        u'\u2191/k: previous answer, \u2193/j: next answer, c:comments, o: open in browser, \u2190/h: back, '
                         u'd: visit duplicated question, q: quit')
                 ])
             )
