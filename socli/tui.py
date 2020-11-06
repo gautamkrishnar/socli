@@ -159,10 +159,10 @@ class QuestionPage(urwid.WidgetWrap):
         """
         Overrides keypress in superclass, so don't fall for the trap! size parameter is needed!
         """
-        if key in {'down', 'n', 'N'} and not self.answer_text.comments_toggled:
+        if key in {'down', 'n', 'N' , 'j'} and not self.answer_text.comments_toggled:
             # bool comparison is necessary to disable up down buttons when comments are being shown
             self.answer_text.next_ans()
-        elif key in {'up', 'b', 'B'} and not self.answer_text.comments_toggled:
+        elif key in {'up', 'b', 'B','k'} and not self.answer_text.comments_toggled:
             self.answer_text.prev_ans()
         elif key in {'c', 'C'}:
             self.answer_text.show_comments()
