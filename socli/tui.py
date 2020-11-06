@@ -122,8 +122,8 @@ class QuestionPage(urwid.WidgetWrap):
                 footer=urwid.Pile([
                     QuestionURL(self.url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, c: comments, o: open in browser, '
-                        u'\u2190: back, q: quit')
+                        u'\u2191/k: previous answer, \u2193/j: next answer, c: comments, o: open in browser, '
+                        u'\u2190/h: back, q: quit')
                 ])
             )
         return answer_frame
@@ -150,7 +150,7 @@ class QuestionPage(urwid.WidgetWrap):
             footer=urwid.Pile([
                 QuestionURL(self.url),
                 UnicodeText(
-                    'o: open in browser, v: back to answer, \u2190: back, q: quit')
+                    'o: open in browser, v/u: back to answer, \u2190/h: back, q: quit')
             ])
         )
         return comment_frame
@@ -170,7 +170,7 @@ class QuestionPage(urwid.WidgetWrap):
             comment_frame = self.make_comment_frame()
             urwid.WidgetWrap.__init__(self, comment_frame)
             self.answer_text.comments_toggled = True
-        elif key in {'v', 'V'}:
+        elif key in {'v', 'V' ,'u'}:
             self.answer_text.set_content()
             self._invalidate()
             answer_frame = self.make_frame()
@@ -180,7 +180,7 @@ class QuestionPage(urwid.WidgetWrap):
             import webbrowser
             display_header.event('browser', "Opening in your browser...")
             webbrowser.open(self.url)
-        elif key == 'left':
+        elif key in { 'left','h'}:
             global question_post
             global question_page
             question_post = None

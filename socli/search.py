@@ -328,6 +328,11 @@ def socli_interactive(query):
                     self.footer.set_text(self.errorText)
             elif key in {'down', 'up'}:
                 self.questions_box.keypress(size, key)
+            elif key in {'j','k'}:
+                if key == 'j':
+                    self.questions_box.keypress(size,'down')
+                if key == 'k':
+                    self.questions_box.keypress(size,'up')
             else:
                 raise urwid.ExitMainLoop()
 
