@@ -263,6 +263,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Saif807380"><img src="https://avatars2.githubusercontent.com/u/50794619?v=4" width="100px;" alt=""/><br /><sub><b>Saif Kazi</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=Saif807380" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/pstreff"><img src="https://avatars3.githubusercontent.com/u/32448748?v=4" width="100px;" alt=""/><br /><sub><b>pstreff</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=pstreff" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/anshik1998"><img src="https://avatars0.githubusercontent.com/u/54910667?v=4" width="100px;" alt=""/><br /><sub><b>anshik1998</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=anshik1998" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/abstanton"><img src="https://avatars1.githubusercontent.com/u/23246639?v=4" width="100px;" alt=""/><br /><sub><b>abstanton</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=abstanton" title="Code">💻</a></td>
   </tr>
 </table>
 
