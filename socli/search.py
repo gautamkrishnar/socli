@@ -452,7 +452,8 @@ def captcha_check(url):
     else:
         if re.search(r"\.com/nocaptcha", url):  # Searching for stackoverflow captcha check
             socli.printer.print_warning(
-                "StackOverflow captcha check triggered. Please wait a few seconds before trying again.")
+                "StackOverflow captcha check triggered. Please wait a few seconds before trying again. "
+                "Try solving it manually: " + url)
             exit(0)
 
 

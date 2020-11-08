@@ -143,7 +143,8 @@ def test_user_json():
 
 def test_searchSO():
     try:
-         _search.get_questions_for_query(squery)
+        _search.google_search = False
+        _search.get_questions_for_query(squery)
     except Exception:
         raise SoCLITestingException("Search Stack Overflow test failed.")
 
