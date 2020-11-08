@@ -319,7 +319,16 @@ def main():
     """
     The main logic for how options in a command is checked.
     """
+    history=[]
     global query
+    check_history=sys.argv[1:]
+    if(check_history == 'history'):
+        print(history)
+        return
+    history+=[check_history]
+    if(len(history)>=15):
+        history.pop(0)
+
     namespace = parse_arguments(sys.argv[1:])
     search.load_user_agents()  # Populates the user agents array
     query_tag = ' '.join(namespace.browse)  # Tags
