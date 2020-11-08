@@ -1,6 +1,12 @@
 SoCLI Changelog
 ================
 
+Release 5.9
+---------------------------
+* Added `-j` or `--json-output` for providing json output
+* Added manpage for socli
+* Added option to return to original question after visiting duplicate one
+
 Release 5.8
 ---------------------------
 * Added sentry for error logging
