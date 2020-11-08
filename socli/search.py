@@ -340,7 +340,7 @@ def socli_interactive(query):
                     url = so_url + url
                 question_title, question_desc, question_stats, answers, comments, dup_url = get_question_stats_and_answer_and_comments(url)
                 socli.tui.question_post = socli.tui.QuestionPage(
-                    (url, question_title, question_desc, question_stats, answers, comments, dup_url))
+                    (url, question_title, question_desc, question_stats, answers, comments, dup_url, None))
                 self.cachedQuestions[index] = socli.tui.question_post
                 socli.tui.MAIN_LOOP.widget = socli.tui.question_post
 
@@ -452,7 +452,8 @@ def captcha_check(url):
     else:
         if re.search(r"\.com/nocaptcha", url):  # Searching for stackoverflow captcha check
             socli.printer.print_warning(
-                "StackOverflow captcha check triggered. Please wait a few seconds before trying again.")
+                "StackOverflow captcha check triggered. Please wait a few seconds before trying again. "
+                "Try solving it manually: " + url)
             exit(0)
 
 

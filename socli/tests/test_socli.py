@@ -140,12 +140,13 @@ def test_user_json():
     except Exception:
         raise SoCLITestingException("User JSON test failed.")
 
-
-def test_searchSO():
-    try:
-         _search.get_questions_for_query(squery)
-    except Exception:
-        raise SoCLITestingException("Search Stack Overflow test failed.")
+# Commented out because of stackoverflow bot detection
+# def test_searchSO():
+#     try:
+#         _search.google_search = False
+#         _search.get_questions_for_query(squery)
+#     except Exception:
+#         raise SoCLITestingException("Search Stack Overflow test failed.")
 
 
 def test_searchStats():
