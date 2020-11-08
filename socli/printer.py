@@ -206,11 +206,12 @@ def helpman():
     print(help_text)
 
 
-def display_results(url, dup_link=None):
+def display_results(url, dup_link=None, json_output=False):
     """
     Display result page
     :param url: URL of the search result
     :param dup_link: URL to the duplicate question visited from
+    :param json_output: JSON output flag
     :return:
     """
     search.random_headers()

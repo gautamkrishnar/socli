@@ -129,6 +129,7 @@ Usage: socli [ Arguments] < Search Query >
 | -s | --sosearch | SoCLI uses Google search by default to search for questions. To override this and use stackoverflow's default search instead. | **socli -s -q for loop python** |
 | -h | --help | Displays the help text. | **socli --help** |
 | -o | --open-url | Displays the given url in socli if possible if not opens in browser. | **socli -o https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works** |
+| -j | --json-output | Gives output to stdout as json | **socli -jq for loop python** |
 | -v | --version | Displays the version of socli. | **socli -v** |
 
 ###### Query
