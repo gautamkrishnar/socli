@@ -94,7 +94,7 @@ def has_tags():
         search.so_qurl = search.so_qurl + "[" + tags + "]" + "+"
 
 
-def socli(query):
+def socli(query, json_output=False):
     """
     SoCLI Code
     :param query: Query to search on Stack Overflow.
@@ -107,18 +107,18 @@ def socli(query):
         if search.google_search:
             questions = search.get_questions_for_query_google(query)
             res_url = questions[0][2]  # Gets the first result
-            display_results(res_url)
+            display_results(res_url, json_output=json_output)
         else:
             questions = search.get_questions_for_query(query)
             res_url = questions[0][2]
-            display_results(search.so_url + res_url)  # Returned URL is relative to SO homepage
+            display_results(search.so_url + res_url, json_output=json_output)  # Returned URL is relative to SO homepage
 
     except IndexError:
         if len(questions) > 1:
             for i in range(1, len(questions)):
                 res_url = questions[i][2]
                 try:
-                    display_results(res_url)
+                    display_results(res_url, json_output=json_output)
                 except IndexError:
                     continue
                 break
@@ -283,7 +283,7 @@ def socli_browse_interactive(query_tag):
                 question_title, question_desc, question_stats, answers, comments, dup_url = \
                     search.get_question_stats_and_answer_and_comments(url)
                 question_post = tui.QuestionPage(
-                    (url, question_title, question_desc, question_stats, answers, comments, dup_url)
+                    (url, question_title, question_desc, question_stats, answers, comments, dup_url, None)
                 )
                 self.cachedQuestions[index] = question_post
                 tui.MAIN_LOOP.widget = question_post
@@ -336,6 +336,8 @@ def main():
         # Display command line syntax
         printer.helpman()
         sys.exit(0)
+
+    json_output = True if namespace.json else False
 
     if namespace.debug:  # If --debug flag is present
         # Prints out error used for debugging
@@ -423,7 +425,7 @@ def main():
         if display_condition:
             open_in_browser = False
             try:
-                display_results(url_to_use)
+                display_results(url_to_use, json_output=json_output)
             except IndexError:
                 printer.print_fail("The URL specified is returning a 404, please check the url and try again!")
                 sys.exit(0)
@@ -454,10 +456,10 @@ def main():
         if namespace.interactive:
             search.socli_interactive(query)
         else:
-            socli(query)
+            socli(query, json_output=json_output)
     elif query not in [' ', ''] and not (
             namespace.tag or namespace.res or namespace.interactive or namespace.browse):  # If there are no flags
-        socli(query)
+        socli(query, json_output=json_output)
     else:
         # Help text for interactive mode
         if namespace.interactive and namespace.query == [] and namespace.tag is None:
