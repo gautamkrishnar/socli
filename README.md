@@ -1,4 +1,4 @@
-# SoCLI [![PyPI](https://img.shields.io/pypi/v/socli?color=brightgreen) ![PyPI Downloads](https://img.shields.io/pypi/dm/socli)](https://pypi.org/project/socli/) [![Travis Build](https://travis-ci.org/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.org/gautamkrishnar/socli) [![Collaborizm](https://img.shields.io/badge/Collaborizm-Join%20Project-brightgreen.svg)](https://www.collaborizm.com/project/S1cbUui6) [![Gitter Chat](https://badges.gitter.im/socli-community/Lobby.svg)](https://gitter.im/socli-community/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# SoCLI [![PyPI](https://img.shields.io/pypi/v/socli?color=brightgreen) ![PyPI Downloads](https://img.shields.io/pypi/dm/socli)](https://pypi.org/project/socli/) [![Build Status](https://travis-ci.com/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.com/gautamkrishnar/socli) [![Collaborizm](https://img.shields.io/badge/Collaborizm-Join%20Project-brightgreen.svg)](https://www.collaborizm.com/project/S1cbUui6) [![Gitter Chat](https://badges.gitter.im/socli-community/Lobby.svg)](https://gitter.im/socli-community/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 Stack Overflow command line written in python. Using SoCLI you can search and browse Stack Overflow without leaving the terminal. Just use the **socli** command:
@@ -129,6 +129,7 @@ Usage: socli [ Arguments] < Search Query >
 | -s | --sosearch | SoCLI uses Google search by default to search for questions. To override this and use stackoverflow's default search instead. | **socli -s -q for loop python** |
 | -h | --help | Displays the help text. | **socli --help** |
 | -o | --open-url | Displays the given url in socli if possible if not opens in browser. | **socli -o https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works** |
+| -j | --json-output | Gives output to stdout as json | **socli -jq for loop python** |
 | -v | --version | Displays the version of socli. | **socli -v** |
 
 ###### Query
@@ -263,6 +264,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Saif807380"><img src="https://avatars2.githubusercontent.com/u/50794619?v=4" width="100px;" alt=""/><br /><sub><b>Saif Kazi</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=Saif807380" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/pstreff"><img src="https://avatars3.githubusercontent.com/u/32448748?v=4" width="100px;" alt=""/><br /><sub><b>pstreff</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=pstreff" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/anshik1998"><img src="https://avatars0.githubusercontent.com/u/54910667?v=4" width="100px;" alt=""/><br /><sub><b>anshik1998</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=anshik1998" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/abstanton"><img src="https://avatars1.githubusercontent.com/u/23246639?v=4" width="100px;" alt=""/><br /><sub><b>abstanton</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=abstanton" title="Code">💻</a></td>
+    <td align="center"><a href="http://ssyd.pw"><img src="https://avatars3.githubusercontent.com/u/28098330?v=4" width="100px;" alt=""/><br /><sub><b>Sabu Siyad</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=ssiyad" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/pspiagicw"><img src="https://avatars0.githubusercontent.com/u/30765406?v=4" width="100px;" alt=""/><br /><sub><b>pspiagicw</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=pspiagicw" title="Code">💻</a></td>
   </tr>
 </table>
 

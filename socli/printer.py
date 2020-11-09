@@ -7,6 +7,7 @@ import subprocess
 import sys
 import textwrap
 import urllib
+import json
 
 import colorama
 import requests
@@ -205,18 +206,30 @@ def helpman():
     print(help_text)
 
 
-def display_results(url):
+def display_results(url, dup_link=None, json_output=False):
     """
     Display result page
     :param url: URL of the search result
+    :param dup_link: URL to the duplicate question visited from
+    :param json_output: JSON output flag
     :return:
     """
     search.random_headers()
     res_page = requests.get(url, headers=search.header)
     search.captcha_check(res_page.url)
-    tui.display_header = tui.Header()
     question_title, question_desc, question_stats, answers, comments, dup_url = \
         search.get_question_stats_and_answer_and_comments(url)
-    tui.question_post = tui.QuestionPage((url, question_title, question_desc, question_stats, answers, comments, dup_url))
-    tui.MAIN_LOOP = tui.EditedMainLoop(tui.question_post, palette)
-    tui.MAIN_LOOP.run()
+    if json_output:
+        sys.stdout.write(urllib.parse.unquote(json.dumps({
+            'title': question_title,
+            'desc': question_desc,
+            'stats': question_stats,
+            'answers': answers,
+            'comments': comments,
+            'dup_url': dup_url,
+        })))
+    else:
+        tui.display_header = tui.Header()
+        tui.question_post = tui.QuestionPage((url, question_title, question_desc, question_stats, answers, comments, dup_url, dup_link))
+        tui.MAIN_LOOP = tui.EditedMainLoop(tui.question_post, palette)
+        tui.MAIN_LOOP.run()
