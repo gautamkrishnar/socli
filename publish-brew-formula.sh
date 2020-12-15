@@ -3,7 +3,7 @@ set -e
 pip install homebrew-pypi-poet==0.10.0 requests==2.24.0
 
 # Code to wait till the latest package is available in pypi, if available do install
-until pip install  --no-cache socli==${TRAVIS_TAG}
+until pip install  --no-cache socli=="${TRAVIS_TAG}" && [[ "$(socli --version | awk '{print $2}')" == "$TRAVIS_TAG" ]] && true || false
 do
   echo "Retrying again in 10 seconds..."
   sleep 10
@@ -52,7 +52,7 @@ echo "--------------------------------------------------------------------------
 git config --global user.email "gkr@tuta.io"
 git config --global user.name "gkr-bot"
 echo "Pulling repo..."
-git clone https://${BREW_GH_TOKEN}@github.com/gautamkrishnar/homebrew-socli.git brewroot > /dev/null 2>&1
+git clone https://"${BREW_GH_TOKEN}"@github.com/gautamkrishnar/homebrew-socli.git brewroot > /dev/null 2>&1
 echo "Generating formula..."
 cp -fv socli.rb brewroot/Formula
 cd brewroot

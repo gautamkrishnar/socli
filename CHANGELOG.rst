@@ -3,6 +3,10 @@ SoCLI Changelog
 
 Release 5.9
 ---------------------------
+* Added accepted answer highlighting
+
+Release 5.9
+---------------------------
 * Added `-j` or `--json-output` for providing json output
 * Added manpage for socli
 * Added option to return to original question after visiting duplicate one
