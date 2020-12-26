@@ -1,4 +1,4 @@
-name: Python Test
+name: Python Test, Build and Publish
 on: [push, pull_request]
 jobs:
   build:
@@ -6,7 +6,6 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.5', '3.6', '3.7', '3.8']
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -23,3 +22,23 @@ jobs:
         python setup.py test
     - name: Test Installation
       run: python setup.py install
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: startsWith(github.ref, 'refs/tags')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Publish to PyPi
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          pip install setuptools wheel twine
+          python setup.py sdist bdist_wheel
+          twine upload dist/*
+      - name: Publish Brew formula
+        run: bash publish-brew-formula.sh # installs the latest published version and generates formula
