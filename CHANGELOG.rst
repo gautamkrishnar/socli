@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 6.2
+---------------------------
+* Migrated to GitHub actions
+
 Release 6.1
 ---------------------------
 * Migrated to GitHub actions

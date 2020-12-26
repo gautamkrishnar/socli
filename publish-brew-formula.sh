@@ -3,7 +3,7 @@ set -e
 pip install homebrew-pypi-poet==0.10.0 requests==2.24.0
 
 # Code to wait till the latest package is available in pypi, if available do install
-until pip install  --upgrade --no-cache socli=="${TRAVIS_TAG}" && [[ "$(socli --version | awk '{print $2}')" == "$TRAVIS_TAG" ]] && true || false
+until pip install  --upgrade --no-cache socli=="${GITHUB_REF}" && [[ "$(socli --version | awk '{print $2}')" == "$GITHUB_REF" ]] && true || false
 do
   echo "Retrying again in 10 seconds..."
   sleep 10
@@ -58,6 +58,6 @@ cp -fv socli.rb brewroot/Formula
 cd brewroot
 git add --all
 echo "Committing formula..."
-git commit -m "Published ${TRAVIS_TAG}"
+git commit -m "Published ${GITHUB_REF}"
 echo "Pushing formula..."
 git push --quiet
