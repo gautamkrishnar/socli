@@ -40,5 +40,8 @@ jobs:
           pip install setuptools wheel twine
           python setup.py sdist bdist_wheel
           twine upload dist/*
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Publish Brew formula
         run: bash publish-brew-formula.sh # installs the latest published version and generates formula
