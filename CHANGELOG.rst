@@ -1,7 +1,11 @@
 SoCLI Changelog
 ================
 
-Release 5.9
+Release 6.1
+---------------------------
+* Migrated to GitHub actions
+
+Release 6.0
 ---------------------------
 * Added accepted answer highlighting
 
