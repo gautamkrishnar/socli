@@ -3,7 +3,7 @@ set -e
 pip install homebrew-pypi-poet==0.10.0 requests==2.24.0
 
 # Code to wait till the latest package is available in pypi, if available do install
-until pip install  --no-cache socli=="${TRAVIS_TAG}" && [[ "$(socli --version | awk '{print $2}')" == "$TRAVIS_TAG" ]] && true || false
+until pip install  --upgrade --no-cache socli=="${TRAVIS_TAG}" && [[ "$(socli --version | awk '{print $2}')" == "$TRAVIS_TAG" ]] && true || false
 do
   echo "Retrying again in 10 seconds..."
   sleep 10
