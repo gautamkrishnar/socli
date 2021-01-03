@@ -243,7 +243,7 @@ def socli_interactive_windows(query):
                                     socli.printer.print_warning(" No more answers found for this question. Exiting...")
                                     sys.exit(0)
                                 continue
-                            elif qna in ["b", "B"]:
+                            if qna in ["b", "B"]:
                                 if cnt == 1:
                                     socli.printer.print_warning(
                                         " You cant go further back. You are on the first answer!")
@@ -253,7 +253,7 @@ def socli_interactive_windows(query):
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
                                 continue
-                            elif qna in ["o", "O"]:
+                            if qna in ["o", "O"]:
                                 import webbrowser
                                 if sys.platform.startswith('darwin'):
                                     browser = webbrowser.get('safari')
