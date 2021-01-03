@@ -7,7 +7,7 @@ import os
 import sys
 import socli.printer as pr
 
-app_data = dict()  # Data file dictionary
+app_data = {} # Data file dictionary
 data_file = os.path.join(os.path.dirname(__file__), "data.json")  # Data file location
 
 
