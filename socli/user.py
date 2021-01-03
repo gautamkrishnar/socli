@@ -4,7 +4,7 @@ Contains all functions used for user authentication and user metadata fetching.
 
 import json
 import os
-
+import sys
 import socli.printer as pr
 
 app_data = dict()  # Data file dictionary
@@ -26,7 +26,7 @@ def user_page(user_id):
         pr.print_warning("\nUser ID must be an integer.")
         print(
             "\nFollow the instructions on this page to get your User ID: http://meta.stackexchange.com/a/111130")
-        exit(1)
+        sys.exit()
 
     try:
         from urllib.error import URLError
@@ -38,7 +38,7 @@ def user_page(user_id):
         pr.print_warning("\nUser ID must be an integer.")
         print(
             "\nFollow the instructions on this page to get your User ID: http://meta.stackexchange.com/a/111130")
-        exit(1)
+        sys.exit()
 
     try:
         if "api_key" not in app_data:
@@ -75,22 +75,22 @@ def user_page(user_id):
             print("You have 0 questions")
     except URLError:
         pr.print_fail("Please check your internet connectivity...")
-        exit(1)
+        sys.exit()
     except Exception as e:
         pr.showerror(e)
         if str(e) == "400 [bad_parameter]: `key` doesn't match a known application":
             pr.print_warning("Wrong API key... Deleting the data file...")
             del_datafile()
-            exit(1)
+            sys.exit()
         elif str(e) in ("not enough values to unpack (expected 1, got 0)", "400 [bad_parameter]: ids"):
             global manual
             if manual:
                 pr.print_warning("Wrong user ID specified...")
                 pr.helpman()
-                exit(1)
+                sys.exit()
             pr.print_warning("Wrong user ID... Deleting the data file...")
             del_datafile()
-            exit(1)
+            sys.exit()
 
         # Reaches here when rate limit exceeds
         pr.print_warning(
@@ -98,7 +98,7 @@ def user_page(user_id):
             "http://stackapps.com/questions/3055/is-there-a-limit-of-api-requests")
         print("Use http://stackapps.com/apps/oauth/register to register a new API key.")
         set_api_key()
-        exit(1)
+        sys.exit()
 
 
 def set_api_key():
@@ -175,7 +175,7 @@ def retrieve_saved_profile():
         del_datafile()
         pr.print_warning("Error in parsing the data file, it will be now deleted. Please rerun the "
                          "socli -u command.")
-        exit(1)
+        sys.exit()
     except FileNotFoundError:
         pr.print_warning("Default user not set...\n")
         try:
@@ -188,5 +188,5 @@ def retrieve_saved_profile():
             pr.print_warning("\nUser ID must be an integer.")
             print(
                 "\nFollow the instructions on this page to get your User ID: http://meta.stackexchange.com/a/111130")
-            exit(1)
+            sys.exit()
     return user
