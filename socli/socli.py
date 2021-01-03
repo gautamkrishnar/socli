@@ -337,7 +337,7 @@ def main():
         printer.helpman()
         sys.exit(0)
 
-    json_output = True if namespace.json else False
+    json_output = bool(namespace.json)
 
     if namespace.debug:  # If --debug flag is present
         # Prints out error used for debugging
