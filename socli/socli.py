@@ -66,8 +66,7 @@ def fix_code_page():
             sys.stdout.write("\x1b[A")  # Removes the output of chcp command
             sys.stdout.flush()
             return
-        else:
-            return
+        return
 
 
 def wrongsyn(query):
