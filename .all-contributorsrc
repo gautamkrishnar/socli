@@ -468,6 +468,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "tharunc",
+      "name": "tharunc",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/68283386?v=4",
+      "profile": "https://github.com/tharunc",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
