@@ -167,21 +167,8 @@ All tests are in the `socli/tests/` subdirectory of this repository.
 TravisCI is supposed to run the test-suite on build.
 
 ### Contributing
-If you are willing to contribute to SoCLI project, you are awesome! Just follow the steps below:
-
-1. Fork it!
-2. Make a local clone: 
-  ```sh
-  git clone https://github.com/{YOUR_USERNAME}/socli.git
-  ```
-
-3. Switch to the directory: `cd socli` 
-4. Create your new branch: `git checkout -b feature-name`
-5. Make necessary changes to the source code
-6. Add changes to git index by using `git add .`
-7. Commit your changes: `git commit -m 'Added new feature'`
-8. Push to the branch: `git push`
-9. Submit a [new pull request](https://github.com/gautamkrishnar/socli/pull/new) 😄
+If you are willing to contribute to SoCLI project, you are awesome! 
+Just follow the steps given the [CONTRIBUTING.md](https://github.com/gautamkrishnar/socli/blob/master/CONTRIBUTING.md)
 
 ## Maintainers
 
