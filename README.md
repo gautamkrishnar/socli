@@ -166,9 +166,9 @@ All tests are in the `socli/tests/` subdirectory of this repository.
 
 TravisCI is supposed to run the test-suite on build.
 
-### Contributing
+### 💥 How to Contribute ?
 If you are willing to contribute to SoCLI project, you are awesome! 
-Just follow the steps given the [CONTRIBUTING.md](https://github.com/gautamkrishnar/socli/blob/master/CONTRIBUTING.md)
+Just follow the steps given the [CONTRIBUTING.md](https://github.com/gautamkrishnar/socli/blob/master/CONTRIBUTING.md) 😃
 
 ## Maintainers
 
