@@ -255,6 +255,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/pspiagicw"><img src="https://avatars0.githubusercontent.com/u/30765406?v=4?s=100" width="100px;" alt=""/><br /><sub><b>pspiagicw</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=pspiagicw" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/hertzrp"><img src="https://avatars1.githubusercontent.com/u/37788702?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ryan Hertz</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=hertzrp" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/tharunc"><img src="https://avatars3.githubusercontent.com/u/68283386?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tharunc</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=tharunc" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://akrish4.github.io/online-portfolio/"><img src="https://avatars0.githubusercontent.com/u/61831021?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ananthakrishnan Nair RS</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=akrish4" title="Code">💻</a></td>
   </tr>
 </table>
 
