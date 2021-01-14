@@ -1,7 +1,7 @@
 """
 Contains all functions used for parsing the command line args
 """
-import argparse
+import argparse,argcomplete
 import textwrap
 
 
@@ -64,6 +64,7 @@ def parse_arguments(command):
     parser.add_argument('--json', '-j', action='store_true', help='Write output to stdout as json')
 
     parser.add_argument('--version' , '-v', action='store_true', help='Prints the current version of socli')
-
+    
+    argcomplete.autocomplete(parser)
     namespace = parser.parse_args(command)
     return namespace

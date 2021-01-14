@@ -4,3 +4,4 @@ colorama~=0.4.3
 py-stackexchange==2.2.7
 sentry-sdk==0.18.0
 urwid~=2.1.1
+argcomplete
