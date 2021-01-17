@@ -495,6 +495,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "chetak123",
+      "name": "Ayushman",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/53306550?v=4",
+      "profile": "https://github.com/chetak123",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
