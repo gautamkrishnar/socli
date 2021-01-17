@@ -12,7 +12,7 @@ import json
 import colorama
 import requests
 
-from socli import search as search, tui as tui
+from socli import search, tui
 
 DEBUG = False
 

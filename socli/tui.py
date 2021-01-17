@@ -31,8 +31,7 @@ class UnicodeText(urwid.Text):
             mapped = [cls.to_unicode(i) for i in markup]
             if isinstance(markup, tuple):
                 return tuple(mapped)
-            else:
-                return mapped
+            return mapped
 
 
 class Header(UnicodeText):
