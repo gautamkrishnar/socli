@@ -44,7 +44,7 @@ brew install socli
 ##### Enabling the shell autocompletion
 If you installed socli vis pyPi you may need to enable the shell autocompletion. Add the following to your `.bashrc` file to enable it:
 ```bash
-eval "$(register-python-argcomplete socli)"
+socli --register
 ```
 
 ### Updating
@@ -137,6 +137,7 @@ Usage: socli [ Arguments] < Search Query >
 | -h | --help | Displays the help text. | **socli --help** |
 | -o | --open-url | Displays the given url in socli if possible if not opens in browser. | **socli -o https://stackoverflow.com/questions/20639180/explanation-of-how-nested-list-comprehension-works** |
 | -j | --json-output | Gives output to stdout as json | **socli -jq for loop python** |
+| -g | --register | Registers socli's shell autocompletion | socli -g |
 | -v | --version | Displays the version of socli. | **socli -v** |
 
 ###### Query

@@ -343,6 +343,10 @@ def main():
         printer.DEBUG = True
         debug_requests_on()
 
+    if namespace.register:
+        os.system('eval "$(register-python-argcomplete socli)"')
+        sys.exit(0)
+
     if namespace.new:  # If --new flag is present
         # Opens StackOverflow website in the browser to create a  new question
         import webbrowser
