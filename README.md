@@ -40,6 +40,13 @@ Install **socli**:
 brew tap gautamkrishnar/socli
 brew install socli
 ```
+
+##### Enabling the shell autocompletion
+If you installed socli vis pyPi you may need to enable the shell autocompletion. Add the following to your `.bashrc` file to enable it:
+```bash
+eval "$(register-python-argcomplete socli)"
+```
+
 ### Updating
 Use the command below to update your existing version of **socli** to the newest version so that you won't miss any features:
 ```bash
