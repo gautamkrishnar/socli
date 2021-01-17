@@ -20,7 +20,7 @@ setup(
     packages=["socli"],
     entry_points={"console_scripts": ['socli = socli.sentry:main']},
     python_requires='>=3.5.0',
-    install_requires=['BeautifulSoup4', 'requests', 'colorama', 'Py-stackExchange', 'sentry_sdk', 'urwid'],
+    install_requires=['BeautifulSoup4', 'requests', 'colorama', 'Py-stackExchange', 'sentry_sdk', 'urwid', 'argcomplete'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     requires=['BeautifulSoup4', 'requests', 'colorama', 'PyStackExchange', 'sentry_sdk', 'urwid'],
