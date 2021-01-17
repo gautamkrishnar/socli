@@ -66,8 +66,7 @@ def fix_code_page():
             sys.stdout.write("\x1b[A")  # Removes the output of chcp command
             sys.stdout.flush()
             return
-        else:
-            return
+        return
 
 
 def wrongsyn(query):
@@ -185,7 +184,7 @@ def socli_browse_interactive_windows(query_tag):
                                     printer.print_warning(" No more answers found for this question. Exiting...")
                                     sys.exit(0)
                                 continue
-                            elif qna in ["b", "B"]:
+                            if qna in ["b", "B"]:
                                 if cnt == 1:
                                     printer.print_warning(" You cant go further back. You are on the first answer!")
                                     continue
@@ -194,7 +193,7 @@ def socli_browse_interactive_windows(query_tag):
                                 print("-------\n" + answer + "\n-------\n")
                                 cnt = cnt - 1
                                 continue
-                            elif qna in ["o", "O"]:
+                            if qna in ["o", "O"]:
                                 import webbrowser
                                 printer.print_warning("Opening in your browser...")
                                 webbrowser.open(search.so_burl + question_local_url[op - 1])
@@ -337,7 +336,7 @@ def main():
         printer.helpman()
         sys.exit(0)
 
-    json_output = True if namespace.json else False
+    json_output = bool(namespace.json)
 
     if namespace.debug:  # If --debug flag is present
         # Prints out error used for debugging
