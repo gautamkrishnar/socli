@@ -43,7 +43,8 @@ jobs:
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - name: Publish Brew formula
-        env:
-          PUBLISHED_VERSION: ${{ steps.get_version.outputs.VERSION }}
-        run: bash publish-brew-formula.sh # installs the latest published version and generates formula
+      - name: Trigger brew formula generation
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.BREW_GH_TOKEN }}
+          event-type: socli-released

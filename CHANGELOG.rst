@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 6.8
+---------------------------
+* Moved brew formula generation to formula repo
+
 Release 6.7
 ---------------------------
 * No change, just dummy build to retry brew publish
