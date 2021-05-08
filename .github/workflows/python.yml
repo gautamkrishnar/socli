@@ -43,8 +43,11 @@ jobs:
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - name: Trigger brew formula generation
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.BREW_GH_TOKEN }}
-          event-type: socli-released
+      - name: Trigger brew formula generation workflow
+        run: |
+          curl --silent \
+            -X POST \
+            -H "Authorization: Bearer ${{ secrets.BREW_GH_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/gautamkrishnar/homebrew-socli/actions/workflows/generate.yml/dispatches \
+            -d '{"ref":"master"}'
