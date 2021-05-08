@@ -44,4 +44,6 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - name: Publish Brew formula
+        env:
+          PUBLISHED_VERSION: ${{ steps.get_version.outputs.VERSION }}
         run: bash publish-brew-formula.sh # installs the latest published version and generates formula

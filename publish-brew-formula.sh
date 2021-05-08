@@ -1,9 +1,10 @@
 # Generate formula
 set -e
 pip install homebrew-pypi-poet==0.10.0 requests==2.24.0
+echo Doing pip install  --upgrade --no-cache socli="${PUBLISHED_VERSION}"
 
 # Code to wait till the latest package is available in pypi, if available do install
-until pip install  --upgrade --no-cache socli=="${steps.get_version.outputs.VERSION}" && [[ "$(socli --version | awk '{print $2}')" == "${steps.get_version.outputs.VERSION}" ]] && true || false
+until pip install --upgrade --no-cache socli=="${PUBLISHED_VERSION}" && [[ "$(socli --version | awk '{print $2}')" == "${PUBLISHED_VERSION}" ]] && true || false
 do
   echo "Retrying again in 10 seconds..."
   sleep 10
@@ -58,6 +59,6 @@ cp -fv socli.rb brewroot/Formula
 cd brewroot
 git add --all
 echo "Committing formula..."
-git commit -m "Published ${steps.get_version.outputs.VERSION}"
+git commit -m "Published ${PUBLISHED_VERSION}"
 echo "Pushing formula..."
 git push --quiet

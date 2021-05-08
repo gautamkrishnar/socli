@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 6.5
+---------------------------
+* Fixing brew formula auto deploy
+
 Release 6.4
 ---------------------------
 * Fixed tag name
