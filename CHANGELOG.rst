@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 6.6
+---------------------------
+* Fixing brew push to github error
+
 Release 6.5
 ---------------------------
 * Fixing brew formula auto deploy
