@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 6.9
+---------------------------
+* Fixed google search html change #265
+
 Release 6.8
 ---------------------------
 * Moved brew formula generation to formula repo
