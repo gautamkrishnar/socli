@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 6.7
+---------------------------
+* No change, just dummy build to retry brew publish
+
 Release 6.6
 ---------------------------
 * Fixing brew push to github error
