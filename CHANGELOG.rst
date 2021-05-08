@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 6.4
+---------------------------
+* Fixed tag name
+
 Release 6.3
 ---------------------------
 * Minor fixes
