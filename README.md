@@ -95,7 +95,7 @@ socli -t javascript,node.js -q window.open
 See the complete list of tags [here](http://stackoverflow.com/tags).
 
 ##### User Profile Browsing
-Just use the command below to set your [user ID]( http://meta.stackexchange.com/a/111130) in socli. When you execute the command next time, it will automaticially fetch the data.
+Just use the command below to set your [user ID]( http://meta.stackexchange.com/a/111130) in socli. When you execute the command next time, it will automatically fetch the data.
 ```sh
 socli -u
 ```
