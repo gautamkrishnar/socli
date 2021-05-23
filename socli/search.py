@@ -113,7 +113,7 @@ def get_questions_for_query_google(query, count=10):
 def get_comments(soup):
     """
     :param soup
-    extacts comments on the answers
+    extracts comments on the answers
     """
     comments_list = []
     raw_comments_list = soup.find_all("ul", class_="js-comments-list")
@@ -205,7 +205,7 @@ def socli_interactive_windows(query):
         captcha_check(search_res.url)
         soup = BeautifulSoup(search_res.text, 'html.parser')
         try:
-            soup.find_all("div", class_="question-summary")[0]  # For explictly raising exception
+            soup.find_all("div", class_="question-summary")[0]  # For explicitly raising exception
             tmp = (soup.find_all("div", class_="question-summary"))
             tmp1 = (soup.find_all("div", class_="excerpt"))
             i = 0
