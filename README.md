@@ -268,6 +268,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/chetak123"><img src="https://avatars1.githubusercontent.com/u/53306550?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ayushman</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=chetak123" title="Code">💻</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/tusharnankani"><img src="https://avatars1.githubusercontent.com/u/61280281?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tushar Nankani</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=tusharnankani" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://bandism.net/"><img src="https://avatars.githubusercontent.com/u/22633385?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ikko Ashimine</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=eltociear" title="Documentation">📖</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->
