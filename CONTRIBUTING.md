@@ -2,7 +2,7 @@
 
 ![GitHub custom open for collaboration](https://img.shields.io/badge/Open%20For-Collaboration-brightgreen?style=for-the-badge)
 
-Refer to the following articles on the basics of Git and Github and can also contact the Project Mentors, in case you are stuck:
+Refer to the following articles on the basics of Git and GitHub and can also contact the Project Mentors, in case you are stuck:
 
 
 - [Getting started with Git and GitHub](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github)
