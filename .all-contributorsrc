@@ -522,6 +522,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "UKnowWhoIm",
+      "name": "Sidharth Ajithkumar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/51323747?v=4",
+      "profile": "https://uknowwhoim.me/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
