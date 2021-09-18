@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 7.1
+---------------------------
+* Fixes for google search
+
 Release 7.0
 ---------------------------
 * Fixes for google search
