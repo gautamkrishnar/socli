@@ -84,11 +84,10 @@ def get_questions_for_query_google(query, count=10):
             break
         try:
             question_title = result.find("h3").get_text().replace(' - Stack Overflow', '')
-
             # Instant answers will raise IndexError here
-            question_desc = result.find("div", recursive=False).find("div",recursive=False) \
-                .findAll("div",recursive=False)[1].findAll("div",recursive=False)[1] \
-                .findAll("span",recursive=False)[1].getText()
+            question_desc = result.find("div", recursive=False).find("div", recursive=False) \
+                .findAll("div", recursive=False)[1].findAll("div", recursive=False)[1] \
+                .getText()
 
             question_url = result.find("a").get("href")  # Retrieves the Stack Overflow link
             question_url = fix_google_url(question_url.lower())
