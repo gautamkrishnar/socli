@@ -272,6 +272,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://bandism.net/"><img src="https://avatars.githubusercontent.com/u/22633385?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ikko Ashimine</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=eltociear" title="Documentation">📖</a></td>
     <td align="center"><a href="https://uknowwhoim.me/"><img src="https://avatars.githubusercontent.com/u/51323747?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sidharth Ajithkumar</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=UKnowWhoIm" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/samsheff"><img src="https://avatars.githubusercontent.com/u/228820?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sam Sheffres</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=samsheff" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Rudy2401"><img src="https://avatars.githubusercontent.com/u/19256040?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rushi Dolas</b></sub></a><br /><a href="https://github.com/gautamkrishnar/socli/commits?author=Rudy2401" title="Code">💻</a></td>
   </tr>
 </table>
 
