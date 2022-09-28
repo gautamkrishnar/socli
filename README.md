@@ -1,4 +1,4 @@
-# SoCLI [![PyPI](https://img.shields.io/pypi/v/socli?color=brightgreen) ![PyPI Downloads](https://img.shields.io/pypi/dm/socli)](https://pypi.org/project/socli/) [![Build Status](https://travis-ci.com/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.com/gautamkrishnar/socli) [![Collaborizm](https://img.shields.io/badge/Collaborizm-Join%20Project-brightgreen.svg)](https://www.collaborizm.com/project/S1cbUui6) [![Gitter Chat](https://badges.gitter.im/socli-community/Lobby.svg)](https://gitter.im/socli-community/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# SoCLI [![PyPI](https://img.shields.io/pypi/v/socli?color=brightgreen) ![PyPI Downloads](https://img.shields.io/pypi/dm/socli)](https://pypi.org/project/socli/) [![Build Status](https://travis-ci.com/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.com/gautamkrishnar/socli) [![Gitter Chat](https://badges.gitter.im/socli-community/Lobby.svg)](https://gitter.im/socli-community/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 Stack Overflow command line written in python. Using SoCLI you can search and browse Stack Overflow without leaving the terminal. Just use the **socli** command:
@@ -318,7 +318,7 @@ sudo pip install pyopenssl or sudo easy_install pyopenssl
 <img src="https://cloud.githubusercontent.com/assets/8397274/16355101/edb3b98a-3aca-11e6-8db5-5f54cd4b9969.png" width=80px>
 
 ### Sponsors
-Sponsor SoCLI on [Collaborizm](https://www.collaborizm.com/project/S1cbUui6) or on [Open Collective](https://opencollective.com/socli):
+Sponsor SoCLI on [Open Collective](https://opencollective.com/socli):
 
 * Thanks [Steven Reubenstone](https://www.collaborizm.com/profile/1) for contributing $5 for the issue [#22](https://github.com/gautamkrishnar/socli/issues/22)
 
