@@ -53,10 +53,16 @@ class Header(UnicodeText):
 
 
 class EditedMainLoop(urwid.MainLoop):
+    def __init__(self, question_page, palette):
+        self.question_page = question_page
+        super(EditedMainLoop, self).__init__(question_page, palette)
+
 
     def process_input(self, keys):
         super(EditedMainLoop, self).process_input(keys)
+        global question_page
         global question_post
+        question_page = self.question_page
         if question_post is not None:
             if 'window resize' in keys:
                 question_post.keypress(question_post, 'window resize')
