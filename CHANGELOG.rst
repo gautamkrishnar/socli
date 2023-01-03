@@ -1,6 +1,10 @@
 SoCLI Changelog
 ================
 
+Release 7.3
+---------------------------
+* Fixes for back button #291 and #282
+
 Release 7.2
 ---------------------------
 * Fixes for google search
