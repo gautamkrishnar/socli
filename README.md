@@ -315,8 +315,9 @@ sudo pip install pyopenssl or sudo easy_install pyopenssl
  	* [@cyb3rops](https://twitter.com/cyb3rops/status/747380776350650368)
  	* [@pythontrending](https://twitter.com/pythontrending/status/745635512803819521)
 * Thanks to my favourite IDE JetBrains PyCharm ❤️ 😄
-
-<img src="https://cloud.githubusercontent.com/assets/8397274/16355101/edb3b98a-3aca-11e6-8db5-5f54cd4b9969.png" width=80px>
+<a href="https://www.jetbrains.com/?from=SOCLI" target="_blank">
+  <img src="https://cloud.githubusercontent.com/assets/8397274/16355101/edb3b98a-3aca-11e6-8db5-5f54cd4b9969.png" width=80px>
+</a>
 
 ### Sponsors
 Sponsor SoCLI on [Open Collective](https://opencollective.com/socli):
