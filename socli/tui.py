@@ -111,7 +111,7 @@ class QuestionPage(urwid.WidgetWrap):
                 footer=urwid.Pile([
                     QuestionURL(self.url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, c:comments, o: open in browser, \u2190: back, '
+                        u'\u2191: previous answer, \u2193: next answer, x: copy answer, c:comments, o: open in browser, \u2190: back, '
                         u'd: visit duplicated question, q: quit')
                 ])
             )
@@ -128,7 +128,7 @@ class QuestionPage(urwid.WidgetWrap):
                 footer=urwid.Pile([
                     QuestionURL(self.url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, c:comments, o: open in browser, \u2190: back, '
+                        u'\u2191: previous answer, \u2193: next answer, x: copy answer, c:comments, o: open in browser, \u2190: back, '
                         u'd: back to original question, q: quit')
                 ])
             )
@@ -145,7 +145,7 @@ class QuestionPage(urwid.WidgetWrap):
                 footer=urwid.Pile([
                     QuestionURL(self.url),
                     UnicodeText(
-                        u'\u2191: previous answer, \u2193: next answer, c: comments, o: open in browser, '
+                        u'\u2191: previous answer, \u2193: next answer, x: copy answer, c: comments, o: open in browser, '
                         u'\u2190: back, q: quit')
                 ])
             )
@@ -203,6 +203,10 @@ class QuestionPage(urwid.WidgetWrap):
             import webbrowser
             display_header.event('browser', "Opening in your browser...")
             webbrowser.open(self.url)
+        elif key in {'x', 'X'}:
+            import pyperclip
+            current_answer = self.answer_text.index
+            pyperclip.copy(self.answer_text.answers[current_answer])
         elif key == 'left':
             global question_post
             global question_page
