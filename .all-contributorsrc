@@ -567,8 +567,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "cvoorhees15",
+      "name": "Caleb Voorhees",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54859729?v=4",
+      "profile": "https://github.com/cvoorhees15",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs"
 }
