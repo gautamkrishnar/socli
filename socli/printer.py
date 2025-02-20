@@ -218,7 +218,7 @@ def display_results(url, dup_link=None, json_output=False):
     res_page = requests.get(url, headers=search.header)
     search.captcha_check(res_page.url)
     question_title, question_desc, question_stats, answers, comments, dup_url = \
-        search.get_question_stats_and_answer_and_comments(url)
+        search.get_question_stats_and_answer_and_comments(res_page.text)
     if json_output:
         sys.stdout.write(urllib.parse.unquote(json.dumps({
             'title': question_title,

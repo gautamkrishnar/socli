@@ -122,16 +122,14 @@ def get_comments(soup):
     return comments_list[1::]
 
 
-def get_question_stats_and_answer_and_comments(url):
+def get_question_stats_and_answer_and_comments(html):
     """
     Fetch the content of a StackOverflow page for a particular question.
     :param url: full url of a StackOverflow question
     :return: tuple of ( question_title, question_desc, question_stats, answers, comments, dup_url )
     """
     random_headers()
-    res_page = requests.get(url, headers=header)
-    captcha_check(res_page.url)
-    soup = BeautifulSoup(res_page.text, 'html.parser')
+    soup = BeautifulSoup(html, 'html.parser')
     dup_url = None
     question_title, question_desc, question_stats, dup_url = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="js-post-body")][
