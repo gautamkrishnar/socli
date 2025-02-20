@@ -136,7 +136,8 @@ def get_question_stats_and_answer_and_comments(url):
     question_title, question_desc, question_stats, dup_url = get_stats(soup)
     answers = [s.get_text() for s in soup.find_all("div", class_="js-post-body")][
               1:]  # first post is question, discard it.
-    accepted_answer  = soup.find_all("div",class_="accepted-answer")[0].find_all("div",class_="js-post-body")[0].get_text()
+    # accepted_answer  = soup.find_all("div",class_="accepted-answer")[0].find_all("div",class_="js-post-body")[0].get_text()
+    accepted_answer  = soup.find("div", attrs={"data-position-on-page" : "1"}).find("div",class_="js-post-body").get_text()
     if accepted_answer in answers:
         answers.remove(accepted_answer)
     accepted_answer = "=============ACCEPTED_ANSWER===========\n" + accepted_answer + "\n===============ACCEPTED_ANSWER============"
