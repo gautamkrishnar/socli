@@ -6,6 +6,23 @@ Stack Overflow command line written in python. Using SoCLI you can search and br
 
 ![SoCLI in action](https://cloud.githubusercontent.com/assets/8397274/24831468/86c290aa-1cb7-11e7-8161-2665d0c02e4b.gif)
 
+
+### announcements regarding archivist epidemic  
+
+there is an ongoing plague of closing repos hampering all communications for googler rtv and other basic tools . I always have a working branch but I have to preemptively ask everyone to write down emergency contact information before closing the repo . If this repo joins the list of museum pieces THESE places are always**open** for communication about CLI work flow.
+
+~~~
+gh issues list -R john-peterson/socli
+add another repo here as backup 
+~~~
+
+<ins> add your name to the list</ins> if you expect to have a continuing interest in terminal work and not an to switch to GUI and remember to **activate comments** with
+
+gh repo edit --enable-discussions --enable-issues
+
+the site has to require emergency contact information for closing a repo with many forks. if a repo is a root it will disrupt communication for everyone to figure out where to communicate. thanks for your time and hope this stays open for the ease of everyone 
+
+
 ### Installation
 
 ##### Supported platforms
