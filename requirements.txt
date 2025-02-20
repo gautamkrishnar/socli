@@ -5,3 +5,4 @@ py-stackexchange==2.2.7
 sentry-sdk==0.18.0
 urwid~=2.1.1
 argcomplete
+googlesearch-python==1.3.0

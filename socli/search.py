@@ -11,6 +11,7 @@ import copy
 from bs4 import BeautifulSoup
 import requests
 import urwid
+from googlesearch import search
 
 import socli.printer
 import socli.tui
@@ -68,37 +69,23 @@ def get_questions_for_query_google(query, count=10):
     :param query: User-entered query string
     :return: list of [ (question_text, question_description, question_url) ]
     """
-    i = 0
     questions = []
-    random_headers()
-    search_results = requests.get(google_search_url + query, headers=header)
-    captcha_check(search_results.url)
-    soup = BeautifulSoup(search_results.text, 'html.parser')
+    # questions.append([question_title, question_desc, question_url])
     try:
-        soup.find_all("div", class_="g")[0]  # For explicitly raising exception
+        google_search_items = search(f"site:stackoverflow.com {query}", num_results=count, advanced=True)
+        for item in google_search_items:
+            title = item.title
+            description = item.description
+            if item.title:
+                title = title.replace(' - Stack Overflow', '')
+            if description:
+                # to fix " 8 May 2019  ·  Just use range(10) but explain it's starts on zero."
+                # => "Just use range(10) but explain it's starts on zero."
+                description = description.split("·", 1)[-1].strip()
+            questions.append([title, description, item.url])
     except IndexError:
         socli.printer.print_warning("No results found...")
         sys.exit(0)
-    for result in soup.find_all("div", class_="g"):
-        if i == count:
-            break
-        try:
-            question_title = result.find("h3").get_text().replace(' - Stack Overflow', '')
-            # Instant answers will raise IndexError here
-            question_desc = result.find("div", recursive=False).find("div", recursive=False) \
-                .find_all("div", recursive=False)[0].find_all("div", recursive=False)[0] \
-                .get_text()
-
-            question_url = result.find("a").get("href")  # Retrieves the Stack Overflow link
-            question_url = fix_google_url(question_url.lower())
-            if question_url is None:
-                i = i - 1
-                continue
-
-            questions.append([question_title, question_desc, question_url])
-            i += 1
-        except (NameError, AttributeError, IndexError):
-            continue
 
     # Check if there are any valid question posts
     if not questions:

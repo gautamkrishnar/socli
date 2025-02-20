@@ -101,13 +101,13 @@ def socli(query, json_output=False):
     Else, use Stack Overflow default search mechanism.
     :return:
     """
-    query = printer.urlencode(query)
     try:
         if search.google_search:
             questions = search.get_questions_for_query_google(query)
             res_url = questions[0][2]  # Gets the first result
             display_results(res_url, json_output=json_output)
         else:
+            query = printer.urlencode(query);
             questions = search.get_questions_for_query(query)
             res_url = questions[0][2]
             display_results(search.so_url + res_url, json_output=json_output)  # Returned URL is relative to SO homepage
