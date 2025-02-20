@@ -61,6 +61,7 @@ def parse_arguments(command):
                                                       "foo bar: Displays the second search result of the query"
                                                       " \"foo bar\"'s most voted answer")
     parser.add_argument('--open-url', '-o', nargs=1, type=str, help='To load the given url')
+    parser.add_argument('--parse-html', nargs=1, type=str, help="Parse html file for debug purpose ")
     parser.add_argument('--json', '-j', action='store_true', help='Write output to stdout as json')
     parser.add_argument('--register', '-g', action='store_true', help='Registers socli\'s shell autocompletion')
     parser.add_argument('--version' , '-v', action='store_true', help='Prints the current version of socli')

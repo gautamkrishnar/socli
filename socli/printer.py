@@ -217,8 +217,11 @@ def display_results(url, dup_link=None, json_output=False):
     search.random_headers()
     res_page = requests.get(url, headers=search.header)
     search.captcha_check(res_page.url)
+    display_results_html(res_page.text, url, dup_link, json_output)
+
+def display_results_html(html, url="", dup_link=None, json_output=False):
     question_title, question_desc, question_stats, answers, comments, dup_url = \
-        search.get_question_stats_and_answer_and_comments(res_page.text)
+        search.get_question_stats_and_answer_and_comments(html)
     if json_output:
         sys.stdout.write(urllib.parse.unquote(json.dumps({
             'title': question_title,

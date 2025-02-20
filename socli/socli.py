@@ -29,7 +29,7 @@ import socli.user as user_module
 import socli.search as search
 import socli.printer as printer
 from socli.parser import parse_arguments
-from socli.printer import display_results
+from socli.printer import display_results, display_results_html
 from socli.version import __version__
 
 tag = ""  # tag based search
@@ -384,6 +384,17 @@ def main():
         search.google_search = False
         tag = namespace.tag
         has_tags()  # Adds tags to StackOverflow url (when not using google search.
+
+    if namespace.parse_html:
+        try:
+            file = str(namespace.parse_html[0])
+            with open(file,  encoding='utf-8') as fp:
+                html = fp.read()
+        except Exception as e:
+            printer.print_warning("error opening " + file + str(e))
+            exit(1)
+        display_results_html(html, json_output=json_output)
+
     if namespace.open_url:
         import webbrowser
         open_in_browser = False
