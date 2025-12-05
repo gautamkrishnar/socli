@@ -1,4 +1,4 @@
-# SoCLI [![PyPI](https://img.shields.io/pypi/v/socli?color=brightgreen) ![PyPI Downloads](https://img.shields.io/pypi/dm/socli)](https://pypi.org/project/socli/) [![Build Status](https://travis-ci.com/gautamkrishnar/socli.svg?branch=master)](https://travis-ci.com/gautamkrishnar/socli) [![Gitter Chat](https://badges.gitter.im/socli-community/Lobby.svg)](https://gitter.im/socli-community/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# SoCLI [![PyPI](https://img.shields.io/pypi/v/socli?color=brightgreen) ![PyPI Downloads](https://img.shields.io/pypi/dm/socli)](https://pypi.org/project/socli/)
 
 
 Stack Overflow command line written in python. Using SoCLI you can search and browse Stack Overflow without leaving the terminal. Just use the **socli** command:
