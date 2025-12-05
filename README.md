@@ -1,4 +1,4 @@
-# SoCLI [![PyPI](https://img.shields.io/pypi/v/socli?color=brightgreen) ![PyPI Downloads](https://img.shields.io/pypi/dm/socli)](https://pypi.org/project/socli/)
+# SoCLI [![PyPI](https://img.shields.io/pypi/v/socli?color=brightgreen) ![PyPI Downloads](https://img.shields.io/pypi/dm/socli)](https://pypi.org/project/socli/) [![Python Test](https://github.com/gautamkrishnar/socli/actions/workflows/test.yml/badge.svg)](https://github.com/gautamkrishnar/socli/actions/workflows/test.yml)
 
 
 Stack Overflow command line written in python. Using SoCLI you can search and browse Stack Overflow without leaving the terminal. Just use the **socli** command:
@@ -168,11 +168,16 @@ Please check out the list of [issues](https://github.com/gautamkrishnar/socli/is
 ### Testing
 Automated tests are setup by using
 [pytest](https://docs.pytest.org/en/latest/contents.html), the tests can be run
-locally by invoking a `python setup.py test`.
+locally by invoking `pytest` after installing the package with test dependencies:
+
+```bash
+pip install -e .[test]
+pytest
+```
 
 All tests are in the `socli/tests/` subdirectory of this repository.
 
-TravisCI is supposed to run the test-suite on build.
+GitHub Actions runs the test suite on every push and pull request across Python 3.9, 3.10, 3.11, 3.12, and 3.13.
 
 ### 💥 How to Contribute ?
 If you are willing to contribute to SoCLI project, you are awesome! 

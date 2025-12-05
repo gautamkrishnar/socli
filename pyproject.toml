@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "socli"
+version = "7.3"
+description = "Stack overflow command line interface. SoCLI allows you to search and browse stack overflow from the terminal."
+readme = "README.md"
+requires-python = ">=3.5.0"
+license = "BSD-3-Clause"
+authors = [
+    {name = "Gautam Krishna R", email = "r.gautamkrishna@gmail.com"}
+]
+keywords = ["stack overflow", "cli"]
+classifiers = [
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "BeautifulSoup4",
+    "requests",
+    "colorama",
+    "Py-stackExchange",
+    "sentry_sdk",
+    "urwid",
+    "argcomplete",
+    "googlesearch-python",
+]
+
+[project.optional-dependencies]
+test = ["pytest", "mock"]
+
+[project.urls]
+Homepage = "https://www.github.com/gautamkrishnar/socli"
+
+[project.scripts]
+socli = "socli.sentry:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["socli*"]
