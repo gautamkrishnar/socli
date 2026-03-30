@@ -10,7 +10,7 @@ mock==5.2.0
 packaging==25.0
 pluggy==1.6.0
 py-stackexchange==2.2.7
-Pygments==2.19.2
+Pygments==2.20.0
 pytest==8.4.1
 requests==2.32.5
 sentry-sdk==2.35.1
